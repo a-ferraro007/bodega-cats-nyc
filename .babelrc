@@ -1,0 +1,8 @@
+{
+  "presets": ["next/babel"],
+  "plugins": [],
+  "ignore": [
+    "./node_modules/mapbox-gl/dist/mapbox-gl.js",
+    "./node_modules/@mapbox/mapbox-gl-geocoder"
+  ]
+}
