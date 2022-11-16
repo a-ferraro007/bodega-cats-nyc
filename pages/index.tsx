@@ -10,6 +10,7 @@ import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import Map from '../components/Map'
 import { useStore } from '../store'
+import SideDrawer from '../components/SideDrawer'
 
 const Home: NextPage = () => {
   const marker = useRef<mapboxgl.Marker>()
@@ -61,7 +62,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="mx-11 my-3 md:mt-8 h-screen relative">
+      <main className="mx-11 my-3 md:mt-8 h-screen">
         <h1 className=" text-3xl md:text-[50px] font-baloo text-primaryGold font-bold">
           {' '}
           Bodega Cats
@@ -69,10 +70,13 @@ const Home: NextPage = () => {
         {isLoading ? (
           <div className="text-3xl text-white"> ... loading </div>
         ) : (
-          <>
-            <Map geo_json={geo_json} addBtn={addBtn} setAddBtn={setAddBtn} setAuth={setAuth} />
+          <div className="mt-4 md:mt-6 h-full">
+            <div className="flex flex-row h-3/4">
+              <SideDrawer />
+              <Map geo_json={geo_json} addBtn={addBtn} setAddBtn={setAddBtn} setAuth={setAuth} />
+            </div>
             {isDrawerOpen && <Drawer handleStateReset={HandleStateReset} />}
-          </>
+          </div>
         )}
 
         {!user && showAuth && (

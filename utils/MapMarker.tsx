@@ -1,24 +1,27 @@
 import mapboxgl, { FeatureIdentifier, MercatorCoordinate } from 'mapbox-gl'
 import { createRoot } from 'react-dom/client'
 import MapMarker from '../components/Marker'
+import Popup from '../components/Popup'
 
 const newMarker = (feature: any, image?: string): mapboxgl.Marker => {
-  const container = document.createElement('div')
-  const root = createRoot(container)
-  root.render(<MapMarker image={image} />)
+  const mContainer = document.createElement('div')
+  const mRoot = createRoot(mContainer)
+  mRoot.render(<MapMarker image={image} />)
+
+  const pContainer = document.createElement('div')
+  const pRoot = createRoot(pContainer)
+  pRoot.render(<Popup feature={feature} />)
 
   const popup = new mapboxgl.Popup({
     closeButton: false,
-    closeOnClick: true
-    //offset: { center: [100, 10000] }
+    closeOnClick: true,
+    offset: 35
   })
     .setLngLat(feature.geometry.coordinates as mapboxgl.LngLatLike)
-    //.setHt
-    .setHTML(`<div className="bg-white h-52 w-52 absolute bottom-1 transition-all"> HELLOO </div>`)
-    .setOffset(35)
+    .setDOMContent(pContainer)
 
   return new mapboxgl.Marker({
-    element: container,
+    element: mContainer,
     clickTolerance: 25,
     scale: 4
   })

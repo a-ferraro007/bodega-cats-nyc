@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import { ChangeEvent, useEffect, useState } from 'react'
+/* eslint-disable @next/next/no-img-element */
+import { ChangeEvent, useState } from 'react'
 import { Path, UseFormRegister } from 'react-hook-form'
 import { FormInputs } from '../../constants/types'
 
@@ -9,8 +9,20 @@ type FileInputProps = {
   required?: boolean
 }
 
+const FileInputContainer = ({ children, image }: any) => {
+  return (
+    <div
+      className={`w-36 h-32 mx-auto transition-all duration-500 rounded-lg cursor-pointer text-center relative ${
+        !image && 'bg-slate-200 hover:bg-slate-300'
+      }`}
+    >
+      <div className="w-full h-full z-10 absolute p-2">{children}</div>
+      {image && <img alt="uploaded image" src={image} className="w-36 h-32 rounded-lg absolute" />}
+    </div>
+  )
+}
+
 const FileInput = ({ label, required, register }: FileInputProps) => {
-  const { onBlur, name, ref } = register(label)
   const [image, setImage] = useState<string | ArrayBuffer | null>()
 
   const HandleOnChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,14 +41,12 @@ const FileInput = ({ label, required, register }: FileInputProps) => {
   }
   return (
     <>
-      <div
-        className={`w-[150px] h-[125px] mx-auto transition-all duration-500 rounded-lg cursor-pointer  p-2 text-center relative ${
-          !image && 'bg-slate-200 hover:bg-slate-300'
-        }`}
-      >
+      <FileInputContainer image={image}>
         <label
           htmlFor="file-input"
-          className="flex flex-col h-full justify-center items-center rounded-lg border-2  cursor-pointer p-2"
+          className={`flex flex-col h-full justify-center items-center rounded-lg cursor-pointer ${
+            !image && 'border-2'
+          }`}
         >
           {!image && (
             <div className="flex flex-col justify-center items-center">
@@ -68,13 +78,12 @@ const FileInput = ({ label, required, register }: FileInputProps) => {
             {...register(label, {
               onChange: (e) => HandleOnChange(e)
             })}
-            //{...register(label)}
             type="file"
             accept="image/*"
             className="hidden"
           />
         </label>
-      </div>
+      </FileInputContainer>
     </>
   )
 }

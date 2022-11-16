@@ -17,7 +17,6 @@ const Map = ({ geo_json, addBtn, setAddBtn, setAuth }: any) => {
   const isDrawerOpen = useStore((state) => state.isDrawerOpen)
   const setDrawerOpen = useStore((state) => state.setDrawerOpen)
   useMapUpdate(geo_json)
-
   mapboxgl.accessToken =
     'pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA'
 
@@ -87,7 +86,7 @@ const Map = ({ geo_json, addBtn, setAddBtn, setAuth }: any) => {
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [-73.96875682489714, 40.73423383278248], //[location?.longitude, location?.latitude],
       zoom: 14,
-      maxBounds: [-74.25909, 40.477399, -73.700272, 40.917577],
+      maxBounds: [-74.26379, 40.3923, -73.667498, 40.94285], //[-74.25909, 40.477399, -73.700272, 40.917577],
       interactive: true
     })
 
@@ -114,7 +113,7 @@ const Map = ({ geo_json, addBtn, setAddBtn, setAuth }: any) => {
   }
 
   return (
-    <div className="relative mt-4 md:mt-6 bodega-cats" ref={mapContainer}>
+    <div className="bodega-cats" ref={mapContainer}>
       {addBtn && (
         <button
           className="absolute top-14 right-4 z-10 text-xl font-baloo font-bold px-3 py-1 rounded-md bg-white shadow-[0_6px_30px_-10px]"

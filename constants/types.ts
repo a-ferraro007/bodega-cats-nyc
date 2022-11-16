@@ -2,6 +2,7 @@ export interface FormInputs {
   name: string
   address: string
   rating: number
+  search: string
   file?: string
 }
 
