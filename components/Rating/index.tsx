@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 enum KittyRanking {
   'Bad Kitty' = 1,
   'Ok Kitty' = 2,

@@ -1,7 +1,6 @@
 import { NewFeatureMutation } from './../../constants/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import supabase from '../../supabase'
-import { fetchFeatures } from '../Features'
 //{ uuid, name, rating, image, geo_json, address, locality }: any,
 const newFeature = async ({ CatProperties, MapBoxFeature }: NewFeatureMutation) => {
   try {
@@ -29,7 +28,6 @@ const useNewFeatureMutation = () => {
     mutationFn: newFeature,
     onSuccess: () => {
       console.log('ON SUCCESS')
-
       return queryClient.invalidateQueries(['features'])
     }
   })

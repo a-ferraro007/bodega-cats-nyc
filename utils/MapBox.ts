@@ -18,44 +18,42 @@ const createAddressString = (propertyAddress: string, context: any) => {
 }
 
 const useMapUpdate = (geo_json: any) => {
-  const featureMap = useStore((state) => state.featureMap)
+  const featureStateMap = useStore((state) => state.features)
   const updateMapState = useStore((state) => state.updateMapState)
 
   useEffect(() => {
     const { features } = geo_json
     if (!features) return
-    if (featureMap.size === 0) {
+    if (featureStateMap.size === 0) {
       features.forEach((feature: any) => {
-        const marker = newMarker(feature, feature.properties.image)
-        featureMap.set(feature.id, marker)
+        const marker = newMarker(feature, true, feature.properties.image)
+        featureStateMap.set(feature.id, marker)
       })
-      updateMapState(featureMap)
+      updateMapState(featureStateMap)
       return
     }
 
-    const newMap = new Map()
+    const fetchedFeaturesMap = new Map()
     features.forEach((feature: any) => {
-      newMap.set(feature.id, feature)
+      fetchedFeaturesMap.set(feature.id, feature)
     })
 
-    featureMap.forEach((_: any, key: any) => {
-      if (!newMap.has(key)) {
-        const marker = featureMap.get(key)
-        featureMap.delete(key)
+    featureStateMap.forEach((_: any, key: any) => {
+      if (!fetchedFeaturesMap.has(key)) {
+        const marker = featureStateMap.get(key)
+        featureStateMap.delete(key)
         marker.remove()
       } else {
-        newMap.forEach((feature, key) => {
-          if (featureMap.has(key)) return
-          const marker = newMarker(feature, feature.properties.image)
-          //marker.addTo(map)
-          featureMap.set(feature.id, marker)
+        fetchedFeaturesMap.forEach((feature, key) => {
+          if (featureStateMap.has(key)) return
+          const marker = newMarker(feature, true, feature.properties.image)
+          featureStateMap.set(feature.id, marker)
         })
       }
     })
-
-    updateMapState(featureMap)
+    updateMapState(featureStateMap)
     // //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [featureMap, geo_json, updateMapState])
+  }, [featureStateMap, geo_json, updateMapState])
 }
 
 export { setUpData as setUpData, createAddressString, useMapUpdate }

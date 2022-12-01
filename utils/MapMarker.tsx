@@ -3,14 +3,23 @@ import { createRoot } from 'react-dom/client'
 import MapMarker from '../components/Marker'
 import Popup from '../components/Popup'
 
-const newMarker = (feature: any, image?: string): mapboxgl.Marker => {
+const newMarker = (feature: any, setPopup = true, image?: string): mapboxgl.Marker => {
   const mContainer = document.createElement('div')
   const mRoot = createRoot(mContainer)
   mRoot.render(<MapMarker image={image} />)
 
+  if (!setPopup) {
+    return new mapboxgl.Marker({
+      element: mContainer,
+      clickTolerance: 25,
+      scale: 1
+    }).setLngLat(feature.geometry.coordinates as mapboxgl.LngLatLike)
+  }
   const pContainer = document.createElement('div')
   const pRoot = createRoot(pContainer)
   pRoot.render(<Popup feature={feature} />)
+
+  console.log(setPopup)
 
   const popup = new mapboxgl.Popup({
     closeButton: false,
@@ -23,7 +32,7 @@ const newMarker = (feature: any, image?: string): mapboxgl.Marker => {
   return new mapboxgl.Marker({
     element: mContainer,
     clickTolerance: 25,
-    scale: 4
+    scale: 1
   })
     .setLngLat(feature.geometry.coordinates as mapboxgl.LngLatLike)
     .setPopup(popup)

@@ -6,12 +6,20 @@ export interface FormInputs {
   file?: string
 }
 
-export interface NewLocation {
+export interface ParsedFeature {
   feature_id: string
   name: string
   center: Array<Number>
   address: string
   locality: string
+}
+
+export interface FeatureData {
+  id: string
+  name: string
+  geometry: { coordinates: Array<Number>; type: string }
+  place_type: Array<string>
+  type: string
 }
 
 export interface CatProperties {
@@ -30,11 +38,28 @@ export interface MapBoxFeature {
 }
 
 export interface DrawerState {
-  LocationData?: NewLocation
-  FeatureData?: any
+  searchDrawerIsActive: boolean
+  featureDrawerIsActive: boolean
+}
+
+export interface FeatureDrawerProps {
+  handleStateReset: () => void
+}
+
+export interface FeatureDrawerState {
+  ParsedFeature?: ParsedFeature
+  Feature?: any
 }
 
 export interface NewFeatureMutation {
   CatProperties: CatProperties
   MapBoxFeature: MapBoxFeature
+}
+
+export enum Borough {
+  Manhattan = 'Manhattan',
+  Queens = 'Queens',
+  Brooklyn = 'Brooklyn',
+  Bronx = 'Bronx',
+  StatenIsland = 'Staten Island'
 }
