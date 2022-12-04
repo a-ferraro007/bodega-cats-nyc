@@ -6,7 +6,7 @@ import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { useState, useEffect } from 'react'
 import { useStore } from '../../store'
 
-const Layout = ({ children }) => {
+const Layout = ({ children }: any) => {
   const { data } = useFeatures()
   const [_, setAuth] = useState(false)
   const user = useUser()
