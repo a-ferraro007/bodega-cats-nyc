@@ -9,7 +9,7 @@ import SearchBar from '../../SearchBar'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { useState } from 'react'
 
-const Desktop = ({ children }) => {
+const Desktop = () => {
   const { data } = useFeatures()
   const [_, setAuth] = useState(false)
   const user = useUser()
@@ -81,7 +81,7 @@ const Desktop = ({ children }) => {
           )}
         </AnimatePresence>
 
-        {children}
+        {/*{children}*/}
 
         <AnimatePresence>
           {featureDrawerIsActive && (
