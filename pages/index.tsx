@@ -3,12 +3,13 @@ import Head from 'next/head'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import { useState } from 'react'
-import { fetchFeatures } from '../hooks/Features'
+import { fetchFeatures, useFeatures } from '../hooks/Features'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { useStore } from '../store'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import Layout from '../components/Layout'
+import Map from '../components/Map'
 
 export async function getServerSideProps() {
   const queryClient = new QueryClient()
@@ -23,10 +24,12 @@ export async function getServerSideProps() {
 }
 
 const Home: NextPage = ({}) => {
+  const { data } = useFeatures()
   const [_, setAuth] = useState(false)
   const user = useUser()
   const { supabaseClient, session } = useSessionContext()
   const authState = useStore((state) => state.authState)
+  const [addBtn, setAddBtn] = useState(false)
 
   return (
     <>
@@ -41,7 +44,22 @@ const Home: NextPage = ({}) => {
           {' '}
           Bodega Cats
         </h1>
-        <Layout />
+        <Layout>
+          {!data ? (
+            <div key={'load'} className="text-3xl text-black">
+              {' '}
+              ... loading{' '}
+            </div>
+          ) : (
+            <Map
+              key={'mobile'}
+              geo_json={data}
+              addBtn={addBtn}
+              setAddBtn={setAddBtn}
+              setAuth={setAuth}
+            />
+          )}
+        </Layout>
         {!user && authState && (
           <div className="absolute left-0 right-0 top-40 max-w-xs  bg-white rounded-md shadow-[0_6px_30px_-10px] mx-auto p-4">
             <button

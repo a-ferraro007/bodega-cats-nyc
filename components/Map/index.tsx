@@ -68,6 +68,8 @@ const Map = ({ geo_json }: any) => {
   })
 
   useEffect(() => {
+    console.log('RESIZE')
+
     let resizeInterval = setInterval(() => {
       if (map.current) {
         map.current.resize()

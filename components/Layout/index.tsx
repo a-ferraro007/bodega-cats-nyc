@@ -6,7 +6,7 @@ import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { useState, useEffect } from 'react'
 import { useStore } from '../../store'
 
-const Layout = () => {
+const Layout = ({ children }) => {
   const { data } = useFeatures()
   const [_, setAuth] = useState(false)
   const user = useUser()
@@ -23,28 +23,12 @@ const Layout = () => {
   useEffect(() => {
     console.log('data', data)
   })
+  const classNames =
+    'h-3/4 max-h-[900px] hidden md:flex flex-col  bg-ice mt-3 mx-3 md:mt-6 md:mx-8 rounded-[25px] p-5 md:pt-5 md:p-7'
   return (
     <>
-      <div className="h-3/4 max-h-[900px] hidden md:flex flex-col md:gap-4 bg-ice mt-3 mx-3 md:mt-6 md:mx-8 rounded-[25px] p-5 md:pt-5 md:p-7">
-        <Desktop />
-      </div>
-      <div className="h-3/4 max-h-[900px] md:hidden bg-ice mt-3 mx-3 md:mt-6 md:mx-8 rounded-[25px] p-5 md:pt-5 md:p-7">
-        <Mobile>
-          {!data ? (
-            <div key={'load'} className="text-3xl text-black">
-              {' '}
-              ... loading{' '}
-            </div>
-          ) : (
-            <Map
-              key={'map'}
-              geo_json={data}
-              addBtn={addBtn}
-              setAddBtn={setAddBtn}
-              setAuth={setAuth}
-            />
-          )}
-        </Mobile>
+      <div className="h-3/4 max-h-[900px] bg-ice mt-3 mx-3 md:mt-6 md:mx-8 rounded-[25px] p-5 md:pt-5 md:p-7">
+        <Mobile>{children}</Mobile>
       </div>
     </>
   )

@@ -9,7 +9,7 @@ import SearchBar from '../../SearchBar'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { useState } from 'react'
 
-const Desktop = () => {
+const Desktop = ({ children }) => {
   const { data } = useFeatures()
   const [_, setAuth] = useState(false)
   const user = useUser()
@@ -80,20 +80,9 @@ const Desktop = () => {
             </Drawer>
           )}
         </AnimatePresence>
-        {!data ? (
-          <div key={'load'} className="text-3xl text-white">
-            {' '}
-            ... loading{' '}
-          </div>
-        ) : (
-          <Map
-            key={'map'}
-            geo_json={data}
-            addBtn={addBtn}
-            setAddBtn={setAddBtn}
-            setAuth={setAuth}
-          />
-        )}
+
+        {children}
+
         <AnimatePresence>
           {featureDrawerIsActive && (
             <Drawer
