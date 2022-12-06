@@ -39,11 +39,13 @@ const Home: NextPage = ({}) => {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="mx-1 md:mx-3 h-screen overflow-hidden">
-        <h1 className="my-6 md:mt-10 text-3xl md:text-[50px] font-baloo text-primaryGold font-bold">
-          {' '}
-          Bodega Cats
-        </h1>
+      <main className="fixed w-full top-0 left-0 md:static mx-0 md:mx-3 h-screen overflow-hidden">
+        <div className="hidden md:block">
+          <h1 className="my-6 md:mt-10 text-3xl md:text-[50px] font-baloo text-primaryGold font-bold">
+            {' '}
+            Bodega Cats
+          </h1>
+        </div>
         <Layout>
           {!data ? (
             <div key={'load'} className="text-3xl text-black">

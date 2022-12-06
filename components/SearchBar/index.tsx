@@ -37,7 +37,7 @@ const SearchBar = () => {
   //focus-within:bg-slate-300 active:bg-slate-300
   return (
     <>
-      <div className="relative group-focus/search mt-4 flex-grow">
+      <div className="hidden md:block relative group-focus/search mt-4 flex-grow">
         <input
           id={'search-input'}
           ref={isFocused}
@@ -60,6 +60,28 @@ const SearchBar = () => {
         <label className="text-lg font-bold font-nunito text-graphite transform transition-all duration-500 absolute top-0 left-0 h-full flex items-center pl-2 group-focus-within/search:text-sm  group-focus-within/search:h-1/2  group-focus-within/search:-translate-y-full  group-focus-within/search:pl-0 peer-focus-within/search:-translate-y-full peer-focus-within/search:h-1/2 peer-focus-within/search:pl-0 peer-focus-within/search:text-sm peer-valid/search:-translate-y-full peer-valid/search:h-1/2 peer-valid/search:pl-0 peer-valid/search:text-sm pointer-events-none">
           find a cat
         </label>
+      </div>
+      <div className=" block md:hidden bg-white px-3 py-2 w-full">
+        <input
+          placeholder="find a cat"
+          id={'mobile-search-input'}
+          ref={isFocused}
+          required={true}
+          type="search"
+          className="w-full h-10 px-4 text-graphite text-sm font-bold font-nunito rounded-md outline-none  transition-all duration-500 border-[1px] border-solid border-[rgba(0,0,0,.12)]"
+          value={query}
+          onChange={(e) => HandleOnChange(e)}
+          onKeyDown={(e) => HandleInputEnterEvent(e)}
+          onFocus={() => {
+            setSearchFocus(true)
+          }}
+          onBlur={() => {
+            setSearchFocus(false)
+            if (searchDrawerIsActive && query.length === 0) {
+              setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive })
+            }
+          }}
+        />
       </div>
     </>
   )

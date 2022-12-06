@@ -1,34 +1,44 @@
-import Desktop from './Desktop'
-import Mobile from './Mobile'
-import Map from '../Map'
-import { useFeatures } from '../../hooks/Features'
-import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
-import { useState, useEffect } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useStore } from '../../store'
+import Drawer from '../Drawer'
+import SearchDrawer from '../Drawer/SearchDrawer'
+import SearchBar from '../SearchBar'
+import Mobile from './Mobile'
 
 const Layout = ({ children }: any) => {
-  const { data } = useFeatures()
-  const [_, setAuth] = useState(false)
-  const user = useUser()
-  const { supabaseClient, session } = useSessionContext()
-  const authState = useStore((state) => state.authState)
-  const searchMarker = useStore((state) => state.searchMarker)
-  const setSearchMarker = useStore((state) => state.setSearchMarker)
-  const setDrawerState = useStore((state) => state.setDrawerState)
-  const { featureDrawerIsActive, searchDrawerIsActive } = useStore((state) => state.drawerState)
-  const query = useStore((state) => state.searchQuery)
+  const { searchDrawerIsActive, featureDrawerIsActive } = useStore((state) => state.drawerState)
   const searchFocus = useStore((state) => state.searchFocus)
-  const map = useStore((state) => state.mapRef)
-  const [addBtn, setAddBtn] = useState(false)
-  useEffect(() => {
-    console.log('data', data)
-  })
-  const classNames =
-    'h-3/4 max-h-[900px] hidden md:flex flex-col  bg-ice mt-3 mx-3 md:mt-6 md:mx-8 rounded-[25px] p-5 md:pt-5 md:p-7'
   return (
     <>
-      <div className="h-3/4 max-h-[900px] bg-ice mt-3 mx-3 md:mt-6 md:mx-8 rounded-[25px] p-5 md:pt-5 md:p-7">
+      <div className="hidden md:block h-3/4 max-h-[900px] bg-ice mt-3 mx-3 md:mt-6 md:mx-8 rounded-[25px] p-5 md:pt-5 md:p-7">
         <Mobile>{children}</Mobile>
+      </div>
+      <div className="relative z-0 w-full h-full md:hidden">
+        {children}
+
+        <div className="absolute z-100 top-0 right-0 left-0">
+          <SearchBar />
+          <div className="h-[400px] overflow-hidden">
+            <AnimatePresence>
+              {((searchDrawerIsActive && searchFocus) || searchFocus) && (
+                <motion.div
+                  className="block md:hidden "
+                  key={'drawer-mobilee'}
+                  {...{
+                    initial: { height: '0px', opacity: 0 },
+                    animate: { height: '100%', opacity: 1 },
+                    exit: { height: '0px', opacity: 0 },
+                    transition: { type: 'tween', duration: 0.3 }
+                  }}
+                >
+                  <Drawer>
+                    <SearchDrawer />
+                  </Drawer>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
     </>
   )

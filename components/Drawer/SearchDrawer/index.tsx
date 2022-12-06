@@ -50,7 +50,7 @@ const SearchDrawer = () => {
 
   return (
     <>
-      <ul className="overflow-scroll h-full">
+      <ul className="overflow-scroll h-full max-h-[400px] md:max-h-full">
         {isFetched && query && data?.length === 0 && (
           <span className="block w-full font-nunito font-bold text-sm text-center">
             no cats found
@@ -63,7 +63,7 @@ const SearchDrawer = () => {
             return (
               <li
                 key={ParsedFeature?.feature_id}
-                className=" my-2 p-4 cursor-pointer border-b-[1px] border-b-gray-300 transition-all duration-200 hover:border-b-gray-100 hover:bg-slate-200 hover:rounded-md last:border-b-0"
+                className="my-2 p-4 cursor-pointer border-b-[1px] border-b-gray-300 transition-all duration-200 hover:border-b-gray-100 hover:bg-slate-200 hover:rounded-md last:border-b-0"
                 onClick={() => HandleOnClick(feature)}
                 onKeyDown={(e) => HandleOnKeyDown(e, feature)}
                 tabIndex={0}

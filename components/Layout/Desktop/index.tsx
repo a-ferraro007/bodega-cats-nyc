@@ -10,19 +10,10 @@ import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { useState } from 'react'
 
 const Desktop = () => {
-  const { data } = useFeatures()
-  const [_, setAuth] = useState(false)
-  const user = useUser()
-  const { supabaseClient, session } = useSessionContext()
-  const authState = useStore((state) => state.authState)
-  const searchMarker = useStore((state) => state.searchMarker)
-  const setSearchMarker = useStore((state) => state.setSearchMarker)
   const setDrawerState = useStore((state) => state.setDrawerState)
   const { featureDrawerIsActive, searchDrawerIsActive } = useStore((state) => state.drawerState)
   const query = useStore((state) => state.searchQuery)
   const searchFocus = useStore((state) => state.searchFocus)
-  const map = useStore((state) => state.mapRef)
-  const [addBtn, setAddBtn] = useState(false)
 
   return (
     <>

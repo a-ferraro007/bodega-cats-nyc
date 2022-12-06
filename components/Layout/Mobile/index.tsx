@@ -106,7 +106,7 @@ const Mobile = ({ children }: any) => {
         )}
       </div>
       <AnimatePresence>
-        {((searchDrawerIsActive && searchFocus) || searchDrawerIsActive) && (
+        {((searchDrawerIsActive && searchFocus) || searchFocus) && (
           <motion.div
             className="block md:hidden "
             key={'drawer-mobile'}
