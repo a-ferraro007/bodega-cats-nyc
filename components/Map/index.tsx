@@ -86,7 +86,7 @@ const Map = ({ geo_json }: any) => {
     }
   }, [featureDrawerIsActive, searchDrawerIsActive, map])
 
-  return <div className="bodega-cats h-full" ref={mapContainer}></div>
+  return <div className="bodega-cats h-full w-full" ref={mapContainer}></div>
 }
 
 export default Map
