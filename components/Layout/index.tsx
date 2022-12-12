@@ -1,25 +1,26 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useRef } from 'react'
 import { useStore } from '../../store'
 import Drawer from '../Drawer'
 import SearchDrawer from '../Drawer/SearchDrawer'
-import SearchBar from '../SearchBar'
-import Mobile from './Mobile'
+import MobileSearchBar from '../SearchBar/MobileSearchBar'
+import Desktop from './Desktop'
 
 const Layout = ({ children }: any) => {
   const { searchDrawerIsActive, featureDrawerIsActive } = useStore((state) => state.drawerState)
   const searchFocus = useStore((state) => state.searchFocus)
+
   return (
     <>
       <div className="hidden md:block h-3/4 max-h-[900px] bg-ice mt-3 mx-3 md:mt-6 md:mx-8 rounded-[25px] p-5 md:pt-5 md:p-7">
-        <Mobile>{children}</Mobile>
+        <Desktop>{children}</Desktop>
       </div>
       <div className="relative w-full h-full md:hidden">
         {children}
-
-        <div className="absolute z-100 top-0 right-0 left-0">
-          <SearchBar />
-          <AnimatePresence>
-            {((searchDrawerIsActive && searchFocus) || searchFocus) && (
+        <MobileSearchBar />
+        <div className='absolute z-100 top-16 right-0 left-0"'>
+          {/*<AnimatePresence>
+            {((searchDrawerIsActive && searchFocus) || searchDrawerIsActive) && (
               <motion.div
                 className="block md:hidden "
                 key={'drawer-mobilee'}
@@ -35,7 +36,7 @@ const Layout = ({ children }: any) => {
                 </Drawer>
               </motion.div>
             )}
-          </AnimatePresence>
+          </AnimatePresence>*/}
         </div>
       </div>
     </>

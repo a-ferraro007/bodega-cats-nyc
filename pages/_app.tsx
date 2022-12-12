@@ -26,7 +26,7 @@ function MyApp({
         <Hydrate state={pageProps.dehydratedState}>
           <Component {...pageProps} />
         </Hydrate>
-        <ReactQueryDevtools />
+        {/*<ReactQueryDevtools />*/}
       </QueryClientProvider>
     </SessionContextProvider>
   )

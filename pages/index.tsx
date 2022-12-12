@@ -42,27 +42,22 @@ const Home: NextPage = ({}) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="fixed w-full top-0 left-0 md:static mx-0 md:mx-3 h-screen overflow-hidden">
-        <div className="hidden md:block">
-          <h1 className="my-6 md:mt-10 text-3xl md:text-[50px] font-baloo text-primaryGold font-bold">
-            {' '}
-            Bodega Cats
-          </h1>
-        </div>
+      <main className="fixed w-full flex flex-col top-0 left-0 md:static mx-0 md:mx-3 h-screen overflow-hidden ">
+        <h1 className="hidden md:block my-6 md:mt-10 text-3xl md:text-[50px] font-baloo text-primaryGold font-bold">
+          {' '}
+          Bodega Cats
+        </h1>
+
+        <h1 className=" block md:hidden p-2 bg-ice text-left text-2xl md:text-[50px] font-baloo text-primaryGold font-bold shadow-3xl">
+          {' '}
+          Bodega Cats
+        </h1>
+
         <Layout>
           {!data ? (
-            <div key={'load'} className="text-3xl text-black">
-              {' '}
-              ... loading{' '}
-            </div>
+            <div className="text-3xl text-black"> ... loading </div>
           ) : (
-            <Map
-              key={'mobile'}
-              geo_json={data}
-              addBtn={addBtn}
-              setAddBtn={setAddBtn}
-              setAuth={setAuth}
-            />
+            <Map geo_json={data} addBtn={addBtn} setAddBtn={setAddBtn} setAuth={setAuth} />
           )}
         </Layout>
         {!user && authState && (
