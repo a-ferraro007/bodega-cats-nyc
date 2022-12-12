@@ -50,7 +50,7 @@ const SearchDrawer = () => {
 
   return (
     <div className="overflow-scroll h-container">
-      <ul className="px-4 pb-4 h-full max-h-[400px] md:max-h-full">
+      <ul className="px-4 h-full max-h-[400px] md:max-h-full">
         {isFetched && query && data?.length === 0 && (
           <span className="block w-full font-nunito font-bold text-sm text-center">
             no cats found
@@ -68,22 +68,16 @@ const SearchDrawer = () => {
                 onKeyDown={(e) => HandleOnKeyDown(e, feature)}
                 tabIndex={0}
               >
-                <p>
-                  <span className="block font-nunito font-bold text-md pb-1">
-                    {ParsedFeature?.name}
-                  </span>
-                  <p className="font-roboto font-normal text-xs mb-4  ">
-                    {' '}
-                    {ParsedFeature?.address}
-                  </p>
+                <span className="block font-nunito font-bold text-md pb-1">
+                  {ParsedFeature?.name}
+                </span>
+                <p className="font-roboto font-normal text-xs mb-4  "> {ParsedFeature?.address}</p>
 
-                  {/*<span className="border-2"></span>*/}
-                  {ParsedFeature?.locality && (
-                    <p className="pt-4 border-t-[1px] border-solid border-[#dad8d2]">
-                      <BoroughBadge locality={ParsedFeature?.locality} />
-                    </p>
-                  )}
-                </p>
+                {ParsedFeature?.locality && (
+                  <div className="pt-4 border-t-[1px] border-solid border-[#dad8d2]">
+                    <BoroughBadge locality={ParsedFeature?.locality} />
+                  </div>
+                )}
               </li>
             )
           })

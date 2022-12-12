@@ -77,7 +77,7 @@ const Home: NextPage = ({}) => {
           {/*<div className=""> log in</div>*/}
         </nav>
         <div className="h-container flex flex-row">
-          <div className="max-w-[400px] w-full gap-4 h-ful overflow-hidden bg-white  border-solid border-r-[.5px] border-[rgba(0,0,0,.2)]">
+          <div className="pb-4 max-w-[400px] w-full h-full overflow-hidden bg-white  border-solid border-r-[.5px] border-[rgba(0,0,0,.2)]">
             <div className="pb-2 pt-4 px-4">
               <SearchBar />
             </div>
