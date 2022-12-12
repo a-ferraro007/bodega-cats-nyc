@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-import { useStore } from '../../store'
+import { useStore } from '../../../store'
 import Drawer from '../Drawer'
 import SearchDrawer from '../Drawer/SearchDrawer'
 import MobileSearchBar from '../SearchBar/MobileSearchBar'

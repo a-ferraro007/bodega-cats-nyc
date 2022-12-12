@@ -1,4 +1,4 @@
-import { Borough } from '../../../constants/types'
+import { Borough } from '../../../../constants/types'
 
 type BoroughBadgeProps = {
   locality: string
@@ -29,7 +29,7 @@ const BoroughBadge = ({ locality }: BoroughBadgeProps) => {
   return (
     <div>
       <span
-        className={`${classNames} font-roboto font-medium text-[.55rem] leading-none py-1 px-2 rounded-2xl`}
+        className={`${classNames} font-roboto font-medium text-xs leading-none py-1 px-2 rounded-2xl`}
       >
         {' '}
         {locality}

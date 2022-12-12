@@ -8,8 +8,12 @@ import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { useStore } from '../store'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
-import Layout from '../components/Layout'
+import Layout from '../components/version-one/Layout'
 import Map from '../components/Map'
+import SearchBar from '../components/SearchBar'
+import MobileSearchBar from '../components/version-one/SearchBar/MobileSearchBar'
+import SearchDrawer from '../components/version-one/Drawer/SearchDrawer'
+import Drawer from '../components/version-one/Drawer'
 
 export async function getServerSideProps() {
   const queryClient = new QueryClient()
@@ -30,7 +34,8 @@ const Home: NextPage = ({}) => {
   const { supabaseClient, session } = useSessionContext()
   const authState = useStore((state) => state.authState)
   const [addBtn, setAddBtn] = useState(false)
-
+  const { searchDrawerIsActive, featureDrawerIsActive } = useStore((state) => state.drawerState)
+  const searchFocus = useStore((state) => state.searchFocus)
   return (
     <>
       <Head>
@@ -42,8 +47,9 @@ const Home: NextPage = ({}) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="fixed w-full flex flex-col top-0 left-0 md:static mx-0 md:mx-3 h-screen overflow-hidden ">
-        <h1 className="hidden md:block my-6 md:mt-10 text-3xl md:text-[50px] font-baloo text-primaryGold font-bold">
+      <>
+        {/*<main className="fixed w-full flex flex-col top-0 left-0 md:static mx-0 md:mx-3 h-screen overflow-hidden ">*/}
+        {/*<h1 className="hidden md:block my-6 md:mt-10 text-3xl md:text-[50px] font-baloo text-primaryGold font-bold">
           {' '}
           Bodega Cats
         </h1>
@@ -51,15 +57,34 @@ const Home: NextPage = ({}) => {
         <h1 className=" block md:hidden p-2 bg-ice text-left text-2xl md:text-[50px] font-baloo text-primaryGold font-bold shadow-3xl">
           {' '}
           Bodega Cats
-        </h1>
+        </h1>*/}
 
-        <Layout>
+        {/*<Layout>
           {!data ? (
             <div className="text-3xl text-black"> ... loading </div>
           ) : (
             <Map geo_json={data} addBtn={addBtn} setAddBtn={setAddBtn} setAuth={setAuth} />
           )}
-        </Layout>
+        </Layout>*/}
+        {/*</main>*/}
+      </>
+      <main className="h-screen w-screen">
+        <nav className="w-full h-16 bg-white flex justify-between items-center  border-solid border-b-[.5px] border-[rgba(0,0,0,.2)] px-6 gap-6">
+          <h1 className="text-3xl md:text-[36px] font-baloo text-primaryGold font-bold">
+            {' '}
+            Bodega Cats
+          </h1>
+          {/*<div className=""> log in</div>*/}
+        </nav>
+        <div className="h-container flex flex-row">
+          <div className="max-w-[400px] w-full gap-4 h-ful overflow-hidden bg-white  border-solid border-r-[.5px] border-[rgba(0,0,0,.2)]">
+            <div className="pb-2 pt-4 px-4">
+              <SearchBar />
+            </div>
+            {(searchFocus || searchDrawerIsActive) && <SearchDrawer />}
+          </div>
+          <Map data={data} addBtn={addBtn} setAddBtn={setAddBtn} setAuth={setAuth} />
+        </div>
         {!user && authState && (
           <div className="absolute left-0 right-0 top-40 max-w-xs  bg-white rounded-md shadow-[0_6px_30px_-10px] mx-auto p-4">
             <button
@@ -84,6 +109,7 @@ const Home: NextPage = ({}) => {
           </div>
         )}
       </main>
+
       <footer></footer>
     </>
   )

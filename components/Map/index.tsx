@@ -3,14 +3,14 @@ import { useEffect, useRef, useState } from 'react'
 import { useStore } from '../../store'
 import { setUpData, useMapUpdate } from '../../utils/MapBox'
 
-const Map = ({ geo_json }: any) => {
+const Map = ({ data }: any) => {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map>()
   const [_, setLocation] = useState<GeolocationCoordinates>()
   const featureMap = useStore((state) => state.features)
   const setMapRef = useStore((state) => state.setMapRef)
   const { featureDrawerIsActive, searchDrawerIsActive } = useStore((state) => state.drawerState)
-  useMapUpdate(geo_json)
+  useMapUpdate(data)
   mapboxgl.accessToken =
     'pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA'
 
@@ -56,11 +56,11 @@ const Map = ({ geo_json }: any) => {
     setMapRef(map.current)
 
     map.current.on('load', () => {
-      if (map.current && map && geo_json) {
-        console.log('GEO', geo_json)
+      if (map.current && map && data) {
+        console.log('GEO', data)
         map.current.addSource('unclustered-bodega-cats', {
           type: 'geojson',
-          data: geo_json
+          data: data
         })
         setUpData(map.current, featureMap)
       }

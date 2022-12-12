@@ -1,8 +1,14 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react'
+//import { useStore } from '../../../../store'
 import { useStore } from '../../store'
-import { FeatureDrawerState } from '../../constants/types'
+//import { FeatureDrawerState } from '../../../../constants/types'
+//import { useDebounce, useSearch } from '../../../../hooks/Search'
 import { useDebounce, useSearch } from '../../hooks/Search'
-import { newMarker } from '../../utils/MapMarker'
+//import { newMarker } from '../../../../utils/MapMarker'
+import { AnimatePresence, motion } from 'framer-motion'
+//import Drawer from '../../Drawer'
+//import SearchDrawer from '../../Drawer/SearchDrawer'
+import SearchDrawer from '../version-one/Drawer/SearchDrawer'
 
 const SearchBar = () => {
   const query = useStore((state) => state.searchQuery)
@@ -17,6 +23,7 @@ const SearchBar = () => {
   const searchMarker = useStore((state) => state.searchMarker)
   const setQuery = useStore((state) => state.setSearchQuery)
   const setSearchFocus = useStore((state) => state.setSearchFocus)
+  const searchFocus = useStore((state) => state.searchFocus)
   const isFocused = useRef(null)
 
   const HandleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,32 +41,69 @@ const SearchBar = () => {
       map.flyTo({ center: data[0].Feature.geometry.coordinates })
     }
   }
-  //focus-within:bg-slate-300 active:bg-slate-300
+
+  const variants = {
+    container: {
+      active: { top: 0, height: '100%' },
+      close: { bottom: '2.5rem', height: '0px' }
+    },
+    input: {
+      active: { width: '100%' },
+      close: { width: '75%' }
+    }
+  }
+
   return (
-    <div className="hidden md:block relative group-focus/search mt-4 flex-grow">
-      <input
-        id={'search-input'}
-        ref={isFocused}
-        required={true}
-        type="search"
-        className="w-full h-10 px-4 text-graphite text-sm font-bold font-nunito peer/search bg-[rgba(0,0,0,.1)] active:bg-[rgba(0,0,0,.06)] focus-within:bg-[rgba(0,0,0,.06)] rounded-md outline-none  transition-all duration-500"
-        value={query}
-        onChange={(e) => HandleOnChange(e)}
-        onKeyDown={(e) => HandleInputEnterEvent(e)}
-        onFocus={() => {
-          setSearchFocus(true)
-        }}
-        onBlur={() => {
-          setSearchFocus(false)
-          if (searchDrawerIsActive && query.length === 0) {
-            setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive })
-          }
-        }}
-      />
-      <label className="text-lg font-bold font-nunito text-graphite transform transition-all duration-500 absolute top-0 left-0 h-full flex items-center pl-2 group-focus-within/search:text-sm  group-focus-within/search:h-1/2  group-focus-within/search:-translate-y-full  group-focus-within/search:pl-0 peer-focus-within/search:-translate-y-full peer-focus-within/search:h-1/2 peer-focus-within/search:pl-0 peer-focus-within/search:text-sm peer-valid/search:-translate-y-full peer-valid/search:h-1/2 peer-valid/search:pl-0 peer-valid/search:text-sm pointer-events-none">
-        find a cat
-      </label>
-    </div>
+    <>
+      <div className="min-w-[275px]">
+        <input
+          className="bg-[#f5f4f1] w-full h-10 px-4 text-graphite text-sm font-bold font-nunito rounded-[15px] outline-none transition-all duration-500  border-[rgba(0,0,0,.5)] placeholder:text-graphite"
+          placeholder="find a cat"
+          id={'mobile-search-input'}
+          ref={isFocused}
+          required={true}
+          type="search"
+          value={query}
+          onChange={(e) => HandleOnChange(e)}
+          onKeyDown={(e) => HandleInputEnterEvent(e)}
+          onFocus={() => {
+            setSearchFocus(true)
+          }}
+          onBlur={() => {
+            setSearchFocus(false)
+            if (searchDrawerIsActive && query.length === 0) {
+              setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive })
+            }
+          }}
+          autoFocus={true}
+          autoComplete="none"
+        />
+      </div>
+      {/*{(searchFocus || searchDrawerIsActive) && (
+        <Drawer>
+        <SearchDrawer />
+        </Drawer>
+      )}*/}
+      {/*<AnimatePresence>
+          {(searchFocus || searchDrawerIsActive) && (
+            <motion.div
+              className="block md:hidden "
+              key={'drawer-mobilee'}
+              {...{
+                initial: { height: '0px', opacity: 0 },
+                animate: { height: '100%', opacity: 1 },
+                exit: { height: '0px', opacity: 0 },
+                transition: { type: 'tween', duration: 0.3 }
+              }}
+            >
+              <Drawer>
+                <SearchDrawer />
+              </Drawer>
+            </motion.div>
+          )}
+        </AnimatePresence>*/}
+      {/*</div>*/}
+    </>
   )
 }
 
