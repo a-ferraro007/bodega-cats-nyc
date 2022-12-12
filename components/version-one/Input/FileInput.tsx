@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ChangeEvent, useState } from 'react'
 import { Path, UseFormRegister } from 'react-hook-form'
-import { FormInputs } from '../../constants/types'
+import { FormInputs } from '../../../constants/types'
 
 type FileInputProps = {
   label: Path<FormInputs>

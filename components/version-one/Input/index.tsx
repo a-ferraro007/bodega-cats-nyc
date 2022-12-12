@@ -1,6 +1,6 @@
 import { HTMLInputTypeAttribute } from 'react'
 import { Path, UseFormRegister } from 'react-hook-form'
-import { FormInputs } from '../../constants/types'
+import { FormInputs } from '../../../constants/types'
 
 type InputProps = {
   id: string
