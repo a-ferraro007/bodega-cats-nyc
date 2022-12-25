@@ -21,11 +21,12 @@ const SearchDrawer = () => {
   const HandleOnClick = (selected: FeatureDrawerState) => {
     const { Feature } = selected
     setFeatureDrawerState(selected)
+    setDrawerState({ featureDrawerIsActive: false, searchDrawerIsActive: false })
+
     if (searchMarker) searchMarker.remove()
     if (featuresMap.has(Feature.id)) {
-      console.log('featureMAP', featuresMap.get(Feature.id))
+      console.log('FEATURE MAP:', featuresMap.get(Feature.id))
       map.flyTo({ zoom: 18, center: Feature.geometry.coordinates })
-      //map.resize()
       return
     }
 
@@ -41,16 +42,9 @@ const SearchDrawer = () => {
     }
   }
 
-  //useEffect(() => {
-  //  console.log(data)
-  //  if (data && data.length > 0 && map) {
-  //    map.flyTo({ center: data[0].Feature.geometry.coordinates })
-  //  }
-  //}, [data, map])
-
   return (
-    <div className="overflow-scroll h-container">
-      <ul className="px-4 h-full max-h-[400px] md:max-h-full">
+    <div className="overflow-scroll h-container bg-white">
+      <ul className="px-4 pb-4">
         {isFetched && query && data?.length === 0 && (
           <span className="block w-full font-nunito font-bold text-sm text-center">
             no cats found
@@ -63,7 +57,7 @@ const SearchDrawer = () => {
             return (
               <li
                 key={ParsedFeature?.feature_id}
-                className="my-4 px-4 py-6 cursor-pointer border-[1px] border-[#dad8d2] rounded-[15px] hover:bg-[#f5f4f1] transition-all duration-200"
+                className="my-4 px-4 py-6 cursor-pointer border-[1px] border-[#dad8d2] rounded-[15px] hover:bg-[#f5f4f1] transition-all duration-200 last:mb-0"
                 onClick={() => HandleOnClick(feature)}
                 onKeyDown={(e) => HandleOnKeyDown(e, feature)}
                 tabIndex={0}

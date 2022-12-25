@@ -80,7 +80,7 @@ const FeatureDrawer = () => {
   }
 
   useEffect(() => {
-    console.log('success', newFeatureMutation.isSuccess)
+    console.log('NEW FEATURE MUTATION SUCCESS:', newFeatureMutation.isSuccess)
     if (newFeatureMutation.isSuccess) {
       if (searchMarker) {
         searchMarker.remove()
@@ -89,8 +89,7 @@ const FeatureDrawer = () => {
       }
       setDrawerState({ searchDrawerIsActive: true, featureDrawerIsActive: false })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newFeatureMutation.isSuccess])
+  }, [newFeatureMutation.isSuccess, searchMarker, setDrawerState, setSearchMarker])
 
   return (
     <div className="bg-ice z-10 w-full h-full rounded-md overflow-scroll">

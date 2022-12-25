@@ -17,6 +17,9 @@ module.exports = {
         lightBlue: 'rgba(30, 48, 164, .1)',
         mediumBlue: 'rgba(30, 48, 164, .2)'
       },
+      fontSize: {
+        xxs: ['.5rem', '.75rem']
+      },
       animation: {
         slide: 'slideOut 3s linear'
       },

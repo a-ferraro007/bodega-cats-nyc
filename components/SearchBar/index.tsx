@@ -55,7 +55,8 @@ const SearchBar = () => {
   //rounded-[15px]
   return (
     <>
-      <div className="min-w-[275px]">
+      {/* className="min-w-[250px]" */}
+      <div className="flex-grow">
         <input
           className="bg-[#f5f4f1] w-full h-10 px-4 text-graphite text-sm font-bold font-nunito rounded-[5px] outline-none transition-all duration-500  border-[rgba(0,0,0,.5)] placeholder:text-graphite"
           placeholder="find a cat"

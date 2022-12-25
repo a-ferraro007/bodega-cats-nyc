@@ -16,7 +16,7 @@ const MapMarker = ({ image }: MapMarkerProps) => {
           <button
             className="h-full w-full font-normal font-nunito text-white"
             onClick={() => {
-              setDrawerState({ searchDrawerIsActive: true, featureDrawerIsActive: true })
+              setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive: true })
             }}
           >
             {' '}

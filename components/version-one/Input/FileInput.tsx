@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { Path, UseFormRegister } from 'react-hook-form'
 import { FormInputs } from '../../../constants/types'
 
@@ -51,6 +51,11 @@ const FileInput = ({ label, required, register }: FileInputProps) => {
       reader.readAsDataURL(e.target.files[0])
     }
   }
+
+  useEffect(() => {
+    console.log('FILE UPLOAD IMAGE:', image)
+  }, [image])
+
   return (
     <>
       <FileInputContainer image={image}>
