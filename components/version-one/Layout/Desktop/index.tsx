@@ -10,7 +10,7 @@ import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { useEffect, useState } from 'react'
 
 const Desktop = ({ children }: any) => {
-  const { data } = useFeatures()
+  //const { data } = useFeatures()
   const [_, setAuth] = useState(false)
   const user = useUser()
   const { supabaseClient, session } = useSessionContext()
