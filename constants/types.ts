@@ -63,3 +63,13 @@ export enum Borough {
   Bronx = 'Bronx',
   StatenIsland = 'Staten Island'
 }
+
+export type Coordinates = {
+  longitude: number
+  latitude: number
+}
+
+export interface LngLat {
+  lng: number
+  lat: number
+}

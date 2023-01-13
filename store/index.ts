@@ -14,6 +14,9 @@ interface StoreState {
   authState: boolean
   searchQuery: string
   searchFocus: boolean
+  show: boolean
+  currentPosition: {}
+  setShow: (show: boolean) => void
   setDrawerOpen: (isDrawerOpen: boolean) => void
   setDrawerState: (drawerState: DrawerState) => void
   setFeatureDrawerState: (featureDrawerState: FeatureDrawerState) => void
@@ -23,6 +26,7 @@ interface StoreState {
   setAuthState: (authState: boolean) => void
   setSearchQuery: (searchQuery: string) => void
   setSearchFocus: (setSearchFocus: boolean) => void
+  setCurrentPosition: (currentPosition: {}) => void
 }
 
 const store = (set: any) => ({
@@ -38,6 +42,8 @@ const store = (set: any) => ({
   authState: false,
   searchQuery: '',
   searchFocus: false,
+  show: false,
+  currentPosition: {},
   setDrawerOpen: (isDrawerOpen: boolean) => set(() => ({ isDrawerOpen: isDrawerOpen })),
   setDrawerState: (drawerState: DrawerState) => set(() => ({ drawerState: drawerState })),
   setFeatureDrawerState: (featureDrawerState: FeatureDrawerState) =>
@@ -48,7 +54,9 @@ const store = (set: any) => ({
     set(() => (searchMarker ? { searchMarker: searchMarker } : null)),
   setAuthState: (authState: boolean) => set(() => ({ authState: authState })),
   setSearchQuery: (searchQuery: string) => set(() => ({ searchQuery: searchQuery })),
-  setSearchFocus: (searchFocus: boolean) => set(() => ({ searchFocus: searchFocus }))
+  setSearchFocus: (searchFocus: boolean) => set(() => ({ searchFocus: searchFocus })),
+  setShow: (show: boolean) => set(() => ({ show: show })),
+  setCurrentPosition: (currentPosition: {}) => set(() => ({ currentPosition: currentPosition }))
 })
 
 export const useStore = create<StoreState>()(subscribeWithSelector<StoreState>(store))

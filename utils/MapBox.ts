@@ -22,10 +22,14 @@ const useMapUpdate = (geo_json: any) => {
   const updateMapState = useStore((state) => state.updateMapState)
 
   useEffect(() => {
+    if (!geo_json) return
     const { features } = geo_json
     if (!features) return
+
     if (featureStateMap.size === 0) {
       features.forEach((feature: any) => {
+        console.log(feature)
+
         const marker = newMarker(feature, true, feature.properties.image)
         featureStateMap.set(feature.id, marker)
       })

@@ -1,42 +1,23 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import 'mapbox-gl/dist/mapbox-gl.css'
+//import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import { useEffect, useState } from 'react'
 import { fetchFeatures, useFeatures } from '../hooks/Features'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { useStore } from '../store'
-import { dehydrate, QueryClient } from '@tanstack/react-query'
 import Map from '../components/Map'
 import SearchBar from '../components/SearchBar'
 import SearchDrawer from '../components/version-one/Drawer/SearchDrawer'
-import { AnimatePresence, motion } from 'framer-motion'
-import FeatureDrawer from '../components/version-one/Drawer/FeatureDrawer'
-
-export async function getServerSideProps() {
-  const queryClient = new QueryClient()
-
-  await queryClient.prefetchQuery(['features'], fetchFeatures)
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient)
-    }
-  }
-}
 
 const Home: NextPage = ({}) => {
-  const { data } = useFeatures()
   const [_, setAuth] = useState(false)
   const user = useUser()
   const { supabaseClient } = useSessionContext()
   const authState = useStore((state) => state.authState)
-  const [addBtn, setAddBtn] = useState(false)
-  const { searchDrawerIsActive, featureDrawerIsActive } = useStore((state) => state.drawerState)
-  const setDrawerState = useStore((state) => state.setDrawerState)
   const searchFocus = useStore((state) => state.searchFocus)
-  const setSearchQuery = useStore((state) => state.setSearchQuery)
+  const mapRef = useStore((state) => state.mapRef)
 
   return (
     <>
@@ -49,118 +30,35 @@ const Home: NextPage = ({}) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <>
-        {/*<main className="fixed w-full flex flex-col top-0 left-0 md:static mx-0 md:mx-3 h-screen overflow-hidden ">*/}
-        {/*<h1 className="hidden md:block my-6 md:mt-10 text-3xl md:text-[50px] font-baloo text-primaryGold font-bold">
-          {' '}
-          Bodega Cats
-        </h1>
-
-        <h1 className=" block md:hidden p-2 bg-ice text-left text-2xl md:text-[50px] font-baloo text-primaryGold font-bold shadow-3xl">
-          {' '}
-          Bodega Cats
-        </h1>*/}
-
-        {/*<Layout>
-          {!data ? (
-            <div className="text-3xl text-black"> ... loading </div>
-          ) : (
-            <Map geo_json={data} addBtn={addBtn} setAddBtn={setAddBtn} setAuth={setAuth} />
-          )}
-        </Layout>*/}
-        {/*</main>*/}
-      </>
       <main className="h-screen w-screen overflow-hidden relative">
-        <nav className="hidden md:flex w-full h-16 bg-white justify-between items-center  border-solid border-b-[.5px] border-[rgba(0,0,0,.2)] px-6 gap-6">
-          <h1 className="text-3xl md:text-[36px] font-baloo text-primaryGold font-bold">
-            {' '}
-            Bodega Cats
-          </h1>
-        </nav>
-
-        <nav className="flex md:hidden w-full h-16 bg-white justify-between items-center border-solid border-b-[.5px] border-[rgba(0,0,0,.2)] p-3 gap-3">
+        <nav className="flex w-full h-20 bg-white justify-between items-center border-solid border-b-[.5px] border-[rgba(0,0,0,.2)] p-3 gap-3">
           <h1 className="text-lg font-baloo text-primaryGold font-bold leading-none">
-            {' '}
-            Bodega <br /> Cats {/* graphite  primaryBlue*/}
+            Bodega <br /> Cats
             <span className="text-xs font-baloo text-graphite italic font-bold leading-none">
-              {' '}
               of nyc
             </span>
           </h1>
           <SearchBar />
-          {(searchDrawerIsActive || featureDrawerIsActive) && (
-            <button
-              onClick={() => {
-                setSearchQuery('')
-                setDrawerState({ featureDrawerIsActive: false, searchDrawerIsActive: false })
-              }}
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 27 30"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                transform="rotate(180)"
-              >
-                <path
-                  d="M0.585786 13.5858C-0.195262 14.3668 -0.195262 15.6332 0.585786 16.4142L13.3137 29.1421C14.0948 29.9232 15.3611 29.9232 16.1421 29.1421C16.9232 28.3611 16.9232 27.0948 16.1421 26.3137L4.82843 15L16.1421 3.68629C16.9232 2.90524 16.9232 1.63891 16.1421 0.857864C15.3611 0.0768158 14.0948 0.0768158 13.3137 0.857864L0.585786 13.5858ZM27 13L2 13V17L27 17V13Z"
-                  fill="black"
-                />
-              </svg>
-            </button>
-          )}
+          <button
+            onClick={() => {
+              const coord = mapRef.getCenter()
+              console.log(mapRef)
+            }}
+          >
+            {' '}
+            CLICK{' '}
+          </button>
         </nav>
 
-        <div className="h-container flex flex-row relative">
-          <div className="hidden md:block pb-4 max-w-[400px] w-full h-full overflow-hidden bg-white  border-solid border-r-[.5px] border-[rgba(0,0,0,.2)]">
+        <div className="h-container flex flex-row-reverse relative">
+          {/*<div className="hidden md:block pb-4 max-w-[400px] w-full h-full overflow-hidden bg-white  border-solid border-r-[.5px] border-[rgba(0,0,0,.2)]">
             <div className="pb-2 pt-4 px-4">
               <SearchBar />
             </div>
             {(searchFocus || searchDrawerIsActive) && <SearchDrawer />}
-          </div>
-          <Map data={data} addBtn={addBtn} setAddBtn={setAddBtn} setAuth={setAuth} />
+          </div>*/}
+          <Map />
         </div>
-        <AnimatePresence>
-          {(searchDrawerIsActive || featureDrawerIsActive) && (
-            <div className="block md:hidden">
-              <motion.div
-                className="w-full h-full absolute top-[4rem] left-0 z-10"
-                key="searchContainer"
-                initial={{ x: '100px', opacity: 0 }}
-                animate={{ x: '0', opacity: 1 }}
-                exit={{ x: '100px', opacity: 0 }}
-                transition={{ type: 'tween', duration: 0.25 }}
-              >
-                {searchDrawerIsActive && <SearchDrawer />}
-                {featureDrawerIsActive && <FeatureDrawer />}
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
-        {!user && authState && (
-          <div className="absolute left-0 right-0 top-40 max-w-xs  bg-white rounded-md shadow-[0_6px_30px_-10px] mx-auto p-4">
-            <button
-              className="font-baloo font-medium w-full text-right"
-              onClick={() => setAuth(false)}
-            >
-              {' '}
-              close
-            </button>
-            <p className="font-baloo font-bold text-lg text-center">
-              {' '}
-              log in with Google to add a new cat{' '}
-            </p>
-            <Auth
-              redirectTo="http://localhost:3000/"
-              appearance={{ theme: ThemeSupa }}
-              supabaseClient={supabaseClient}
-              providers={['google']}
-              socialLayout="horizontal"
-              onlyThirdPartyProviders={true}
-            />
-          </div>
-        )}
       </main>
 
       <footer></footer>

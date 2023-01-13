@@ -41,3 +41,11 @@ a {
   /*-webkit-clip-path: inset(0% 0% 0% 0% round 15px);*/
   /*clip-path: inset(0% 0% 0% 0% round 15px);*/
 }
+
+.mapboxgl-canvas-container {
+  display: block;
+}
+
+canvas {
+  display: block;
+}
