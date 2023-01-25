@@ -1,6 +1,6 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
 import { useStore } from '../../../../store'
-import { useDebounce, useSearch } from '../../../../hooks/Search'
+import { useDebounce, useSearch } from '../../../../hooks/SearchByPlace'
 import { newMarker } from '../../../../utils/MapMarker'
 import { FeatureDrawerState } from '../../../../constants/types'
 import BoroughBadge from './BoroughBadge'
@@ -52,7 +52,7 @@ const SearchDrawer = () => {
         )}
 
         {isFetched && data ? (
-          data?.map((feature) => {
+          data?.map((feature: FeatureDrawerState) => {
             const { ParsedFeature } = feature
             return (
               <li

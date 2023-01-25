@@ -3,7 +3,7 @@ import { ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react'
 import { useStore } from '../../store'
 //import { FeatureDrawerState } from '../../../../constants/types'
 //import { useDebounce, useSearch } from '../../../../hooks/Search'
-import { useDebounce, useSearch } from '../../hooks/Search'
+import { useDebounce, useSearch } from '../../hooks/SearchByPlace'
 //import { newMarker } from '../../../../utils/MapMarker'
 import { AnimatePresence, motion } from 'framer-motion'
 //import Drawer from '../../Drawer'
@@ -58,8 +58,8 @@ const SearchBar = () => {
       {/* className="min-w-[250px]" */}
       <div className="flex-grow">
         <input
-          className="bg-[#f5f4f1] w-full h-10 px-4 text-graphite text-sm font-bold font-nunito rounded-[5px] outline-none transition-all duration-500  border-[rgba(0,0,0,.5)] placeholder:text-graphite"
-          placeholder="find a cat"
+          className="bg-[#f5f4f1] w-full h-10 px-4 text-graphite text-md font-bold font-nunito rounded-[10px] outline-none transition-all duration-500  border-[rgba(0,0,0,.5)] placeholder:text-graphite"
+          placeholder="enter an address"
           id={'mobile-search-input'}
           ref={isFocused}
           required={true}
@@ -70,12 +70,7 @@ const SearchBar = () => {
           onFocus={() => {
             setSearchFocus(true)
           }}
-          onBlur={() => {
-            setSearchFocus(false)
-            if (searchDrawerIsActive && query.length === 0) {
-              setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive })
-            }
-          }}
+          onBlur={() => {}}
           autoFocus={true}
           autoComplete="none"
         />

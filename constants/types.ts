@@ -14,13 +14,17 @@ export interface ParsedFeature {
   locality: string
 }
 
-export interface FeatureData {
-  id: string
+export interface ParsedAddressFeature {
+  feature_id: string
   name: string
-  geometry: { coordinates: Array<Number>; type: string }
-  place_type: Array<string>
-  type: string
 }
+//export interface FeatureData {
+//  id: string
+//  name: string
+//  geometry: { coordinates: Array<Number>; type: string }
+//  place_type: Array<string>
+//  type: string
+//}
 
 export interface CatProperties {
   name: string
@@ -29,6 +33,7 @@ export interface CatProperties {
   locality: string
 }
 
+//CHANGE TO DATA TRANSPORT TYPE
 export interface MapBoxFeature {
   feature_id: string
   user_id: string
@@ -72,4 +77,13 @@ export type Coordinates = {
 export interface LngLat {
   lng: number
   lat: number
+}
+export interface SearchLocation {
+  lnglat: LngLat
+  address: string
+}
+
+export interface ParsedSearchLocation {
+  feature_id: string
+  address: string
 }

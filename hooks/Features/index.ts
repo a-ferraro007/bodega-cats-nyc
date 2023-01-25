@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { LngLat } from '../../constants/types'
+import { useStore } from '../../store'
 import supabase from '../../supabase'
 
 const DEG2RAD = Math.PI / 180
@@ -26,6 +27,7 @@ interface FeaturesQueryKey {
   currentPosition: LngLat | undefined
 }
 const useFeatures = ({ currentPosition }: FeaturesQueryKey) => {
+  console.log({ currentPosition })
   return useQuery({
     queryKey: ['features', currentPosition],
     queryFn: () => fetchFeatures(currentPosition),
@@ -96,4 +98,4 @@ const getBoundingCoordinates = (distance: number, lnglat: any) => {
   ]
 }
 
-export { useFeatures, fetchFeatures }
+export { useFeatures as default, fetchFeatures }

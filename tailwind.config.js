@@ -31,7 +31,8 @@ module.exports = {
       },
       boxShadow: {
         '3xl': '0 1px 2px rgba(0, 0, 0, .2)',
-        '4xl': '0 2px 4px rgb(0 0 0 / 20%), 0 -1px 0px rgb(0 0 0 / 2%)'
+        '4xl': '0 2px 4px rgb(0 0 0 / 20%), 0 -1px 0px rgb(0 0 0 / 2%)',
+        '5xl': '0 0 8px rgb(0 0 0 / 16%)'
       },
       height: {
         container: 'calc(100% - 4rem)'

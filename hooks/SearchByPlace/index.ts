@@ -1,23 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
 import { FeatureDrawerState } from '../../constants/types'
 import { useStore } from '../../store'
-
-//https://github.com/TanStack/query/issues/293
-const useDebounce = (value: string, delay: number) => {
-  const [debouncedValue, setDebouncedValue] = useState(value)
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value)
-    }, delay)
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [value, delay])
-
-  return debouncedValue
-}
 
 const fetchSearchResults = async (query: string): Promise<Array<FeatureDrawerState>> => {
   try {
@@ -81,4 +64,4 @@ const useSearch = (query: string) => {
   })
 }
 
-export { useSearch, useDebounce, fetchSearchResults }
+export { useSearch as default, fetchSearchResults }

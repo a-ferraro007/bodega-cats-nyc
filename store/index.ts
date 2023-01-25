@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl'
-import { DrawerState, FeatureDrawerState } from './../constants/types'
+import { DrawerState, FeatureDrawerState, SearchLocation } from './../constants/types'
 import create from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
 
@@ -13,14 +13,20 @@ interface StoreState {
   featureDrawerState: FeatureDrawerState
   authState: boolean
   searchQuery: string
+  searchResult: any
   searchFocus: boolean
   show: boolean
   currentPosition: {}
+  showMobileMap: boolean
+  searchLocationState: SearchLocation
+  setSearchLocationState: (searchLocation: SearchLocation) => void
+  setShowMobileMap: (showMobileMap: boolean) => void
+  setSearchResult: (result: any) => void
   setShow: (show: boolean) => void
   setDrawerOpen: (isDrawerOpen: boolean) => void
   setDrawerState: (drawerState: DrawerState) => void
   setFeatureDrawerState: (featureDrawerState: FeatureDrawerState) => void
-  updateMapState: (featureMapUpdate: any) => void
+  updateMapState: (features: any) => void
   setMapRef: (mapRef: mapboxgl.Map) => void
   setSearchMarker: (searchMarker: Marker<mapboxgl.Marker>) => void
   setAuthState: (authState: boolean) => void
@@ -41,14 +47,24 @@ const store = (set: any) => ({
   featureDrawerState: <FeatureDrawerState>{},
   authState: false,
   searchQuery: '',
+  searchResult: {},
   searchFocus: false,
   show: false,
   currentPosition: {},
+  showMobileMap: false,
+  searchLocationState: <SearchLocation>{},
+  setSearchLocationState: (searchLocationState: SearchLocation) =>
+    set(() => ({ searchLocationState: searchLocationState })),
+  setShowMobileMap: (showMobileMap: boolean) =>
+    set(() => ({
+      showMobileMap: showMobileMap
+    })),
+  setSearchResult: (result: any) => set(() => ({ result: result })),
   setDrawerOpen: (isDrawerOpen: boolean) => set(() => ({ isDrawerOpen: isDrawerOpen })),
   setDrawerState: (drawerState: DrawerState) => set(() => ({ drawerState: drawerState })),
   setFeatureDrawerState: (featureDrawerState: FeatureDrawerState) =>
     set(() => ({ featureDrawerState: featureDrawerState })),
-  updateMapState: (mapUpdate: any) => set(() => ({ featureMap: mapUpdate })),
+  updateMapState: (features: any) => set(() => ({ features: new Map(features) })),
   setMapRef: (mapRef: mapboxgl.Map) => set(() => ({ mapRef: mapRef })),
   setSearchMarker: (searchMarker: Marker<mapboxgl.Marker>) =>
     set(() => (searchMarker ? { searchMarker: searchMarker } : null)),

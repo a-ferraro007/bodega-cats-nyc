@@ -1,7 +1,7 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react'
 import { useStore } from '../../../../store'
 import { FeatureDrawerState } from '../../../../constants/types'
-import { useDebounce, useSearch } from '../../../../hooks/Search'
+import { useDebounce, useSearch } from '../../../../hooks/SearchByPlace'
 import { newMarker } from '../../../../utils/MapMarker'
 import { AnimatePresence, motion } from 'framer-motion'
 import Drawer from '../../Drawer'

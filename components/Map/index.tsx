@@ -1,18 +1,16 @@
-//import mapboxgl from 'mapbox-gl'
-//import mapboxgl from 'mapbox-gl'
 import mapboxgl, { MercatorCoordinate } from 'mapbox-gl'
 import { useEffect, useRef, useState } from 'react'
-import { useFeatures } from '../../hooks/index '
-import { useGetUserLocation } from '../../hooks/useGetUserLocation'
+import { useFeatures, useMapUpdate } from '../../hooks/index '
 import { useStore } from '../../store'
-import { setUpData, useMapUpdate } from '../../utils/MapBox'
+import { setUpData } from '../../utils/MapBox'
 import { LngLat } from '../../constants/types'
 
 const Map = () => {
-  const initialLocation: LngLat = { lng: -73.990000682489714, lat: 40.73423383278248 } //useGetUserLocation()
-  const currentPositionRef = useRef<LngLat>()
-  const queryKeyRef = useRef<LngLat>()
-  const [fetch, setFetch] = useState(false)
+  const defaultLoc: LngLat = { lng: -73.990000682489714, lat: 40.73423383278248 }
+  const searchLocationState = useStore((state) => state.searchLocationState)
+  const currentPositionRef = useRef<LngLat>(searchLocationState.lnglat)
+  const queryKeyRef = useRef<LngLat>(searchLocationState.lnglat)
+
   const { data, refetch } = useFeatures({ currentPosition: queryKeyRef.current })
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map>()
@@ -21,6 +19,7 @@ const Map = () => {
   const setShow = useStore((state) => state.setShow)
   const show = useStore((state) => state.show)
   useMapUpdate(data)
+
   mapboxgl.accessToken =
     'pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA'
 
@@ -35,30 +34,40 @@ const Map = () => {
       camera.position.z
     ).toLngLat()
 
-    return {
+    const loc: LngLat = {
       lng: point.lng,
       lat: point.lat
-    } as LngLat
+    }
+    return loc
   }
-  useEffect(() => {
-    queryKeyRef.current = initialLocation
-    currentPositionRef.current = initialLocation
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   useEffect(() => {
+    console.log({ queryKeyRef })
+    //refetch()
+  })
+
+  useEffect(() => {
+    if (queryKeyRef.current === undefined) {
+      queryKeyRef.current = searchLocationState.lnglat
+    }
+    if (currentPositionRef.current === undefined) {
+      currentPositionRef.current = searchLocationState.lnglat
+    }
+  }, [searchLocationState])
+
+  useEffect(() => {
+    console.log({ data })
     if (!mapContainer.current || !data) return
     if (map.current) {
       setUpData(map.current, featureMap)
       return
     }
-
+    console.log('AFTER GEO')
+    //[initialLocation.lng, initialLocation.lat], //
     map.current = new mapboxgl.Map({
       container: mapContainer.current || '',
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-73.990000682489714, 40.73423383278248],
-      //[-73.96875682489714, 40.73423383278248],
-      //[location?.longitude, location?.latitude],
+      center: [currentPositionRef.current?.lng, currentPositionRef.current?.lat],
       zoom: 14,
       //minZoom: 10,
       maxBounds: [-74.26379, 40.3923, -73.667498, 40.94285],
@@ -79,7 +88,6 @@ const Map = () => {
           data: data as any
         })
         setUpData(map.current, featureMap)
-        //currentPositionRef.current = { lng: -73.990000682489714, lat: 40.73423383278248 }
       }
     })
 
@@ -90,14 +98,10 @@ const Map = () => {
       if (d >= 0.7) {
         currentPositionRef.current = point
         if (!show) setShow(true)
+        console.log(currentPositionRef.current)
       }
     })
-
-    //console.log('Distance', d)
-    //console.log('Camera', currentPositionRef.current)
-    //console.log('point', point)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [data, currentPositionRef, setMapRef, featureMap, show, setShow])
 
   //useEffect(() => {
   //  console.log('RESIZE')
@@ -122,11 +126,13 @@ const Map = () => {
     <>
       <div className="bodega-cats h-full w-full relative" ref={mapContainer}></div>
       {show && (
-        <div className="absolute top-2 left-0 right-0 mx-auto flex justify-center">
+        <div className="absolute top-4 left-6 mx-auto flex justify-center">
           <button
-            className="px-3 py-1 bg-blue-800 text-white font-roboto font-semibold text-sm rounded-xl"
+            className="h-10 w-48 bg-blue-800 text-white font-roboto font-normal text-sm rounded-full"
             onClick={() => {
               queryKeyRef.current = currentPositionRef.current
+              console.log({ qk: queryKeyRef.current }, { cp: currentPositionRef.current })
+
               refetch()
               setShow(false)
             }}

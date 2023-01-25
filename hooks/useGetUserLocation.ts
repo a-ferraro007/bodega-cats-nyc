@@ -1,6 +1,5 @@
-import { LngLat } from 'mapbox-gl'
+import { LngLat } from '../constants/types'
 import { useEffect, useState } from 'react'
-import { Coordinates } from '../constants/types'
 
 const getUserLocation = (cb: Function) => {
   if (navigator) {

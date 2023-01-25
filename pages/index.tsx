@@ -3,13 +3,23 @@ import Head from 'next/head'
 //import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import { useEffect, useState } from 'react'
-import { fetchFeatures, useFeatures } from '../hooks/Features'
+import shallow from 'zustand/shallow'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { useStore } from '../store'
 import Map from '../components/Map'
+//import AddressSearchBar from '../components/AddressSearch/Input'
+import AddressSearchBar from '../components/AddressSearch/Input'
 import SearchBar from '../components/SearchBar'
 import SearchDrawer from '../components/version-one/Drawer/SearchDrawer'
+import Dropdown from '../components/AddressSearch/Dropdown'
+import AddressSearch from '../components/AddressSearch'
+import MapIcon from '../svg/MapIcon'
+import SearchIcon from '../svg/SearchIcon'
+import FeatureList from '../components/FeatureList'
+import { useLngLatSearch } from '../hooks/index '
+import { getUserLocation, useGetUserLocation } from '../hooks/useGetUserLocation'
+import { SearchLocation } from '../constants/types'
 
 const Home: NextPage = ({}) => {
   const [_, setAuth] = useState(false)
@@ -18,6 +28,21 @@ const Home: NextPage = ({}) => {
   const authState = useStore((state) => state.authState)
   const searchFocus = useStore((state) => state.searchFocus)
   const mapRef = useStore((state) => state.mapRef)
+  const showMobileMap = useStore((state) => state.showMobileMap)
+  const setShowMobileMap = useStore((state) => state.setShowMobileMap)
+  const setSearchLocationState = useStore((state) => state.setSearchLocationState)
+  const lnglat = useGetUserLocation()
+  const { data } = useLngLatSearch(lnglat)
+
+  useEffect(() => {
+    if (lnglat && data) {
+      const loc: SearchLocation = {
+        lnglat,
+        address: data.address
+      }
+      setSearchLocationState(loc)
+    }
+  }, [setSearchLocationState, data, lnglat])
 
   return (
     <>
@@ -31,33 +56,36 @@ const Home: NextPage = ({}) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="h-screen w-screen overflow-hidden relative">
-        <nav className="flex w-full h-20 bg-white justify-between items-center border-solid border-b-[.5px] border-[rgba(0,0,0,.2)] p-3 gap-3">
-          <h1 className="text-lg font-baloo text-primaryGold font-bold leading-none">
+        <nav className="flex w-full h-[70px] md:h-20 bg-white justify-between items-center border-solid border-b-[.5px] border-[rgba(0,0,0,.2)] p-4 gap-4 md:p-6 md:gap-8">
+          <h1 className="text-lg md:text-2xl font-baloo text-primaryGold font-bold leading-none">
             Bodega <br /> Cats
-            <span className="text-xs font-baloo text-graphite italic font-bold leading-none">
+            <span className="text-xs md:text-sm font-baloo text-graphite italic font-bold leading-none">
               of nyc
             </span>
           </h1>
-          <SearchBar />
+          <AddressSearch />
+
           <button
             onClick={() => {
               const coord = mapRef.getCenter()
               console.log(mapRef)
             }}
-          >
-            {' '}
-            CLICK{' '}
-          </button>
+          ></button>
         </nav>
 
-        <div className="h-container flex flex-row-reverse relative">
-          {/*<div className="hidden md:block pb-4 max-w-[400px] w-full h-full overflow-hidden bg-white  border-solid border-r-[.5px] border-[rgba(0,0,0,.2)]">
-            <div className="pb-2 pt-4 px-4">
-              <SearchBar />
-            </div>
-            {(searchFocus || searchDrawerIsActive) && <SearchDrawer />}
-          </div>*/}
-          <Map />
+        <div className="h-container flex flex-row relative">
+          <Map loc={lnglat} />
+          <FeatureList />
+          <button
+            className="block md:hidden absolute bottom-20 right-10 bg-primaryBlue text-white p-4 rounded-full z-20"
+            onClick={() => {
+              console.log(showMobileMap)
+              setShowMobileMap(!showMobileMap)
+            }}
+          >
+            {showMobileMap && <MapIcon />}
+            {!showMobileMap && <SearchIcon />}
+          </button>
         </div>
       </main>
 

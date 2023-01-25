@@ -1,13 +1,11 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react'
 import { useStore } from '../../../store'
-import { FeatureDrawerState } from '../../../constants/types'
-import { useDebounce, useSearch } from '../../../hooks/SearchByPlace'
-import { newMarker } from '../../../utils/MapMarker'
+import { useAddressSearch, useDebounce } from '../../../hooks/index '
 
-const SearchBar = () => {
+const AddressSearchBar = ({ setData }: any) => {
   const query = useStore((state) => state.searchQuery)
   const debounce = useDebounce(query, 250)
-  const { data, isFetching, isLoading, isSuccess } = useSearch(debounce)
+  const { data, isFetching, isLoading, isSuccess } = useAddressSearch(debounce)
   const map = useStore((state) => state.mapRef)
   const featuresMap = useStore((state) => state.features)
   const setFeatureDrawerState = useStore((state) => state.setFeatureDrawerState)
@@ -17,7 +15,13 @@ const SearchBar = () => {
   const searchMarker = useStore((state) => state.searchMarker)
   const setQuery = useStore((state) => state.setSearchQuery)
   const setSearchFocus = useStore((state) => state.setSearchFocus)
+  const searchFocus = useStore((state) => state.searchFocus)
   const isFocused = useRef(null)
+
+  useEffect(() => {
+    //console.log({ address: data })
+    setData(data)
+  }, [data, setData])
 
   const HandleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === '' && searchMarker) {
@@ -31,37 +35,42 @@ const SearchBar = () => {
 
   const HandleInputEnterEvent = (e: KeyboardEvent) => {
     if (e.key === 'Enter' && data && data.length > 0) {
-      map.flyTo({ center: data[0].Feature.geometry.coordinates })
+      //map.flyTo({ center: data[0].Feature.geometry.coordinates })
     }
   }
-  //focus-within:bg-slate-300 active:bg-slate-300
-  // mt-4
+
+  const variants = {
+    container: {
+      active: { top: 0, height: '100%' },
+      close: { bottom: '2.5rem', height: '0px' }
+    },
+    input: {
+      active: { width: '100%' },
+      close: { width: '75%' }
+    }
+  }
+
   return (
-    <div className="hidden md:block relative group-focus/search flex-grow">
+    <div className="flex-grow">
       <input
-        id={'search-input'}
+        className="bg-[#f5f4f1] w-full h-10 px-4 text-graphite text-lg font-regular font-nunito rounded-[10px] outline-none transition-all duration-500  border-[rgba(0,0,0,.5)] placeholder:text-graphite"
+        placeholder="search an area"
+        id={'mobile-search-input'}
         ref={isFocused}
         required={true}
         type="search"
-        className="w-full h-10 px-4 text-graphite text-sm font-bold font-nunito peer/search bg-[rgba(0,0,0,.1)] active:bg-[rgba(0,0,0,.06)] focus-within:bg-[rgba(0,0,0,.06)] rounded-md outline-none  transition-all duration-500"
         value={query}
         onChange={(e) => HandleOnChange(e)}
         onKeyDown={(e) => HandleInputEnterEvent(e)}
         onFocus={() => {
           setSearchFocus(true)
         }}
-        onBlur={() => {
-          setSearchFocus(false)
-          if (searchDrawerIsActive && query.length === 0) {
-            setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive })
-          }
-        }}
+        onBlur={() => {}}
+        autoFocus={true}
+        autoComplete="none"
       />
-      <label className="text-lg font-bold font-nunito text-graphite transform transition-all duration-500 absolute top-0 left-0 h-full flex items-center pl-2 group-focus-within/search:text-sm  group-focus-within/search:h-1/2  group-focus-within/search:-translate-y-full  group-focus-within/search:pl-0 peer-focus-within/search:-translate-y-full peer-focus-within/search:h-1/2 peer-focus-within/search:pl-0 peer-focus-within/search:text-sm peer-valid/search:-translate-y-full peer-valid/search:h-1/2 peer-valid/search:pl-0 peer-valid/search:text-sm pointer-events-none">
-        find a cat
-      </label>
     </div>
   )
 }
 
-export default SearchBar
+export default AddressSearchBar
