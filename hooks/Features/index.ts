@@ -1,38 +1,16 @@
-import { useQuery } from '@tanstack/react-query'
 import { LngLat } from '../../constants/types'
-import { useStore } from '../../store'
-import supabase from '../../supabase'
+import { selectFromFeature } from '../../supabase/db'
 
 const DEG2RAD = Math.PI / 180
 const RAD2DEG = 180 / Math.PI
 const FULL_CIRCLE_RAD = Math.PI * 2
 
 const fetchFeatures = async (currentPosition: LngLat | undefined) => {
-  console.log('FETCH', currentPosition)
-
-  try {
-    const { data, error } = await supabase.from('MapBox_Feature').select('geo_json')
-    if (error) throw error
-
-    return {
-      type: 'FeatureCollection',
-      features: filterByLngLat(data, currentPosition) //data.map((e) => e.geo_json)
-    }
-  } catch (error) {
-    console.log('Error Fetching FeatureCollection Geo_JSON', error)
-    return error
+  const data = await selectFromFeature(['geo_json'])
+  return {
+    type: 'FeatureCollection',
+    features: filterByLngLat(data, currentPosition)
   }
-}
-interface FeaturesQueryKey {
-  currentPosition: LngLat | undefined
-}
-const useFeatures = ({ currentPosition }: FeaturesQueryKey) => {
-  console.log({ currentPosition })
-  return useQuery({
-    queryKey: ['features', currentPosition],
-    queryFn: () => fetchFeatures(currentPosition),
-    enabled: !!currentPosition
-  })
 }
 
 const filterByLngLat = (data: any, lnglat: any) => {
@@ -98,4 +76,4 @@ const getBoundingCoordinates = (distance: number, lnglat: any) => {
   ]
 }
 
-export { useFeatures as default, fetchFeatures }
+export default fetchFeatures

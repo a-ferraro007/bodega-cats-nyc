@@ -1,32 +1,39 @@
 import mapboxgl, { MercatorCoordinate } from 'mapbox-gl'
 import { useEffect, useRef, useState } from 'react'
-import { useFeatures, useMapUpdate } from '../../hooks/index '
+import { useMapUpdate } from '../../hooks'
 import { useStore } from '../../store'
 import { setUpData } from '../../utils/MapBox'
-import { LngLat } from '../../constants/types'
+import { LngLat, SearchLocation } from '../../constants/types'
+import { trpc } from '../../utils/trpc'
 
-const Map = () => {
+interface UserLocation {
+  lnglat: LngLat
+  address: string
+}
+const Map = ({ lnglat, address }: SearchLocation) => {
   const defaultLoc: LngLat = { lng: -73.990000682489714, lat: 40.73423383278248 }
   const searchLocationState = useStore((state) => state.searchLocationState)
   const currentPositionRef = useRef<LngLat>(searchLocationState.lnglat)
-  const queryKeyRef = useRef<LngLat>(searchLocationState.lnglat)
+  const queryKeyRef = useRef<LngLat>(lnglat) //{ lng: -73.990000682489714, lat: 40.73423383278248 })
+  console.log(queryKeyRef.current)
 
-  const { data, refetch } = useFeatures({ currentPosition: queryKeyRef.current })
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map>()
   const featureMap = useStore((state) => state.features)
   const setMapRef = useStore((state) => state.setMapRef)
   const setShow = useStore((state) => state.setShow)
   const show = useStore((state) => state.show)
+  const { data, refetch } = trpc.selectFeatures.useQuery(queryKeyRef.current, { enabled: true })
   useMapUpdate(data)
 
   mapboxgl.accessToken =
     'pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA'
 
-  const getCameraLngLat = (): LngLat | undefined => {
-    if (!map.current) return
+  const getCameraLngLat = (): LngLat => {
+    if (!map.current) return {} as LngLat
+
     const camera = map.current.getFreeCameraOptions()
-    if (!camera || !camera?.position) return
+    if (!camera || !camera?.position) return {} as LngLat
 
     const point = new MercatorCoordinate(
       camera.position.x,
@@ -34,22 +41,21 @@ const Map = () => {
       camera.position.z
     ).toLngLat()
 
-    const loc: LngLat = {
+    return {
       lng: point.lng,
       lat: point.lat
-    }
-    return loc
+    } as LngLat
   }
 
   useEffect(() => {
     console.log({ queryKeyRef })
-    //refetch()
+    refetch()
   })
 
   useEffect(() => {
-    if (queryKeyRef.current === undefined) {
-      queryKeyRef.current = searchLocationState.lnglat
-    }
+    //if (queryKeyRef.current === undefined) {
+    //  queryKeyRef.current = searchLocationState.lnglat
+    //}
     if (currentPositionRef.current === undefined) {
       currentPositionRef.current = searchLocationState.lnglat
     }
@@ -57,7 +63,7 @@ const Map = () => {
 
   useEffect(() => {
     console.log({ data })
-    if (!mapContainer.current || !data) return
+    if (!mapContainer.current || !data || !currentPositionRef.current) return
     if (map.current) {
       setUpData(map.current, featureMap)
       return

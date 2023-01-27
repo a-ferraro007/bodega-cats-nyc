@@ -3,16 +3,16 @@ import shallow from 'zustand/shallow'
 import { useStore } from '../../store'
 import SearchIcon from '../../svg/SearchIcon'
 
-const FeatureList = () => {
+const SideBar = () => {
   const showMobileMap = useStore((state) => state.showMobileMap)
   const featureStateMap = useStore((state) => state.features)
 
   useEffect(() => {
-    console.log('LIST', featureStateMap.entries().next().value[1].feature)
+    //console.log('LIST', featureStateMap.entries().next().value[1].feature)
   })
   return (
     <div
-      className={`absolute md:static w-full h-full md:w-[575px] bg-white  z-10 ${
+      className={`absolute md:static w-full h-full md:w-side-bar bg-white  z-10 ${
         showMobileMap ? '' : 'hidden md:block'
       }`}
     >
@@ -50,4 +50,4 @@ const FeatureList = () => {
   )
 }
 
-export default FeatureList
+export default SideBar

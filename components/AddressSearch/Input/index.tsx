@@ -1,11 +1,14 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react'
 import { useStore } from '../../../store'
-import { useAddressSearch, useDebounce } from '../../../hooks/index '
+import { useAddressSearch, useDebounce } from '../../../hooks'
+import { trpc } from '../../../utils/trpc'
 
 const AddressSearchBar = ({ setData }: any) => {
   const query = useStore((state) => state.searchQuery)
   const debounce = useDebounce(query, 250)
-  const { data, isFetching, isLoading, isSuccess } = useAddressSearch(debounce)
+  const { data, isFetching, isLoading, isSuccess } = trpc.searchByAddress.useQuery(debounce, {
+    enabled: debounce.length > 0
+  })
   const map = useStore((state) => state.mapRef)
   const featuresMap = useStore((state) => state.features)
   const setFeatureDrawerState = useStore((state) => state.setFeatureDrawerState)

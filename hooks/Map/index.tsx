@@ -24,7 +24,7 @@ const useMapUpdate = (data: any) => {
 
       featureStateMap.forEach((_: any, key: any) => {
         if (!fetchedFeaturesMap.has(key)) {
-          const marker = featureStateMap.get(key)
+          const { marker } = featureStateMap.get(key)
           featureStateMap.delete(key)
           marker.remove()
         } else {

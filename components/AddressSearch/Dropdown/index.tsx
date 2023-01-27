@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { ParsedAddressFeature } from '../../../constants/types'
-import { useAddressSearch } from '../../../hooks/index '
+import { useAddressSearch } from '../../../hooks'
 import { useStore } from '../../../store'
 
 const Dropdown = ({ data }: any) => {
