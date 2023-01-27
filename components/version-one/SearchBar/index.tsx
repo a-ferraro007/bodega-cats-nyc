@@ -1,7 +1,7 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react'
 import { useStore } from '../../../store'
 import { FeatureDrawerState } from '../../../constants/types'
-import { useDebounce, useSearch } from '../../../hooks/SearchByPlace'
+import { useDebounce, useSearch } from '../../../hooks'
 import { newMarker } from '../../../utils/MapMarker'
 
 const SearchBar = () => {
