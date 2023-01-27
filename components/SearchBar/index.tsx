@@ -3,12 +3,12 @@ import { ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react'
 import { useStore } from '../../store'
 //import { FeatureDrawerState } from '../../../../constants/types'
 //import { useDebounce, useSearch } from '../../../../hooks/Search'
-import { useDebounce, useSearch } from '../../hooks/SearchByPlace'
+import { useDebounce, useSearch } from '../../hooks'
 //import { newMarker } from '../../../../utils/MapMarker'
 import { AnimatePresence, motion } from 'framer-motion'
 //import Drawer from '../../Drawer'
 //import SearchDrawer from '../../Drawer/SearchDrawer'
-import SearchDrawer from '../version-one/Drawer/SearchDrawer'
+//import SearchDrawer from '../.version-one/Drawer/SearchDrawer'
 
 const SearchBar = () => {
   const query = useStore((state) => state.searchQuery)
