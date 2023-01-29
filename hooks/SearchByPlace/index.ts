@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { FeatureDrawerState } from '../../constants/types'
-import { useStore } from '../../store'
 
 const fetchSearchResults = async (query: string): Promise<Array<FeatureDrawerState>> => {
   try {
@@ -50,17 +49,11 @@ const fetchSearchResults = async (query: string): Promise<Array<FeatureDrawerSta
 }
 
 const useSearch = (query: string) => {
-  const setDrawerState = useStore((state) => state.setDrawerState)
-  const { searchDrawerIsActive, featureDrawerIsActive } = useStore((state) => state.drawerState)
   return useQuery({
     queryKey: ['search', { query }],
     queryFn: () => fetchSearchResults(query),
     enabled: query.length > 0,
-    onSuccess: () => {
-      if (!searchDrawerIsActive) {
-        setDrawerState({ searchDrawerIsActive: true, featureDrawerIsActive })
-      }
-    }
+    onSuccess: () => {}
   })
 }
 
