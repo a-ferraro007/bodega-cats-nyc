@@ -1,23 +1,54 @@
-export interface FormInputs {
-  name: string
-  address: string
-  rating: number
-  search: string
-  file?: string
-}
+import { z } from 'zod'
 
-export interface ParsedFeature {
-  feature_id: string
-  name: string
-  center: Array<Number>
-  address: string
-  locality: string
-}
+export const FormInputs = z.object({
+  name: z.string(),
+  address: z.string(),
+  rating: z.string(),
+  search: z.string(),
+  file: z.string().optional()
+})
+export type FormInputs = z.infer<typeof FormInputs>
+
+export const zLngLat = z.object({
+  lng: z.number(),
+  lat: z.number()
+})
+type lnglat = z.infer<typeof zLngLat>
+
+export interface LngLat extends lnglat {}
+
+export const CatProperties = z.object({
+  name: z.string(),
+  rating: z.number(),
+  image: z.string(),
+  locality: z.string()
+})
+export type CatProperties = z.infer<typeof CatProperties>
+
+//CHANGE TO DATA TRANSPORT TYPE
+export const MapBoxFeature = z.object({
+  feature_id: z.string(),
+  user_id: z.string(),
+  address: z.string(),
+  geo_json: z.any(),
+  cat_id: z.number()
+})
+export type MapBoxFeature = z.infer<typeof MapBoxFeature>
+
+const ParsedFeature = z.object({
+  feature_id: z.string(),
+  name: z.string(),
+  center: z.array(z.number()),
+  address: z.string(),
+  locality: z.string()
+})
+export type ParsedFeature = z.infer<typeof ParsedFeature>
 
 export interface ParsedAddressFeature {
   feature_id: string
   name: string
 }
+
 //export interface FeatureData {
 //  id: string
 //  name: string
@@ -25,22 +56,6 @@ export interface ParsedAddressFeature {
 //  place_type: Array<string>
 //  type: string
 //}
-
-export interface CatProperties {
-  name: string
-  rating: number
-  image: string
-  locality: string
-}
-
-//CHANGE TO DATA TRANSPORT TYPE
-export interface MapBoxFeature {
-  feature_id: string
-  user_id: string
-  address: string
-  geo_json: any
-  cat_id?: number
-}
 
 export interface DrawerState {
   searchDrawerIsActive: boolean
@@ -74,10 +89,10 @@ export type Coordinates = {
   latitude: number
 }
 
-export interface LngLat {
-  lng: number
-  lat: number
-}
+//export interface LngLat {
+//  lng: number
+//  lat: number
+//}
 export interface SearchLocation {
   lnglat: LngLat
   address: string

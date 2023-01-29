@@ -1,46 +1,36 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-//import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
-import { useEffect, useState } from 'react'
-import shallow from 'zustand/shallow'
-import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
-import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
-import { useStore } from '../store'
+import { useEffect } from 'react'
+import { useAddressSearchStore, useStore } from '../store'
 import Map from '../components/Map'
-//import AddressSearchBar from '../components/AddressSearch/Input'
-import AddressSearchBar from '../components/AddressSearch/Input'
-import SearchBar from '../components/SearchBar'
-import SearchDrawer from '../components/version-one/Drawer/SearchDrawer'
-import Dropdown from '../components/AddressSearch/Dropdown'
 import AddressSearch from '../components/AddressSearch'
 import MapIcon from '../svg/MapIcon'
 import SearchIcon from '../svg/SearchIcon'
-import FeatureList from '../components/FeatureList'
-import { useLngLatSearch } from '../hooks/index '
-import { getUserLocation, useGetUserLocation } from '../hooks/useGetUserLocation'
+import FeatureList from '../components/SideBar'
+import { useGetUserLocation } from '../hooks/useGetUserLocation'
 import { SearchLocation } from '../constants/types'
+import { trpc } from '../utils/trpc'
+import Login from '../svg/Login'
 
 const Home: NextPage = ({}) => {
-  const [_, setAuth] = useState(false)
-  const user = useUser()
-  const { supabaseClient } = useSessionContext()
-  const authState = useStore((state) => state.authState)
-  const searchFocus = useStore((state) => state.searchFocus)
   const mapRef = useStore((state) => state.mapRef)
   const showMobileMap = useStore((state) => state.showMobileMap)
   const setShowMobileMap = useStore((state) => state.setShowMobileMap)
-  const setSearchLocationState = useStore((state) => state.setSearchLocationState)
+  const setSearchLocationState = useAddressSearchStore((state) => state.setSearchLocationState)
+  const searchLocationState = useAddressSearchStore((state) => state.searchLocationState)
   const lnglat = useGetUserLocation()
-  const { data } = useLngLatSearch(lnglat)
+  const { data } = trpc.searchByLngLat.useQuery(lnglat, {
+    enabled: !!lnglat
+  })
 
   useEffect(() => {
     if (lnglat && data) {
-      const loc: SearchLocation = {
+      const location: SearchLocation = {
         lnglat,
         address: data.address
       }
-      setSearchLocationState(loc)
+      setSearchLocationState(location)
     }
   }, [setSearchLocationState, data, lnglat])
 
@@ -56,7 +46,7 @@ const Home: NextPage = ({}) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="h-screen w-screen overflow-hidden relative">
-        <nav className="flex w-full h-[70px] md:h-20 bg-white justify-between items-center border-solid border-b-[.5px] border-[rgba(0,0,0,.2)] p-4 gap-4 md:p-6 md:gap-8">
+        <nav className="flex w-full h-[70px] md:h-20 bg-white justify-between items-center border-solid border-b-[.5px] border-[rgba(0,0,0,.2)] p-4 gap-4 md:p-6 md:gap-14">
           <h1 className="text-lg md:text-2xl font-baloo text-primaryGold font-bold leading-none">
             Bodega <br /> Cats
             <span className="text-xs md:text-sm font-baloo text-graphite italic font-bold leading-none">
@@ -64,17 +54,21 @@ const Home: NextPage = ({}) => {
             </span>
           </h1>
           <AddressSearch />
-
           <button
+            className="bg-[#f5f4f1] p-2 rounded-[10px]"
             onClick={() => {
               const coord = mapRef.getCenter()
               console.log(mapRef)
             }}
-          ></button>
+          >
+            <Login classNames="-translate-y-[.2rem]" />
+          </button>
         </nav>
 
         <div className="h-container flex flex-row relative">
-          <Map loc={lnglat} />
+          <div className="w-full md:w-map-container">
+            {searchLocationState.lnglat && <Map {...searchLocationState} />}
+          </div>
           <FeatureList />
           <button
             className="block md:hidden absolute bottom-20 right-10 bg-primaryBlue text-white p-4 rounded-full z-20"
@@ -95,3 +89,8 @@ const Home: NextPage = ({}) => {
 }
 
 export default Home
+
+//const [_, setAuth] = useState(false)
+//const user = useUser()
+//const { supabaseClient } = useSessionContext()
+//const authState = useStore((state) => state.authState)

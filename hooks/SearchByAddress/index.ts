@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { FeatureDrawerState, ParsedAddressFeature } from '../../constants/types'
+import { ParsedAddressFeature } from '../../constants/types'
 import { useStore } from '../../store'
 
 const fetchAddressSearchResults = async (query: string): Promise<Array<ParsedAddressFeature>> => {
@@ -39,8 +39,6 @@ const fetchAddressSearchResults = async (query: string): Promise<Array<ParsedAdd
 }
 
 const useAddressSearch = (query: string) => {
-  const setDrawerState = useStore((state) => state.setDrawerState)
-  const { searchDrawerIsActive, featureDrawerIsActive } = useStore((state) => state.drawerState)
   return useQuery({
     queryKey: ['addresssearch', { query }],
     queryFn: () => fetchAddressSearchResults(query),

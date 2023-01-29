@@ -36,6 +36,13 @@ module.exports = {
       },
       height: {
         container: 'calc(100% - 4rem)'
+      },
+      width: {
+        'side-bar': '25rem',
+        'map-container': 'calc(100% - 25rem)'
+      },
+      maxWidth: {
+        'map-container': 'calc(100% - 25rem)'
       }
     }
   },

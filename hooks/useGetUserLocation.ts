@@ -29,8 +29,11 @@ const getUserLocation = (cb: Function) => {
   }
 }
 
-const useGetUserLocation = () => {
-  const [location, setLocation] = useState<LngLat>()
+const useGetUserLocation = (): LngLat => {
+  const [location, setLocation] = useState<LngLat>({
+    lng: -73.990000682489714,
+    lat: 40.73423383278248
+  })
   useEffect(() => {
     getUserLocation((location: LngLat) => {
       setLocation(location)
