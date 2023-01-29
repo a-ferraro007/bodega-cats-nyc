@@ -1,21 +1,9 @@
 import { useEffect } from 'react'
-import { ParsedAddressFeature } from '../../../constants/types'
-import { useAddressSearch } from '../../../hooks'
-import { useStore } from '../../../store'
+import { ParsedAddressFeature } from '../../constants/types'
+import { useAddressSearch } from '../../hooks'
+import { useStore } from '../../store'
 
 const Dropdown = ({ data }: any) => {
-  const query = useStore((state) => state.searchQuery)
-  //const debounce = useDebounce(query, 250)
-  //const { data, isFetching, isLoading, isSuccess, isFetched } = useAddressSearch(debounce)
-  const map = useStore((state) => state.mapRef)
-  const featuresMap = useStore((state) => state.features)
-  const setFeatureDrawerState = useStore((state) => state.setFeatureDrawerState)
-  const setDrawerState = useStore((state) => state.setDrawerState)
-  const drawerState = useStore((state) => state.drawerState)
-  const setSearchMarker = useStore((state) => state.setSearchMarker)
-  const searchMarker = useStore((state) => state.searchMarker)
-  const setQuery = useStore((state) => state.setSearchQuery)
-
   const HandleOnClick = (selected: ParsedAddressFeature) => {
     console.log({ selected })
     //const { Feature } = selected

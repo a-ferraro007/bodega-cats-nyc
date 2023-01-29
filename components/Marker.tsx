@@ -1,24 +1,18 @@
 import Image from 'next/image'
-import { useStore } from '../../store'
+import { useStore } from '../store'
 type MapMarkerProps = {
   image: string | undefined
   //ClickHandler: () => void
 }
 
 const MapMarker = ({ image }: MapMarkerProps) => {
-  const setDrawerState = useStore((state) => state.setDrawerState)
   const map = useStore((state) => state.mapRef)
   return (
     <>
       {!image && (
         <div className="relative w-[35px] h-[35px] cursor-pointer z-10 bg-primaryGold border-[3px] border-primaryGold rounded-full">
           {' '}
-          <button
-            className="h-full w-full font-normal font-nunito text-white"
-            onClick={() => {
-              setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive: true })
-            }}
-          >
+          <button className="h-full w-full font-normal font-nunito text-white" onClick={() => {}}>
             {' '}
             add
           </button>

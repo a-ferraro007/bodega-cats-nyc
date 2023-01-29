@@ -1,10 +1,10 @@
 import mapboxgl, { MercatorCoordinate } from 'mapbox-gl'
 import { useEffect, useRef, useState } from 'react'
-import { useMapUpdate } from '../../hooks'
-import { useStore } from '../../store'
-import { setUpData } from '../../utils/MapBox'
-import { LngLat, SearchLocation } from '../../constants/types'
-import { trpc } from '../../utils/trpc'
+import { useMapUpdate } from '../hooks'
+import { useAddressSearchStore, useFeatureStore, useStore } from '../store'
+import { setUpData } from '../utils/MapBox'
+import { LngLat, SearchLocation } from '../constants/types'
+import { trpc } from '../utils/trpc'
 
 interface UserLocation {
   lnglat: LngLat
@@ -12,14 +12,14 @@ interface UserLocation {
 }
 const Map = ({ lnglat, address }: SearchLocation) => {
   const defaultLoc: LngLat = { lng: -73.990000682489714, lat: 40.73423383278248 }
-  const searchLocationState = useStore((state) => state.searchLocationState)
+  const searchLocationState = useAddressSearchStore((state) => state.searchLocationState)
   const currentPositionRef = useRef<LngLat>(searchLocationState.lnglat)
   const queryKeyRef = useRef<LngLat>(lnglat) //{ lng: -73.990000682489714, lat: 40.73423383278248 })
   console.log(queryKeyRef.current)
 
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map>()
-  const featureMap = useStore((state) => state.features)
+  const featureMap = useFeatureStore((state) => state.features)
   const setMapRef = useStore((state) => state.setMapRef)
   const setShow = useStore((state) => state.setShow)
   const show = useStore((state) => state.show)
@@ -134,7 +134,7 @@ const Map = ({ lnglat, address }: SearchLocation) => {
       {show && (
         <div className="absolute top-4 left-6 mx-auto flex justify-center">
           <button
-            className="h-10 w-48 bg-blue-800 text-white font-roboto font-normal text-sm rounded-full"
+            className="h-10 w-48 bg-blue-800 text-white font-roboto font-normal text-sm rounded-full hover:shadow-md hover:scale-105  duration-300 transition-all"
             onClick={() => {
               queryKeyRef.current = currentPositionRef.current
               console.log({ qk: queryKeyRef.current }, { cp: currentPositionRef.current })

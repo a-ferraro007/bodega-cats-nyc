@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
-import { useStore } from '../../store'
+import { useFeatureStore, useStore } from '../../store'
 import { newMarker } from '../../utils/MapMarker'
 
 const useMapUpdate = (data: any) => {
-  const featureStateMap = useStore((state) => state.features)
-  const updateMapState = useStore((state) => state.updateMapState)
+  const { features: featureStateMap, setFeatures: updateMapState } = useFeatureStore(
+    (state) => state
+  )
 
   useEffect(() => {
     if (!data) return

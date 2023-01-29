@@ -13,9 +13,7 @@ function MyApp({
   pageProps
 }: AppProps<{
   initialSession: Session
-  //dehydratedState: DehydratedState
 }>) {
-  const [queryClient] = useState(() => new QueryClient())
   const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 
   return (
@@ -23,12 +21,8 @@ function MyApp({
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
-      {/*<QueryClientProvider client={queryClient}>*/}
-      {/*<Hydrate state={pageProps.dehydratedState}>*/}
       <Component {...pageProps} />
-      {/*</Hydrate>*/}
       <ReactQueryDevtools />
-      {/*</QueryClientProvider>*/}
     </SessionContextProvider>
   )
 }

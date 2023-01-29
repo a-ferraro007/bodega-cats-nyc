@@ -1,25 +1,24 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react'
-import { useStore } from '../../../store'
-import { useAddressSearch, useDebounce } from '../../../hooks'
-import { trpc } from '../../../utils/trpc'
+import { useAddressSearchStore, useFeatureStore, useStore } from '../../store'
+import { useAddressSearch, useDebounce } from '../../hooks'
+import { trpc } from '../../utils/trpc'
 
 const AddressSearchBar = ({ setData }: any) => {
-  const query = useStore((state) => state.searchQuery)
+  const {
+    searchQuery: query,
+    searchFocus,
+    searchMarker,
+    setSearchFocus,
+    setSearchQuery: setQuery
+  } = useAddressSearchStore((state) => state)
   const debounce = useDebounce(query, 250)
+  const map = useStore((state) => state.mapRef)
+  const featuresMap = useFeatureStore((state) => state.features)
+
+  const isFocused = useRef(null)
   const { data, isFetching, isLoading, isSuccess } = trpc.searchByAddress.useQuery(debounce, {
     enabled: debounce.length > 0
   })
-  const map = useStore((state) => state.mapRef)
-  const featuresMap = useStore((state) => state.features)
-  const setFeatureDrawerState = useStore((state) => state.setFeatureDrawerState)
-  const setDrawerState = useStore((state) => state.setDrawerState)
-  const { searchDrawerIsActive, featureDrawerIsActive } = useStore((state) => state.drawerState)
-  const setSearchMarker = useStore((state) => state.setSearchMarker)
-  const searchMarker = useStore((state) => state.searchMarker)
-  const setQuery = useStore((state) => state.setSearchQuery)
-  const setSearchFocus = useStore((state) => state.setSearchFocus)
-  const searchFocus = useStore((state) => state.searchFocus)
-  const isFocused = useRef(null)
 
   useEffect(() => {
     //console.log({ address: data })
@@ -30,9 +29,9 @@ const AddressSearchBar = ({ setData }: any) => {
     if (e.target.value === '' && searchMarker) {
       searchMarker.remove()
     }
-    if (e.target.value === '' && searchDrawerIsActive) {
-      //setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive })
-    }
+    //if (e.target.value === '' && searchDrawerIsActive) {
+    //setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive })
+    //}
     setQuery(e.target.value)
   }
 

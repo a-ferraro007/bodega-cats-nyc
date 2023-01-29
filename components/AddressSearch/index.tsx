@@ -5,7 +5,7 @@ import AddressSearchBar from './Input'
 const AddressSearch = () => {
   const [data, setData] = useState()
   return (
-    <div className="flex-grow relative mr-3 lg:mr-28">
+    <div className="flex-grow relative">
       <AddressSearchBar setData={setData} />
       <Dropdown data={data} />
     </div>

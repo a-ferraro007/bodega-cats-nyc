@@ -1,38 +1,26 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react'
-//import { useStore } from '../../../../store'
-import { useStore } from '../../store'
-//import { FeatureDrawerState } from '../../../../constants/types'
-//import { useDebounce, useSearch } from '../../../../hooks/Search'
-import { useDebounce, useSearch } from '../../hooks'
-//import { newMarker } from '../../../../utils/MapMarker'
-import { AnimatePresence, motion } from 'framer-motion'
-//import Drawer from '../../Drawer'
-//import SearchDrawer from '../../Drawer/SearchDrawer'
-//import SearchDrawer from '../.version-one/Drawer/SearchDrawer'
+import { ChangeEvent, KeyboardEvent, useRef } from 'react'
+import { useAddressSearchStore, useStore } from '../store'
+import { useDebounce, useSearch } from '../hooks'
 
 const SearchBar = () => {
-  const query = useStore((state) => state.searchQuery)
+  const {
+    searchQuery: query,
+    setSearchQuery: setQuery,
+    setSearchFocus,
+    searchMarker
+  } = useAddressSearchStore((state) => state)
   const debounce = useDebounce(query, 250)
   const { data, isFetching, isLoading, isSuccess } = useSearch(debounce)
   const map = useStore((state) => state.mapRef)
-  const featuresMap = useStore((state) => state.features)
-  const setFeatureDrawerState = useStore((state) => state.setFeatureDrawerState)
-  const setDrawerState = useStore((state) => state.setDrawerState)
-  const { searchDrawerIsActive, featureDrawerIsActive } = useStore((state) => state.drawerState)
-  const setSearchMarker = useStore((state) => state.setSearchMarker)
-  const searchMarker = useStore((state) => state.searchMarker)
-  const setQuery = useStore((state) => state.setSearchQuery)
-  const setSearchFocus = useStore((state) => state.setSearchFocus)
-  const searchFocus = useStore((state) => state.searchFocus)
   const isFocused = useRef(null)
 
   const HandleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === '' && searchMarker) {
       searchMarker.remove()
     }
-    if (e.target.value === '' && searchDrawerIsActive) {
-      //setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive })
-    }
+    //if (e.target.value === '' && searchDrawerIsActive) {
+    //setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive })
+    //}
     setQuery(e.target.value)
   }
 

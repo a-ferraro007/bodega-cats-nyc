@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import { useEffect } from 'react'
-import { useStore } from '../store'
+import { useAddressSearchStore, useStore } from '../store'
 import Map from '../components/Map'
 import AddressSearch from '../components/AddressSearch'
 import MapIcon from '../svg/MapIcon'
@@ -11,13 +11,14 @@ import FeatureList from '../components/SideBar'
 import { useGetUserLocation } from '../hooks/useGetUserLocation'
 import { SearchLocation } from '../constants/types'
 import { trpc } from '../utils/trpc'
+import Login from '../svg/Login'
 
 const Home: NextPage = ({}) => {
   const mapRef = useStore((state) => state.mapRef)
   const showMobileMap = useStore((state) => state.showMobileMap)
   const setShowMobileMap = useStore((state) => state.setShowMobileMap)
-  const setSearchLocationState = useStore((state) => state.setSearchLocationState)
-  const searchLocationState = useStore((state) => state.searchLocationState)
+  const setSearchLocationState = useAddressSearchStore((state) => state.setSearchLocationState)
+  const searchLocationState = useAddressSearchStore((state) => state.searchLocationState)
   const lnglat = useGetUserLocation()
   const { data } = trpc.searchByLngLat.useQuery(lnglat, {
     enabled: !!lnglat
@@ -45,7 +46,7 @@ const Home: NextPage = ({}) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="h-screen w-screen overflow-hidden relative">
-        <nav className="flex w-full h-[70px] md:h-20 bg-white justify-between items-center border-solid border-b-[.5px] border-[rgba(0,0,0,.2)] p-4 gap-4 md:p-6 md:gap-8">
+        <nav className="flex w-full h-[70px] md:h-20 bg-white justify-between items-center border-solid border-b-[.5px] border-[rgba(0,0,0,.2)] p-4 gap-4 md:p-6 md:gap-14">
           <h1 className="text-lg md:text-2xl font-baloo text-primaryGold font-bold leading-none">
             Bodega <br /> Cats
             <span className="text-xs md:text-sm font-baloo text-graphite italic font-bold leading-none">
@@ -53,13 +54,15 @@ const Home: NextPage = ({}) => {
             </span>
           </h1>
           <AddressSearch />
-
           <button
+            className="bg-[#f5f4f1] p-2 rounded-[10px]"
             onClick={() => {
               const coord = mapRef.getCenter()
               console.log(mapRef)
             }}
-          ></button>
+          >
+            <Login classNames="-translate-y-[.2rem]" />
+          </button>
         </nav>
 
         <div className="h-container flex flex-row relative">
