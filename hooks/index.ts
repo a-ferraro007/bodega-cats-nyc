@@ -1,16 +1,18 @@
-import fetchFeatures from './Features'
+import getFeatures from './Features'
 import useMapUpdate from './Map'
 import useNewFeatureMutation from './NewFeature'
 import useAddressSearch, { fetchAddressSearchResults } from './SearchByAddress'
-import useSearch, { fetchSearchResults } from './SearchByPlace'
+import useSearch, { getSearchResults } from './SearchByPlace'
 import useDebounce from './Debounce'
-import useLngLatSearch, { fetchLngLatResults } from './SearchByLatLng'
+import useLngLatSearch, { getLngLatResults } from './SearchByLatLng'
+import getTopInArea from './GetTopInArea'
 
 export {
   fetchAddressSearchResults,
-  fetchFeatures,
-  fetchLngLatResults,
-  fetchSearchResults,
+  getFeatures,
+  getTopInArea,
+  getLngLatResults,
+  getSearchResults,
   useAddressSearch,
   useDebounce,
   useLngLatSearch,

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { LngLat, ParsedSearchLocation } from '../../constants/types'
 
-const fetchLngLatResults = async (lnglat: LngLat | undefined): Promise<ParsedSearchLocation> => {
+const getLngLatResults = async (lnglat: LngLat | undefined): Promise<ParsedSearchLocation> => {
   if (!lnglat) return <ParsedSearchLocation>{}
   try {
     var requestOptions = <RequestInit>{
@@ -21,7 +21,7 @@ const fetchLngLatResults = async (lnglat: LngLat | undefined): Promise<ParsedSea
     const { features } = await resp.json()
     const { id, type, geometry, place_name, place_type, center, context, text, properties } =
       features[0]
-    console.log({ place_name })
+    //console.log({ place_name })
 
     return <ParsedSearchLocation>{
       feature_id: id,
@@ -36,9 +36,9 @@ const fetchLngLatResults = async (lnglat: LngLat | undefined): Promise<ParsedSea
 const useLngLatSearch = (lnglat: LngLat | undefined) => {
   return useQuery({
     queryKey: ['lnglatsearch', { lnglat }],
-    queryFn: () => fetchLngLatResults(lnglat),
+    queryFn: () => getLngLatResults(lnglat),
     onSuccess: () => {}
   })
 }
 
-export { useLngLatSearch as default, fetchLngLatResults }
+export { useLngLatSearch as default, getLngLatResults }

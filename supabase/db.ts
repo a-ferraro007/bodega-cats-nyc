@@ -11,6 +11,21 @@ const selectFromFeature = async (query: Array<string>) => {
   }
 }
 
+const selectTopInArea = async (borough: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('Cat_Properties')
+      .select(`*, MapBox_Feature (*)`)
+      .eq('locality', 'Brooklyn')
+      .order('rating', { ascending: false })
+
+    if (error) throw error
+    return data
+  } catch (error) {
+    throw new Error('error fetching top list in area', { cause: error })
+  }
+}
+
 const insertCatProperty = async (CatProperties: CatProperties) => {
   try {
     const { data, error } = await supabase.from('Cat_Properties').insert(CatProperties).select('id')
@@ -33,4 +48,4 @@ const insertMapBoxFeature = async (tableData: MapBoxFeature, catId: number) => {
   }
 }
 
-export { selectFromFeature, insertCatProperty, insertMapBoxFeature }
+export { selectFromFeature, selectTopInArea, insertCatProperty, insertMapBoxFeature }

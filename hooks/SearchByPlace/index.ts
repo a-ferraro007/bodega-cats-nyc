@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { FeatureDrawerState } from '../../constants/types'
 
-const fetchSearchResults = async (query: string): Promise<Array<FeatureDrawerState>> => {
+const getSearchResults = async (query: string): Promise<Array<FeatureDrawerState>> => {
   try {
     var requestOptions = <RequestInit>{
       method: 'GET',
@@ -51,10 +51,10 @@ const fetchSearchResults = async (query: string): Promise<Array<FeatureDrawerSta
 const useSearch = (query: string) => {
   return useQuery({
     queryKey: ['search', { query }],
-    queryFn: () => fetchSearchResults(query),
+    queryFn: () => getSearchResults(query),
     enabled: query.length > 0,
     onSuccess: () => {}
   })
 }
 
-export { useSearch as default, fetchSearchResults }
+export { useSearch as default, getSearchResults }

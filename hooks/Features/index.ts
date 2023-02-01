@@ -5,7 +5,7 @@ const DEG2RAD = Math.PI / 180
 const RAD2DEG = 180 / Math.PI
 const FULL_CIRCLE_RAD = Math.PI * 2
 
-const fetchFeatures = async (currentPosition: LngLat | undefined) => {
+const getFeatures = async (currentPosition: LngLat | undefined) => {
   const data = await selectFromFeature(['geo_json'])
   return {
     type: 'FeatureCollection',
@@ -76,4 +76,4 @@ const getBoundingCoordinates = (distance: number, lnglat: any) => {
   ]
 }
 
-export default fetchFeatures
+export default getFeatures

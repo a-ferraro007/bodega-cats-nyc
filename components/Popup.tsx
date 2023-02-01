@@ -28,14 +28,21 @@ const Popup = ({ feature }: any) => {
   return (
     <div onClick={() => console.log('POPUP POP', feature)}>
       <div className="w-24 h-24">
-        <Image width="40" height="40" layout="responsive" src={properties.image} alt="cat image" />
+        <Image
+          className="rounded-[3px]"
+          width="40"
+          height="40"
+          layout="responsive"
+          src={properties.image}
+          alt="cat image"
+        />
       </div>
       <span className="font-bold font-nunito  text-lg"> {properties.name} </span>
 
       <div className="flex flex-row justify-end">
-        <div className=" p-1 bg-zinc-100 rounded-sm mr-1">
+        <div className="p-1 bg-zinc-100 rounded-sm mr-1">
           <svg
-            className={'stroke-1 stroke-primaryGold fill-primaryGold'}
+            className="stroke-1 stroke-primaryGold fill-primaryGold"
             width="12"
             height="12"
             viewBox="0 0 31 30"
