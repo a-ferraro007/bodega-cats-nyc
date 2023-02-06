@@ -35,8 +35,6 @@ const fetchAddressSearchResults = async (
           properties,
         } = feature
 
-        console.log(coordinates)
-
         //const splitPlaceName = place_name?.split(',')
         //let locality = context.find((item: any) => item.id.includes('locality'))?.text
         //if (locality) locality = locality.charAt(0).toUpperCase() + locality.slice(1, locality.length)

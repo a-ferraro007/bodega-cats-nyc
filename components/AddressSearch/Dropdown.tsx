@@ -18,10 +18,7 @@ const Dropdown = () => {
     })
   }
 
-  const HandleOnKeyDown = (
-    e: KeyboardEvent,
-    selected: ParsedAddressFeature
-  ) => {
+  const HandleOnKeyDown = (e: KeyboardEvent, selected: SearchLocation) => {
     if (e.key === 'Enter') {
       HandleOnClick(selected)
     }
@@ -33,13 +30,15 @@ const Dropdown = () => {
         <div className="absolute top-12 left-0 right-0 z-20 mx-auto min-h-[200px] w-[98%] rounded-[10px] bg-white shadow-5xl ">
           <ul className="my-3 h-full max-h-[250px]  overflow-scroll px-4">
             {data?.map((feature: ParsedAddressFeature) => {
-              const { name, feature_id } = feature
+              console.log(feature)
+
+              const { name, feature_id, lnglat } = feature
               return (
                 <li
                   className="cursor-pointer rounded-[10px] p-3 font-nunito font-medium hover:bg-[#f5f4f1]"
                   key={feature_id}
                   tabIndex={1}
-                  onClick={() => HandleOnClick(feature)}
+                  onClick={() => HandleOnClick({ address: name, lnglat })}
                 >
                   {name}
                 </li>

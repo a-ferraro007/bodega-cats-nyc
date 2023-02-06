@@ -54,6 +54,7 @@ export type NewFeatureMutation = z.infer<typeof zNewFeatureMutation>
 export interface ParsedAddressFeature {
   feature_id: string
   name: string
+  lnglat: LngLat
 }
 
 //export interface FeatureData {

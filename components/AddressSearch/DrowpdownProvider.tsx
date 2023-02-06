@@ -4,10 +4,10 @@ import { useAddressSearchStore } from '../../store'
 const DropdownContext = createContext({})
 
 const DropdownProvider = ({ children }: any) => {
-  const [searchLocation, setSearchLocation] = useState({})
+  const [searchLocation, setSearchLocation] = useState<any>({})
   const [query, setQuery] = useState('')
   const [searchFocus, setSearchFocus] = useState(false)
-  const [data, setData] = useState({})
+  const [data, setData] = useState<any>({})
 
   //// NOTE: you *might* need to memoize this value
   //// Learn more in http://kcd.im/optimize-context
@@ -30,7 +30,7 @@ const DropdownProvider = ({ children }: any) => {
   )
 }
 
-function useDropdown() {
+function useDropdown(): any {
   const context = useContext(DropdownContext)
   if (context === undefined) {
     throw new Error('useCount must be used within a CountProvider')
