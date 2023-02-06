@@ -7,7 +7,7 @@ const SearchBar = () => {
     searchQuery: query,
     setSearchQuery: setQuery,
     setSearchFocus,
-    searchMarker
+    searchMarker,
   } = useAddressSearchStore((state) => state)
   const debounce = useDebounce(query, 250)
   const { data, isFetching, isLoading, isSuccess } = useSearch(debounce)
@@ -33,12 +33,12 @@ const SearchBar = () => {
   const variants = {
     container: {
       active: { top: 0, height: '100%' },
-      close: { bottom: '2.5rem', height: '0px' }
+      close: { bottom: '2.5rem', height: '0px' },
     },
     input: {
       active: { width: '100%' },
-      close: { width: '75%' }
-    }
+      close: { width: '75%' },
+    },
   }
   //rounded-[15px]
   return (
@@ -46,7 +46,7 @@ const SearchBar = () => {
       {/* className="min-w-[250px]" */}
       <div className="flex-grow">
         <input
-          className="bg-[#f5f4f1] w-full h-10 px-4 text-graphite text-md font-bold font-nunito rounded-[10px] outline-none transition-all duration-500  border-[rgba(0,0,0,.5)] placeholder:text-graphite"
+          className="text-md h-10 w-full rounded-[10px] border-[rgba(0,0,0,.5)] bg-[#f5f4f1] px-4 font-nunito font-bold text-graphite outline-none transition-all  duration-500 placeholder:text-graphite"
           placeholder="enter an address"
           id={'mobile-search-input'}
           ref={isFocused}

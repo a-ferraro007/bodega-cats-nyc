@@ -53,7 +53,7 @@ const FileInput = ({ label, required, register }: FileInputProps) => {
   }
 
   useEffect(() => {
-    console.log('FILE UPLOAD IMAGE:', image)
+    //console.log('FILE UPLOAD IMAGE:', image)
   }, [image])
 
   return (

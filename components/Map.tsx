@@ -5,29 +5,31 @@ import { useAddressSearchStore, useFeatureStore, useStore } from '../store'
 import { setUpData } from '../utils/MapBox'
 import { LngLat, SearchLocation } from '../constants/types'
 import { trpc } from '../utils/trpc'
+import { returnUserLocationMarker } from '../utils/MapMarker'
+mapboxgl.accessToken =
+  'pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA'
 
-interface UserLocation {
-  lnglat: LngLat
-  address: string
-}
 const Map = ({ lnglat, address }: SearchLocation) => {
-  const defaultLoc: LngLat = { lng: -73.990000682489714, lat: 40.73423383278248 }
-  const searchLocationState = useAddressSearchStore((state) => state.searchLocationState)
+  const defaultLoc: LngLat = {
+    lng: -73.990000682489714,
+    lat: 40.73423383278248,
+  }
+  const searchLocationState = useAddressSearchStore(
+    (state) => state.searchLocationState
+  )
   const currentPositionRef = useRef<LngLat>(searchLocationState.lnglat)
-  const queryKeyRef = useRef<LngLat>(lnglat) //{ lng: -73.990000682489714, lat: 40.73423383278248 })
-  console.log(queryKeyRef.current)
-
+  const userLocationMarkerRef = useRef<any>()
+  const [queryKeyRef, setKey] = useState<LngLat>(lnglat) // useRef<LngLat>(lnglat) //{ lng: -73.990000682489714, lat: 40.73423383278248 })
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map>()
   const featureMap = useFeatureStore((state) => state.features)
   const setMapRef = useStore((state) => state.setMapRef)
   const setShow = useStore((state) => state.setShow)
   const show = useStore((state) => state.show)
-  const { data, refetch } = trpc.selectFeatures.useQuery(queryKeyRef.current, { enabled: true })
+  const { data, refetch } = trpc.selectFeatures.useQuery(queryKeyRef, {
+    enabled: true,
+  })
   useMapUpdate(data)
-
-  mapboxgl.accessToken =
-    'pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA'
 
   const getCameraLngLat = (): LngLat => {
     if (!map.current) return {} as LngLat
@@ -43,55 +45,55 @@ const Map = ({ lnglat, address }: SearchLocation) => {
 
     return {
       lng: point.lng,
-      lat: point.lat
+      lat: point.lat,
     } as LngLat
   }
 
   useEffect(() => {
-    console.log({ queryKeyRef })
-    refetch()
-  })
-
-  useEffect(() => {
-    //if (queryKeyRef.current === undefined) {
-    //  queryKeyRef.current = searchLocationState.lnglat
-    //}
-    if (currentPositionRef.current === undefined) {
+    if (
+      map.current ??
+      currentPositionRef.current !== searchLocationState.lnglat
+    ) {
       currentPositionRef.current = searchLocationState.lnglat
+      map.current?.setCenter(searchLocationState.lnglat)
+      setKey(searchLocationState.lnglat)
     }
-  }, [searchLocationState])
+
+    if (!userLocationMarkerRef.current && map.current) {
+      userLocationMarkerRef.current = returnUserLocationMarker(
+        searchLocationState.lnglat
+      )
+      userLocationMarkerRef.current.addTo(map.current)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchLocationState, map.current])
 
   useEffect(() => {
-    console.log({ data })
     if (!mapContainer.current || !data || !currentPositionRef.current) return
     if (map.current) {
       setUpData(map.current, featureMap)
       return
     }
-    console.log('AFTER GEO')
-    //[initialLocation.lng, initialLocation.lat], //
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current || '',
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [currentPositionRef.current?.lng, currentPositionRef.current?.lat],
+      center: [
+        currentPositionRef.current?.lng,
+        currentPositionRef.current?.lat,
+      ],
       zoom: 14,
-      //minZoom: 10,
       maxBounds: [-74.26379, 40.3923, -73.667498, 40.94285],
-      //[-74.25909, 40.477399, -73.700272, 40.917577]
-      interactive: true
+      interactive: true,
     })
     setMapRef(map.current)
 
-    //[-74.26379, 40.3923, -73.667498, 40.94285], [-74.25909, 40.477399, -73.700272, 40.917577],
-    //[-74.04728, 40.68392], //[lng, lat]
-    //[-73.91058, 40.87764]
-
     map.current.on('load', () => {
       if (map.current && map && data) {
-        console.log('GEO', data)
+        //console.log('GEO', data)
         map.current.addSource('unclustered-bodega-cats', {
           type: 'geojson',
-          data: data as any
+          data: data as any,
         })
         setUpData(map.current, featureMap)
       }
@@ -101,45 +103,25 @@ const Map = ({ lnglat, address }: SearchLocation) => {
       const point = getCameraLngLat()
       if (!point || !currentPositionRef.current) return
       let d = getDistance(point, currentPositionRef.current)
-      if (d >= 0.7) {
+      if (d >= 0.5) {
         currentPositionRef.current = point
         if (!show) setShow(true)
-        console.log(currentPositionRef.current)
       }
     })
   }, [data, currentPositionRef, setMapRef, featureMap, show, setShow])
 
-  //useEffect(() => {
-  //  console.log('RESIZE')
-
-  //  let resizeInterval = setInterval(() => {
-  //    if (map.current) {
-  //      map.current.resize()
-  //    }
-  //  })
-  //  let timeoutHandler = setTimeout(() => {
-  //    clearInterval(resizeInterval)
-  //  }, 300)
-
-  //  return () => {
-  //    if (timeoutHandler) {
-  //      clearTimeout(timeoutHandler)
-  //    }
-  //  }
-  //}, [featureDrawerIsActive, searchDrawerIsActive, map])
-
   return (
     <>
-      <div className="bodega-cats h-full w-full relative" ref={mapContainer}></div>
+      <div
+        className="bodega-cats relative h-full w-full"
+        ref={mapContainer}
+      ></div>
       {show && (
         <div className="absolute top-4 left-6 mx-auto flex justify-center">
           <button
-            className="h-10 w-48 bg-blue-800 text-white font-roboto font-normal text-sm rounded-full hover:shadow-md hover:scale-105  duration-300 transition-all"
+            className="h-10 w-48 rounded-full bg-blue-800 font-roboto text-sm font-normal text-white transition-all duration-300  hover:scale-105 hover:shadow-md"
             onClick={() => {
-              queryKeyRef.current = currentPositionRef.current
-              console.log({ qk: queryKeyRef.current }, { cp: currentPositionRef.current })
-
-              refetch()
+              setKey(currentPositionRef.current)
               setShow(false)
             }}
           >
@@ -150,7 +132,7 @@ const Map = ({ lnglat, address }: SearchLocation) => {
     </>
   )
 }
-//console.log({ queryKEy: queryKeyRef.current }, { currentPosition })
+////console.log({ queryKEy: queryKeyRef.current }, { currentPosition })
 const getDistance = (lngLat1: LngLat, lngLat2: LngLat): number => {
   const DEG2RAD = Math.PI / 180
   const radius = 3963.19 //EARTH RADIUS IN MILES
@@ -165,7 +147,8 @@ const getDistance = (lngLat1: LngLat, lngLat2: LngLat): number => {
 
   return (
     Math.acos(
-      Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng1 - lng2)
+      Math.sin(lat1) * Math.sin(lat2) +
+        Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng1 - lng2)
     ) * radius
   )
 }

@@ -5,15 +5,15 @@ const DEG2RAD = Math.PI / 180
 const RAD2DEG = 180 / Math.PI
 const FULL_CIRCLE_RAD = Math.PI * 2
 
-const getFeatures = async (currentPosition: LngLat | undefined) => {
+const getFeatures = async (currentPosition: LngLat) => {
   const data = await selectFromFeature(['geo_json'])
   return {
     type: 'FeatureCollection',
-    features: filterByLngLat(data, currentPosition)
+    features: filterByLngLat(data, currentPosition),
   }
 }
 
-const filterByLngLat = (data: any, lnglat: any) => {
+const filterByLngLat = (data: any, lnglat: LngLat) => {
   const bounds = getBoundingCoordinates(1, lnglat)
   const min = bounds[0] //min[0] == lat, min[1] == lng
   const max = bounds[1]
@@ -25,7 +25,8 @@ const filterByLngLat = (data: any, lnglat: any) => {
       const lat = coordinates[1]
 
       if (lng >= min[1] && lng <= max[1] && lat >= min[0] && lng <= max[0]) {
-        console.log(geo_json)
+        const { geometry } = geo_json
+        console.log(geometry)
 
         return geo_json
       }
@@ -72,7 +73,7 @@ const getBoundingCoordinates = (distance: number, lnglat: any) => {
 
   return [
     [minLat * RAD2DEG, minLng * RAD2DEG],
-    [maxLat * RAD2DEG, maxLng * RAD2DEG]
+    [maxLat * RAD2DEG, maxLng * RAD2DEG],
   ]
 }
 

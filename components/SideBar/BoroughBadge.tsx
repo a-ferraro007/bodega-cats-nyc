@@ -29,9 +29,8 @@ const BoroughBadge = ({ locality }: BoroughBadgeProps) => {
   return (
     <div>
       <span
-        className={`${classNames} font-roboto font-medium text-xs leading-none py-1 px-2 rounded-2xl`}
+        className={`${classNames} rounded-2xl py-1 px-2 font-roboto text-xs font-medium leading-none`}
       >
-        {' '}
         {locality}
       </span>
     </div>

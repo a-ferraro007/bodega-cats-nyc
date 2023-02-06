@@ -1,29 +1,27 @@
-import { useEffect } from 'react'
-import { ParsedAddressFeature } from '../../constants/types'
-import { useAddressSearch } from '../../hooks'
-import { useStore } from '../../store'
+import shallow from 'zustand/shallow'
+import { ParsedAddressFeature, SearchLocation } from '../../constants/types'
+import { useAddressSearchStore } from '../../store'
+import { useDropdown } from './DrowpdownProvider'
 
-const Dropdown = ({ data }: any) => {
-  const HandleOnClick = (selected: ParsedAddressFeature) => {
-    console.log({ selected })
-    //const { Feature } = selected
-    //setFeatureDrawerState(selected)
-    //setDrawerState({ featureDrawerIsActive: false, searchDrawerIsActive: false })
+const Dropdown = () => {
+  const { setSearchLocationState } = useAddressSearchStore(
+    (state) => state,
+    shallow
+  )
 
-    //if (searchMarker) searchMarker.remove()
-    //if (featuresMap.has(Feature.id)) {
-    //  console.log('FEATURE MAP:', featuresMap.get(Feature.id))
-    //  map.flyTo({ zoom: 18, center: Feature.geometry.coordinates })
-    //  return
-    //}
+  const { data } = useDropdown()
 
-    //const marker = newMarker(Feature, false)
-    //marker.addTo(map)
-    //setSearchMarker(marker)
-    //map.flyTo({ zoom: 18, center: Feature.geometry.coordinates })
+  const HandleOnClick = (selected: SearchLocation) => {
+    setSearchLocationState({
+      address: selected.address,
+      lnglat: selected.lnglat,
+    })
   }
 
-  const HandleOnKeyDown = (e: KeyboardEvent, selected: ParsedAddressFeature) => {
+  const HandleOnKeyDown = (
+    e: KeyboardEvent,
+    selected: ParsedAddressFeature
+  ) => {
     if (e.key === 'Enter') {
       HandleOnClick(selected)
     }
@@ -32,16 +30,16 @@ const Dropdown = ({ data }: any) => {
   return (
     <>
       {data?.length > 0 && (
-        <div className="absolute z-20 w-[98%] mx-auto top-12 bg-white rounded-[10px] left-0 right-0 shadow-5xl min-h-[200px] ">
-          <ul className="my-3 px-4 max-h-[250px]  h-full overflow-scroll">
+        <div className="absolute top-12 left-0 right-0 z-20 mx-auto min-h-[200px] w-[98%] rounded-[10px] bg-white shadow-5xl ">
+          <ul className="my-3 h-full max-h-[250px]  overflow-scroll px-4">
             {data?.map((feature: ParsedAddressFeature) => {
-              console.log(feature)
               const { name, feature_id } = feature
               return (
                 <li
-                  className="p-3 hover:bg-[#f5f4f1] rounded-[10px] font-nunito font-medium cursor-pointer"
+                  className="cursor-pointer rounded-[10px] p-3 font-nunito font-medium hover:bg-[#f5f4f1]"
                   key={feature_id}
                   tabIndex={1}
+                  onClick={() => HandleOnClick(feature)}
                 >
                   {name}
                 </li>

@@ -1,13 +1,22 @@
-import React, { useState } from 'react'
-import Dropdown from './Dropdown'
+import { DropdownProvider } from './DrowpdownProvider'
 import AddressSearchBar from './Input'
+import Dropdown from './Dropdown'
+import { useAddressSearchStore } from '../../store'
+import shallow from 'zustand/shallow'
 
 const AddressSearch = () => {
-  const [data, setData] = useState()
+  const { address } = useAddressSearchStore((state) => {
+    console.log(state.searchLocationState)
+
+    return state.searchLocationState
+  }, shallow)
+
   return (
-    <div className="flex-grow relative">
-      <AddressSearchBar setData={setData} />
-      <Dropdown data={data} />
+    <div className="relative flex-grow">
+      <DropdownProvider>
+        <AddressSearchBar address={address} />
+        <Dropdown />
+      </DropdownProvider>
     </div>
   )
 }

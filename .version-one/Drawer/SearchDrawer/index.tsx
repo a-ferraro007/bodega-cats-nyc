@@ -25,7 +25,7 @@ const SearchDrawer = () => {
 
     if (searchMarker) searchMarker.remove()
     if (featuresMap.has(Feature.id)) {
-      console.log('FEATURE MAP:', featuresMap.get(Feature.id))
+      //console.log('FEATURE MAP:', featuresMap.get(Feature.id))
       map.flyTo({ zoom: 18, center: Feature.geometry.coordinates })
       return
     }

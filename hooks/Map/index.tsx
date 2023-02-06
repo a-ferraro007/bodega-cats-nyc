@@ -32,7 +32,7 @@ const useMapUpdate = (data: any) => {
           fetchedFeaturesMap.forEach((feature, key) => {
             if (!featureStateMap.has(key)) {
               const marker = newMarker(feature, true, feature.properties.image)
-              featureStateMap.set(feature.id, marker)
+              featureStateMap.set(feature.id, { marker, feature })
             }
           })
         }

@@ -12,7 +12,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
     Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: rgba(8, 85, 240, 0.6);
+  /*background-color: rgba(8, 85, 240, 0.6);*/
   /* .6 */
 }
 
@@ -48,4 +48,104 @@ a {
 
 canvas {
   display: block;
+}
+
+.isometric_acht {
+  fill: #e84925;
+  /*#f05a28;*/
+}
+.isometric_negen {
+  fill: #8d2319;
+  /*#be1e2d;*/
+}
+.st0 {
+  fill: #225b49;
+}
+.st1 {
+  fill: #569080;
+}
+.st2 {
+  fill: #f28103;
+}
+.st3 {
+  fill: #7bd6c4;
+}
+.st4 {
+  fill: #72c0ab;
+}
+.st5 {
+  fill: #f29227;
+}
+.st6 {
+  fill: #ff7344;
+}
+.st7 {
+  fill: #f8f7c5;
+}
+.st8 {
+  fill: #f5df89;
+}
+.st9 {
+  fill: #ad9a74;
+}
+.st10 {
+  fill: none;
+}
+.st11 {
+  fill: #be1e2d;
+}
+.st12 {
+  fill: #f2d76c;
+}
+
+.isometric_user_acht {
+  fill: #f05a28;
+}
+.isometric_user_negen {
+  fill: #be1e2d;
+}
+.isometric_elf {
+  fill: #72c0ab;
+}
+.isometric_twaalf {
+  fill: #569080;
+}
+.st0 {
+  fill: #225b49;
+}
+.st1 {
+  fill: #f28103;
+}
+.st2 {
+  fill: #7bd6c4;
+}
+.st3 {
+  fill: #f29227;
+}
+.st4 {
+  fill: #ff7344;
+}
+.st5 {
+  fill: #f8f7c5;
+}
+.st6 {
+  fill: #f5df89;
+}
+.st7 {
+  fill: #ad9a74;
+}
+.st8 {
+  fill: none;
+}
+.st9 {
+  fill: #be1e2d;
+}
+.st10 {
+  fill: #f2d76c;
+}
+.st11 {
+  fill: #72c0ab;
+}
+.st12 {
+  fill: #569080;
 }

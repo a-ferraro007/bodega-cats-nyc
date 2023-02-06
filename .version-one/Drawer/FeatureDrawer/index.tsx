@@ -31,7 +31,7 @@
 //  const { ParsedFeature, Feature } = drawerState
 
 //  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-//    console.log('DATA')
+//    //console.log('DATA')
 
 //    if (!user || !session) {
 //      setAuthState(true)
@@ -57,7 +57,7 @@
 //      sbImgURL = supabase.storage.from('cat-images').getPublicUrl(storageData.path).data.publicUrl
 //      geo_json.properties['image'] = sbImgURL
 //    } catch (error) {
-//      console.log(error)
+//      //console.log(error)
 //      return //handle error in form
 //    }
 
@@ -75,17 +75,17 @@
 //        geo_json
 //      }
 //    }
-//    console.log(mutationReqData)
+//    //console.log(mutationReqData)
 //    newFeatureMutation.mutate(mutationReqData)
 //  }
 
 //  useEffect(() => {
-//    console.log('NEW FEATURE MUTATION SUCCESS:', newFeatureMutation.isSuccess)
+//    //console.log('NEW FEATURE MUTATION SUCCESS:', newFeatureMutation.isSuccess)
 //    if (newFeatureMutation.isSuccess) {
 //      if (searchMarker) {
 //        searchMarker.remove()
 //        setSearchMarker(null)
-//        console.log(searchMarker)
+//        //console.log(searchMarker)
 //      }
 //      setDrawerState({ searchDrawerIsActive: true, featureDrawerIsActive: false })
 //    }

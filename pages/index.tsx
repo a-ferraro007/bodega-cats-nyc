@@ -14,21 +14,21 @@ import { trpc } from '../utils/trpc'
 import Login from '../svg/Login'
 
 const Home: NextPage = ({}) => {
+  const lnglat = useGetUserLocation()
   const mapRef = useStore((state) => state.mapRef)
   const showMobileMap = useStore((state) => state.showMobileMap)
   const setShowMobileMap = useStore((state) => state.setShowMobileMap)
-  const setSearchLocationState = useAddressSearchStore((state) => state.setSearchLocationState)
-  const searchLocationState = useAddressSearchStore((state) => state.searchLocationState)
-  const lnglat = useGetUserLocation()
+  const { setSearchLocationState, searchLocationState, setSearchMarker } =
+    useAddressSearchStore((state) => state)
   const { data } = trpc.searchByLngLat.useQuery(lnglat, {
-    enabled: !!lnglat
+    enabled: !!lnglat,
   })
 
   useEffect(() => {
     if (lnglat && data) {
       const location: SearchLocation = {
         lnglat,
-        address: data.address
+        address: data.address,
       }
       setSearchLocationState(location)
     }
@@ -45,35 +45,35 @@ const Home: NextPage = ({}) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="h-screen w-screen overflow-hidden relative">
-        <nav className="flex w-full h-[70px] md:h-20 bg-white justify-between items-center border-solid border-b-[.5px] border-[rgba(0,0,0,.2)] p-4 gap-4 md:p-6 md:gap-14">
-          <h1 className="text-lg md:text-2xl font-baloo text-primaryGold font-bold leading-none">
+      <main className="relative h-screen w-screen overflow-hidden">
+        <nav className="flex h-[70px] w-full items-center justify-between gap-4 border-b-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white p-4 md:h-20 md:gap-14 md:p-6">
+          <h1 className="font-baloo text-lg font-bold leading-none text-primaryGold md:text-2xl">
             Bodega <br /> Cats
-            <span className="text-xs md:text-sm font-baloo text-graphite italic font-bold leading-none">
+            <span className="font-baloo text-xs font-bold italic leading-none text-graphite md:text-sm">
               of nyc
             </span>
           </h1>
           <AddressSearch />
           <button
-            className="bg-[#f5f4f1] p-2 rounded-[10px]"
+            className="rounded-[10px] bg-[#f5f4f1] p-2"
             onClick={() => {
               const coord = mapRef.getCenter()
-              console.log(mapRef)
+              //console.log(coord)
             }}
           >
             <Login classNames="-translate-y-[.2rem]" />
           </button>
         </nav>
 
-        <div className="h-container flex flex-row relative">
+        <div className="relative flex h-container flex-row">
           <div className="w-full md:w-map-container">
             {searchLocationState.lnglat && <Map {...searchLocationState} />}
           </div>
           <FeatureList />
           <button
-            className="block md:hidden absolute bottom-20 right-10 bg-primaryBlue text-white p-4 rounded-full z-20"
+            className="absolute bottom-20 right-10 z-20 block rounded-full bg-primaryBlue p-4 text-white md:hidden"
             onClick={() => {
-              console.log(showMobileMap)
+              //console.log(showMobileMap)
               setShowMobileMap(!showMobileMap)
             }}
           >

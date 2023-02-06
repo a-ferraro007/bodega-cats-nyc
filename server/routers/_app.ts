@@ -1,13 +1,19 @@
 import { z } from 'zod'
 import { procedure, router } from '../trpc'
-import { zLngLat, LngLat, ParsedSearchLocation } from './../../constants/types'
+import {
+  zLngLat,
+  LngLat,
+  ParsedSearchLocation,
+  zNewFeatureMutation,
+} from './../../constants/types'
 import {
   getFeatures,
   getSearchResults,
   getLngLatResults,
   fetchAddressSearchResults,
-  getTopInArea
+  getTopInArea,
 } from '../../hooks'
+import { newFeature } from '../../hooks/NewFeature'
 
 export const appRouter = router({
   selectFeatures: procedure.input(zLngLat).query(({ input }) => {
@@ -23,7 +29,12 @@ export const appRouter = router({
     if (!input) return <ParsedSearchLocation>{}
     return getLngLatResults(input)
   }),
-  searchByPlace: procedure.input(z.string()).query(({ input }) => getSearchResults(input))
+  searchByPlace: procedure
+    .input(z.string())
+    .query(({ input }) => getSearchResults(input)),
+  addFeature: procedure.input(zNewFeatureMutation).mutation(({ input }) => {
+    return newFeature(input)
+  }),
 })
 
 // export type definition of API

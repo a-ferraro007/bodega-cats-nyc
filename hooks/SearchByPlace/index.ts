@@ -43,7 +43,7 @@ const getSearchResults = async (query: string): Promise<Array<FeatureDrawerState
 
     return mappedFeatures
   } catch (error) {
-    console.log('Error Fetching FeatureCollection Geo_JSON', error)
+    //console.log('Error Fetching FeatureCollection Geo_JSON', error)
     throw error
   }
 }

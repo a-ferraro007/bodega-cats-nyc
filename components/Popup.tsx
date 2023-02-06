@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 const Popup = ({ feature }: any) => {
   const { properties } = feature
-  console.log()
+  //console.log()
   //const Rating = () => {
   //  const arr = []
   //  for (let i = 0; i < 5; i++) {
@@ -26,8 +26,8 @@ const Popup = ({ feature }: any) => {
   //}
 
   return (
-    <div onClick={() => console.log('POPUP POP', feature)}>
-      <div className="w-24 h-24">
+    <div onClick={() => {}}>
+      <div className="h-24 w-24">
         <Image
           className="rounded-[3px]"
           width="40"
@@ -37,12 +37,15 @@ const Popup = ({ feature }: any) => {
           alt="cat image"
         />
       </div>
-      <span className="font-bold font-nunito  text-lg"> {properties.name} </span>
+      <span className="font-nunito text-lg  font-bold">
+        {' '}
+        {properties.name}{' '}
+      </span>
 
       <div className="flex flex-row justify-end">
-        <div className="p-1 bg-zinc-100 rounded-sm mr-1">
+        <div className="mr-1 rounded-sm bg-zinc-100 p-1">
           <svg
-            className="stroke-1 stroke-primaryGold fill-primaryGold"
+            className="fill-primaryGold stroke-primaryGold stroke-1"
             width="12"
             height="12"
             viewBox="0 0 31 30"

@@ -1,3 +1,4 @@
+//import { NewFeatureMutation } from './types';
 import { z } from 'zod'
 
 export const FormInputs = z.object({
@@ -5,13 +6,13 @@ export const FormInputs = z.object({
   address: z.string(),
   rating: z.string(),
   search: z.string(),
-  file: z.string().optional()
+  file: z.string().optional(),
 })
 export type FormInputs = z.infer<typeof FormInputs>
 
 export const zLngLat = z.object({
   lng: z.number(),
-  lat: z.number()
+  lat: z.number(),
 })
 type lnglat = z.infer<typeof zLngLat>
 
@@ -21,7 +22,7 @@ export const CatProperties = z.object({
   name: z.string(),
   rating: z.number(),
   image: z.string(),
-  locality: z.string()
+  locality: z.string(),
 })
 export type CatProperties = z.infer<typeof CatProperties>
 
@@ -31,18 +32,24 @@ export const MapBoxFeature = z.object({
   user_id: z.string(),
   address: z.string(),
   geo_json: z.any(),
-  cat_id: z.number()
+  //cat_id: z.optional(z.number()) //
 })
 export type MapBoxFeature = z.infer<typeof MapBoxFeature>
 
-const ParsedFeature = z.object({
+export const ParsedFeature = z.object({
   feature_id: z.string(),
   name: z.string(),
   center: z.array(z.number()),
   address: z.string(),
-  locality: z.string()
+  locality: z.string(),
 })
 export type ParsedFeature = z.infer<typeof ParsedFeature>
+
+export const zNewFeatureMutation = z.object({
+  MapBoxFeature: MapBoxFeature,
+  CatProperties: CatProperties,
+})
+export type NewFeatureMutation = z.infer<typeof zNewFeatureMutation>
 
 export interface ParsedAddressFeature {
   feature_id: string
@@ -71,17 +78,12 @@ export interface FeatureDrawerState {
   Feature?: any
 }
 
-export interface NewFeatureMutation {
-  CatProperties: CatProperties
-  MapBoxFeature: MapBoxFeature
-}
-
 export enum Borough {
   Manhattan = 'Manhattan',
   Queens = 'Queens',
   Brooklyn = 'Brooklyn',
   Bronx = 'Bronx',
-  StatenIsland = 'Staten Island'
+  StatenIsland = 'Staten Island',
 }
 
 export type Coordinates = {

@@ -1,16 +1,16 @@
-import { useEffect, useMemo } from 'react'
-import shallow from 'zustand/shallow'
+import { useMemo } from 'react'
 import { useFeatureStore, useStore } from '../../store'
-import SearchIcon from '../../svg/SearchIcon'
 import { trpc } from '../../utils/trpc'
-import BoroughBadge from './BoroughBadge'
 import NearbyList from './NearbyList'
-import FeaturedList from './TopList'
+import FeaturedList from './FeaturedList'
 
 const SideBar = () => {
   const showMobileMap = useStore((state) => state.showMobileMap)
   const featureStateMap = useFeatureStore((state) => state.features)
-  const { data, refetch } = trpc.selectTopInArea.useQuery('queryKeyRef.current', { enabled: true })
+  const { data, refetch } = trpc.selectTopInArea.useQuery(
+    'queryKeyRef.current',
+    { enabled: true }
+  )
   const featureArray = useMemo(() => {
     const array: Array<any> = []
     featureStateMap.forEach(({ feature }) => {
@@ -21,7 +21,7 @@ const SideBar = () => {
 
   return (
     <div
-      className={`absolute md:static w-full h-full md:w-side-bar bg-white  z-10 ${
+      className={`absolute z-10 h-full w-full bg-white md:static  md:w-side-bar ${
         showMobileMap ? '' : 'hidden md:block'
       }`}
     >
@@ -57,8 +57,12 @@ const SideBar = () => {
       </div>*/}
 
       <div className="p-6">
-        {data && <FeaturedList data={data} />}
+        <div>
+          <p className="mb-3 font-nunito text-lg font-bold">Top in New York</p>
+          {data && <FeaturedList data={data} />}
+        </div>
         <div className="mt-6">
+          <p className="font-nunito text-lg font-bold">Nearby</p>
           <NearbyList nearby={featureArray} />
         </div>
       </div>

@@ -1,12 +1,15 @@
+import { LngLat } from './../../constants/types'
 import { useQuery } from '@tanstack/react-query'
 import { ParsedAddressFeature } from '../../constants/types'
 import { useStore } from '../../store'
 
-const fetchAddressSearchResults = async (query: string): Promise<Array<ParsedAddressFeature>> => {
+const fetchAddressSearchResults = async (
+  query: string
+): Promise<Array<ParsedAddressFeature>> => {
   try {
     var requestOptions = <RequestInit>{
       method: 'GET',
-      redirect: 'follow'
+      redirect: 'follow',
     }
 
     const resp = await fetch(
@@ -18,23 +21,41 @@ const fetchAddressSearchResults = async (query: string): Promise<Array<ParsedAdd
 
     const { features } = await resp.json()
 
-    const mappedFeatures: Array<ParsedAddressFeature> = features.map((feature: any) => {
-      const { id, type, geometry, place_name, place_type, center, context, text, properties } =
-        feature
-      //const splitPlaceName = place_name?.split(',')
-      //let locality = context.find((item: any) => item.id.includes('locality'))?.text
-      //if (locality) locality = locality.charAt(0).toUpperCase() + locality.slice(1, locality.length)
-      console.log({ properties })
+    const mappedFeatures: Array<ParsedAddressFeature> = features.map(
+      (feature: any) => {
+        const {
+          id,
+          type,
+          geometry: { coordinates },
+          place_name,
+          place_type,
+          center,
+          context,
+          text,
+          properties,
+        } = feature
 
-      return <ParsedAddressFeature>{
-        feature_id: id,
-        name: place_name
+        console.log(coordinates)
+
+        //const splitPlaceName = place_name?.split(',')
+        //let locality = context.find((item: any) => item.id.includes('locality'))?.text
+        //if (locality) locality = locality.charAt(0).toUpperCase() + locality.slice(1, locality.length)
+        //console.log({ properties })
+
+        return <ParsedAddressFeature>{
+          feature_id: id,
+          name: place_name,
+          lnglat: {
+            lng: coordinates[0],
+            lat: coordinates[1],
+          } as LngLat,
+        }
       }
-    })
-    console.log({ mappedFeatures })
+    )
+    //console.log({ mappedFeatures })
     return mappedFeatures
   } catch (error) {
-    console.log('Error Fetching FeatureCollection Geo_JSON', error)
+    //console.log('Error Fetching FeatureCollection Geo_JSON', error)
     throw error
   }
 }
@@ -44,7 +65,7 @@ const useAddressSearch = (query: string) => {
     queryKey: ['addresssearch', { query }],
     queryFn: () => fetchAddressSearchResults(query),
     enabled: query.length > 0,
-    onSuccess: () => {}
+    onSuccess: () => {},
   })
 }
 

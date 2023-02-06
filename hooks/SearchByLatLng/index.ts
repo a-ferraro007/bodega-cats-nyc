@@ -21,14 +21,14 @@ const getLngLatResults = async (lnglat: LngLat | undefined): Promise<ParsedSearc
     const { features } = await resp.json()
     const { id, type, geometry, place_name, place_type, center, context, text, properties } =
       features[0]
-    //console.log({ place_name })
+    ////console.log({ place_name })
 
     return <ParsedSearchLocation>{
       feature_id: id,
       address: place_name
     }
   } catch (error) {
-    console.log('Error Fetching FeatureCollection Geo_JSON', error)
+    //console.log('Error Fetching FeatureCollection Geo_JSON', error)
     throw error
   }
 }

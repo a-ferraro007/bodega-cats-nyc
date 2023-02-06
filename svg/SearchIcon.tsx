@@ -1,7 +1,7 @@
 import React from 'react'
 
 const SearchIcon = ({ color = 'white', width = 25, height = 25 }) => {
-  console.log({ color })
+  //console.log({ color })
 
   return (
     <svg

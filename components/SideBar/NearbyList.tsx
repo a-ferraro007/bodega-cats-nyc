@@ -4,22 +4,26 @@ import BoroughBadge from './BoroughBadge'
 const NearbyList = ({ nearby }: any) => {
   return (
     <div>
-      <p className="font-nunito font-bold text-lg">Nearby</p>
-      <div>
-        {nearby &&
+      <ul className="mt-2">
+        {nearby.length ? (
           nearby.map((feature: any) => {
-            console.log(feature)
+            //console.log(feature)
             const { id, properties } = feature
             const { address, name, locality } = properties
 
             return (
               <li
                 key={id}
-                className="my-4 px-4 py-6 cursor-pointer border-[1px] border-[#dad8d2] rounded-[15px] hover:bg-[#f5f4f1] transition-all duration-200 last:mb-0 list-none"
+                className="my-4 cursor-pointer list-none rounded-[15px] border-[1px] border-[#dad8d2] px-4 py-6 transition-all duration-200 last:mb-0 hover:bg-[#f5f4f1]"
                 tabIndex={0}
               >
-                <span className="block font-nunito font-bold text-md pb-1">{name}</span>
-                <p className="font-roboto font-normal text-xs mb-4  "> {address}</p>
+                <span className="text-md block pb-1 font-nunito font-bold">
+                  {name}
+                </span>
+                <p className="mb-4 font-roboto text-xs font-normal  ">
+                  {' '}
+                  {address}
+                </p>
                 <div className="border-b-[1px] border-solid border-[#dad8d2]"></div>
                 {locality && (
                   <div className="pt-4">
@@ -28,8 +32,14 @@ const NearbyList = ({ nearby }: any) => {
                 )}
               </li>
             )
-          })}
-      </div>
+          })
+        ) : (
+          <span className="block w-full text-center font-nunito font-normal">
+            {' '}
+            no cats nearby :({' '}
+          </span>
+        )}
+      </ul>
     </div>
   )
 }

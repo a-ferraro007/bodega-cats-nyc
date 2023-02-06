@@ -24,7 +24,7 @@
 //  const map = useStore((state) => state.mapRef)
 //  const [addBtn, setAddBtn] = useState(false)
 //  useEffect(() => {
-//    console.log('data', searchDrawerIsActive, searchFocus)
+//    //console.log('data', searchDrawerIsActive, searchFocus)
 //  })
 
 //  return (
