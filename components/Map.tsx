@@ -59,11 +59,19 @@ const Map = ({ lnglat, address }: SearchLocation) => {
       setKey(searchLocationState.lnglat)
     }
 
-    if (!userLocationMarkerRef.current && map.current) {
-      userLocationMarkerRef.current = returnUserLocationMarker(
-        searchLocationState.lnglat
-      )
-      userLocationMarkerRef.current.addTo(map.current)
+    if (map.current) {
+      if (!userLocationMarkerRef.current) {
+        userLocationMarkerRef.current = returnUserLocationMarker(
+          searchLocationState.lnglat
+        )
+        userLocationMarkerRef.current.addTo(map.current)
+      } else {
+        userLocationMarkerRef.current.remove()
+        userLocationMarkerRef.current = returnUserLocationMarker(
+          searchLocationState.lnglat
+        )
+        userLocationMarkerRef.current.addTo(map.current)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchLocationState, map.current])

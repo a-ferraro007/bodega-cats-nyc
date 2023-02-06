@@ -1,4 +1,4 @@
-import { LngLat } from './../../constants/types'
+import { LngLat, SearchLocation } from './../../constants/types'
 import { useQuery } from '@tanstack/react-query'
 import { ParsedAddressFeature } from '../../constants/types'
 import { useStore } from '../../store'
@@ -40,9 +40,9 @@ const fetchAddressSearchResults = async (
         //if (locality) locality = locality.charAt(0).toUpperCase() + locality.slice(1, locality.length)
         //console.log({ properties })
 
-        return <ParsedAddressFeature>{
+        return <SearchLocation>{
           feature_id: id,
-          name: place_name,
+          address: place_name,
           lnglat: {
             lng: coordinates[0],
             lat: coordinates[1],
@@ -50,7 +50,7 @@ const fetchAddressSearchResults = async (
         }
       }
     )
-    //console.log({ mappedFeatures })
+
     return mappedFeatures
   } catch (error) {
     //console.log('Error Fetching FeatureCollection Geo_JSON', error)

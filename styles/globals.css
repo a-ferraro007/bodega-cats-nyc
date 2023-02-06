@@ -10,8 +10,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
-    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   /*background-color: rgba(8, 85, 240, 0.6);*/
   /* .6 */
 }
@@ -32,15 +32,15 @@ a {
   box-sizing: border-box;
 }
 
-.bodega-cats {
+/*.bodega-cats {
   /*width: 100%;*/
 
-  /*border-radius: 15px;*/
-  /*border-top-right-radius: 15px;
+/*border-radius: 15px;*/
+/*border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;*/
-  /*-webkit-clip-path: inset(0% 0% 0% 0% round 15px);*/
-  /*clip-path: inset(0% 0% 0% 0% round 15px);*/
-}
+/*-webkit-clip-path: inset(0% 0% 0% 0% round 15px);*/
+/*clip-path: inset(0% 0% 0% 0% round 15px);*/
+/*}*/
 
 .mapboxgl-canvas-container {
   display: block;

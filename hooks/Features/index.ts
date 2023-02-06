@@ -14,7 +14,7 @@ const getFeatures = async (currentPosition: LngLat) => {
 }
 
 const filterByLngLat = (data: any, lnglat: LngLat) => {
-  const bounds = getBoundingCoordinates(1, lnglat)
+  const bounds = getBoundingCoordinates(2, lnglat)
   const min = bounds[0] //min[0] == lat, min[1] == lng
   const max = bounds[1]
 

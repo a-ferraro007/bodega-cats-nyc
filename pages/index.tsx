@@ -27,6 +27,7 @@ const Home: NextPage = ({}) => {
   useEffect(() => {
     if (lnglat && data) {
       const location: SearchLocation = {
+        feature_id: data.feature_id,
         lnglat,
         address: data.address,
       }
@@ -54,13 +55,7 @@ const Home: NextPage = ({}) => {
             </span>
           </h1>
           <AddressSearch />
-          <button
-            className="rounded-[10px] bg-[#f5f4f1] p-2"
-            onClick={() => {
-              const coord = mapRef.getCenter()
-              //console.log(coord)
-            }}
-          >
+          <button className="rounded-[10px] bg-[#f5f4f1] p-2">
             <Login classNames="-translate-y-[.2rem]" />
           </button>
         </nav>
