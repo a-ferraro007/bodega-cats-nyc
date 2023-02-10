@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
 import { useFeatureStore, useStore } from '../../store'
-import { newMarker } from '../../utils/MapMarker'
+import { returnNewMarker } from '../../utils/MapMarker'
 
 const useMapUpdate = (data: any) => {
-  const { features: featureStateMap, setFeatures: updateMapState } = useFeatureStore(
-    (state) => state
-  )
+  const { features: featureStateMap, setFeatures: updateMapState } =
+    useFeatureStore((state) => state)
 
   useEffect(() => {
     if (!data) return
@@ -14,7 +13,7 @@ const useMapUpdate = (data: any) => {
 
     if (featureStateMap.size === 0) {
       features.forEach((feature: any) => {
-        const marker = newMarker(feature, true, feature.properties.image)
+        const marker = returnNewMarker(feature, true, feature.properties.image)
         featureStateMap.set(feature.id, { marker, feature })
       })
     } else {
@@ -31,7 +30,11 @@ const useMapUpdate = (data: any) => {
         } else {
           fetchedFeaturesMap.forEach((feature, key) => {
             if (!featureStateMap.has(key)) {
-              const marker = newMarker(feature, true, feature.properties.image)
+              const marker = returnNewMarker(
+                feature,
+                true,
+                feature.properties.image
+              )
               featureStateMap.set(feature.id, { marker, feature })
             }
           })

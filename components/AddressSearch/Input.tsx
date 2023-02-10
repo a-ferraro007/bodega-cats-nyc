@@ -13,17 +13,37 @@ import { trpc } from '../../utils/trpc'
 import { useDropdown } from './DrowpdownProvider'
 
 const AddressSearchBar = ({ address }: any) => {
-  const { setQuery, query, setData, setOpenDropdown } = useDropdown()
-  const debounce = useDebounce(query, 200)
+  const {
+    setQuery,
+    query,
+    setData,
+    setOpenDropdown,
+    openDropdown,
+    setInputFocus,
+    inputFocus,
+  } = useDropdown()
+  const debounce = useDebounce(query, 500)
   const [inputValue, setInputValue] = useState<string>(address)
-  const { data, isFetching, isLoading, isSuccess } =
-    trpc.searchByAddress.useQuery(debounce, {
+  const { data, isFetching, isSuccess } = trpc.searchByAddress.useQuery(
+    debounce,
+    {
       enabled: debounce?.length > 0,
-      onSuccess: () => setOpenDropdown(true),
-    })
+      refetchOnWindowFocus: false,
+    }
+  )
+
+  useEffect(() => {
+    if (isFetching) {
+      if (inputFocus) {
+        setOpenDropdown(true)
+      } else {
+        setOpenDropdown(false)
+      }
+    }
+  }, [inputFocus, isFetching, setOpenDropdown])
 
   useMemo(() => {
-    if (inputValue !== address) setInputValue(address)
+    setInputValue(address)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address])
 
@@ -31,26 +51,16 @@ const AddressSearchBar = ({ address }: any) => {
     setData(data)
   }, [data, setData])
 
-  const HandleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleOnFocus = () => setInputFocus(true)
+
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
     setInputValue(e.target.value)
   }
 
-  const HandleInputEnterEvent = (e: KeyboardEvent) => {
-    if (e.key === 'Enter' && data && data.length > 0) {
-      //map.flyTo({ center: data[0].Feature.geometry.coordinates })
-    }
-  }
-
-  const variants = {
-    container: {
-      active: { top: 0, height: '100%' },
-      close: { bottom: '2.5rem', height: '0px' },
-    },
-    input: {
-      active: { width: '100%' },
-      close: { width: '75%' },
-    },
+  const handleOnBlur = () => {
+    setInputFocus(false)
+    setInputValue(inputValue || address)
   }
 
   return (
@@ -63,11 +73,9 @@ const AddressSearchBar = ({ address }: any) => {
         value={inputValue || ''}
         autoFocus={true}
         autoComplete="none"
-        onChange={(e) => HandleOnChange(e)}
-        onKeyDown={(e) => HandleInputEnterEvent(e)}
-        onBlur={() => {
-          setInputValue(inputValue || address)
-        }}
+        onChange={(e) => handleOnChange(e)}
+        onFocus={() => handleOnFocus()}
+        onBlur={() => handleOnBlur()}
         tabIndex={0}
       />
     </div>
@@ -75,3 +83,14 @@ const AddressSearchBar = ({ address }: any) => {
 }
 
 export default AddressSearchBar
+
+//const variants = {
+//  container: {
+//    active: { top: 0, height: '100%' },
+//    close: { bottom: '2.5rem', height: '0px' },
+//  },
+//  input: {
+//    active: { width: '100%' },
+//    close: { width: '75%' },
+//  },
+//}

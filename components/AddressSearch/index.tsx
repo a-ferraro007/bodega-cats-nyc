@@ -5,14 +5,13 @@ import { useAddressSearchStore } from '../../store'
 import shallow from 'zustand/shallow'
 
 const AddressSearch = () => {
-  const { address } = useAddressSearchStore((state) => {
-    console.log(state.searchLocationState)
-
-    return state.searchLocationState
-  }, shallow)
+  const { address } = useAddressSearchStore(
+    (state) => state.searchLocationState,
+    shallow
+  )
 
   return (
-    <div className="relative flex-grow">
+    <div className="flex-grow md:relative">
       <DropdownProvider>
         <AddressSearchBar address={address} />
         <Dropdown />

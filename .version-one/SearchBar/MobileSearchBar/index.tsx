@@ -2,7 +2,7 @@
 //import { useStore } from '../../../../store'
 //import { FeatureDrawerState } from '../../../../constants/types'
 //import { useDebounce, useSearch } from '../../../../hooks'
-//import { newMarker } from '../../../../utils/MapMarker'
+//import { returnNewMarker } from '../../../../utils/MapMarker'
 //import { AnimatePresence, motion } from 'framer-motion'
 //import Drawer from '../../Drawer'
 //import SearchDrawer from '../../Drawer/SearchDrawer'

@@ -2,7 +2,7 @@
 //import { useStore } from '../../../store'
 //import { FeatureDrawerState } from '../../../constants/types'
 //import { useDebounce, useSearch } from '../../../hooks'
-//import { newMarker } from '../../../utils/MapMarker'
+//import { returnNewMarker } from '../../../utils/MapMarker'
 
 //const SearchBar = () => {
 //  const query = useStore((state) => state.searchQuery)

@@ -3,34 +3,38 @@ import { useFeatureStore, useStore } from '../../store'
 import { trpc } from '../../utils/trpc'
 import NearbyList from './NearbyList'
 import FeaturedList from './FeaturedList'
+import LoadingList from './LoadingList'
+import shallow from 'zustand/shallow'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const SideBar = () => {
-  const showMobileMap = useStore((state) => state.showMobileMap)
-  const featureStateMap = useFeatureStore((state) => state.features)
-  const { data, refetch } = trpc.selectTopInArea.useQuery(
-    'queryKeyRef.current',
-    { enabled: true }
-  )
-  const featureArray = useMemo(() => {
-    const array: Array<any> = []
-    featureStateMap.forEach(({ feature }) => {
-      array.push(feature)
+    const showMobileMap = useStore((state) => state.showMobileMap)
+    const { features: featureMap, isLoading } = useFeatureStore(
+        (state) => state,
+        shallow
+    )
+    const { data } = trpc.selectTopInArea.useQuery('queryKeyRef.current', {
+        enabled: true,
     })
-    return array
-  }, [featureStateMap])
+    const featureArray = useMemo(() => {
+        const array: Array<any> = []
+        featureMap.forEach(({ feature }) => {
+            array.push(feature)
+        })
+        return array
+    }, [featureMap])
 
-  return (
-    <div
-      className={`absolute z-10 h-full w-full bg-white md:static  md:w-side-bar ${
-        showMobileMap ? '' : 'hidden md:block'
-      }`}
-    >
-      {/*
+    return (
+        <div
+            className={`absolute z-10 h-full w-full bg-white md:static  md:w-side-bar ${
+                showMobileMap ? '' : 'hidden md:block'
+            }`}>
+            {/*
       border-l-[1px] border-b-[.5px] border-[rgba(0,0,0,.2)]
       border-b-[rgba(0,0,0,.5)] border border-solid */}
-      {/*dad8d2  [rgba(0,0,0,.4)]*/}
+            {/*dad8d2  [rgba(0,0,0,.4)]*/}
 
-      {/*<div className="flex flex-row gap-3 mx-6 border-b border-b-[#dad8d2]">
+            {/*<div className="flex flex-row gap-3 mx-6 border-b border-b-[#dad8d2]">
         <div className="self-center">
           <SearchIcon color={'#6e6e6e'} width={20} height={20} />
         </div>
@@ -56,18 +60,45 @@ const SideBar = () => {
         <div className=""></div>
       </div>*/}
 
-      <div className="p-6">
-        <div>
-          <p className="mb-3 font-nunito text-lg font-bold">Top in New York</p>
-          {data && <FeaturedList data={data} />}
+            <div className="flex flex-col p-6">
+                <div className="mb-6 max-w-[250px] self-end">
+                    <button className="w-full rounded-[10px] bg-dark-blue-radial-gradient p-2 px-4 font-nunito text-lg font-semibold text-white transition-all duration-300 hover:scale-[1.03]">
+                        new cat
+                    </button>
+                </div>
+                <div>
+                    <p className="mb-3 font-nunito text-lg font-semibold">
+                        Top in New York
+                    </p>
+                    {false ? (
+                        <FeaturedList data={data} />
+                    ) : (
+                        <LoadingList size={10} />
+                    )}
+                </div>
+                <div>
+                    <p className="font-nunito text-lg font-semibold">Nearby</p>
+                    {!isLoading && data && <NearbyList nearby={featureArray} />}
+                    {isLoading && (
+                        <AnimatePresence>
+                            <motion.div>
+                                <LoadingList
+                                    size={10}
+                                    flexDirection={'flex-col'}
+                                />
+                            </motion.div>
+                        </AnimatePresence>
+                    )}
+                    {!isLoading && !data && (
+                        <span className="block w-full text-center font-nunito font-normal">
+                            {' '}
+                            no cats nearby :({' '}
+                        </span>
+                    )}
+                </div>
+            </div>
         </div>
-        <div className="mt-6">
-          <p className="font-nunito text-lg font-bold">Nearby</p>
-          <NearbyList nearby={featureArray} />
-        </div>
-      </div>
-    </div>
-  )
+    )
 }
 
 export default SideBar

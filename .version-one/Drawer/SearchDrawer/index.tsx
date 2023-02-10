@@ -1,14 +1,15 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
 import { useStore } from '../../../../store'
 import { useDebounce, useSearch } from '../../../../hooks/SearchByPlace'
-import { newMarker } from '../../../../utils/MapMarker'
+import { returnNewMarker } from '../../../../utils/MapMarker'
 import { FeatureDrawerState } from '../../../../constants/types'
 import BoroughBadge from './BoroughBadge'
 
 const SearchDrawer = () => {
   const query = useStore((state) => state.searchQuery)
   const debounce = useDebounce(query, 250)
-  const { data, isFetching, isLoading, isSuccess, isFetched } = useSearch(debounce)
+  const { data, isFetching, isLoading, isSuccess, isFetched } =
+    useSearch(debounce)
   const map = useStore((state) => state.mapRef)
   const featuresMap = useStore((state) => state.features)
   const setFeatureDrawerState = useStore((state) => state.setFeatureDrawerState)
@@ -21,7 +22,10 @@ const SearchDrawer = () => {
   const HandleOnClick = (selected: FeatureDrawerState) => {
     const { Feature } = selected
     setFeatureDrawerState(selected)
-    setDrawerState({ featureDrawerIsActive: false, searchDrawerIsActive: false })
+    setDrawerState({
+      featureDrawerIsActive: false,
+      searchDrawerIsActive: false,
+    })
 
     if (searchMarker) searchMarker.remove()
     if (featuresMap.has(Feature.id)) {
@@ -30,7 +34,7 @@ const SearchDrawer = () => {
       return
     }
 
-    const marker = newMarker(Feature, false)
+    const marker = returnNewMarker(Feature, false)
     marker.addTo(map)
     setSearchMarker(marker)
     map.flyTo({ zoom: 18, center: Feature.geometry.coordinates })
@@ -43,10 +47,10 @@ const SearchDrawer = () => {
   }
 
   return (
-    <div className="overflow-scroll h-container bg-white">
+    <div className="h-container overflow-scroll bg-white">
       <ul className="px-4 pb-4">
         {isFetched && query && data?.length === 0 && (
-          <span className="block w-full font-nunito font-bold text-sm text-center">
+          <span className="block w-full text-center font-nunito text-sm font-bold">
             no cats found
           </span>
         )}
@@ -57,18 +61,21 @@ const SearchDrawer = () => {
             return (
               <li
                 key={ParsedFeature?.feature_id}
-                className="my-4 px-4 py-6 cursor-pointer border-[1px] border-[#dad8d2] rounded-[15px] hover:bg-[#f5f4f1] transition-all duration-200 last:mb-0"
+                className="my-4 cursor-pointer rounded-[15px] border-[1px] border-[#dad8d2] px-4 py-6 transition-all duration-200 last:mb-0 hover:bg-[#f5f4f1]"
                 onClick={() => HandleOnClick(feature)}
                 onKeyDown={(e) => HandleOnKeyDown(e, feature)}
                 tabIndex={0}
               >
-                <span className="block font-nunito font-bold text-md pb-1">
+                <span className="text-md block pb-1 font-nunito font-bold">
                   {ParsedFeature?.name}
                 </span>
-                <p className="font-roboto font-normal text-xs mb-4  "> {ParsedFeature?.address}</p>
+                <p className="mb-4 font-roboto text-xs font-normal  ">
+                  {' '}
+                  {ParsedFeature?.address}
+                </p>
 
                 {ParsedFeature?.locality && (
-                  <div className="pt-4 border-t-[1px] border-solid border-[#dad8d2]">
+                  <div className="border-t-[1px] border-solid border-[#dad8d2] pt-4">
                     <BoroughBadge locality={ParsedFeature?.locality} />
                   </div>
                 )}
@@ -76,7 +83,7 @@ const SearchDrawer = () => {
             )
           })
         ) : (
-          <span className="block w-full font-nunito font-bold text-sm text-center">
+          <span className="block w-full text-center font-nunito text-sm font-bold">
             search for a cat
           </span>
         )}
