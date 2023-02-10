@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFeatureStore, useStore } from '../../store'
 import { trpc } from '../../utils/trpc'
 import NearbyList from './NearbyList'
@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import AnimationPrescense from '../AnimationPrescense'
 
 const SideBar = () => {
+  const size = useRef<number>()
   const showMobileMap = useStore((state) => state.showMobileMap)
   const { features: featureMap, isLoading } = useFeatureStore((state) => state)
   const { data: topFeatures } = trpc.selectTopInArea.useQuery(
@@ -24,6 +25,10 @@ const SideBar = () => {
     })
     return array
   }, [featureMap])
+
+  useEffect(() => {
+    size.current = Math.round(window.innerHeight / 180)
+  }, [])
 
   return (
     <div
@@ -91,7 +96,11 @@ const SideBar = () => {
                 duration: 0.5,
               }}
             >
-              <LoadingList size={10} flexDirection={'flex-col'} />
+              <LoadingList
+                fullWidth={true}
+                size={size.current ? size.current : 10}
+                flexDirection={'flex-col'}
+              />
             </AnimationPrescense>
           )}
           {!isLoading && featureArray && (
