@@ -70,8 +70,7 @@ const Home: NextPage = ({}) => {
             onClick={() => {
               //console.log(showMobileMap)
               setShowMobileMap(!showMobileMap)
-            }}
-          >
+            }}>
             {showMobileMap && <MapIcon />}
             {!showMobileMap && <SearchIcon />}
           </button>

@@ -1,4 +1,4 @@
-import UserMarker from "../svg/UserMarker";
+import UserMarker from '../svg/UserMarker'
 //type MapMarkerProps = {
 //  image: string | undefined
 //  //ClickHandler: () => void
@@ -12,17 +12,16 @@ const LocationPin = () => {
       <button
         className="relative h-full w-full transition-all duration-300 group-hover:-translate-y-1"
         onClick={() => {
-          console.log("location");
-        }}
-      >
+          console.log('location')
+        }}>
         <UserMarker />
       </button>
       <div className="absolute top-[33px] left-0 right-0 mx-auto h-1 w-1 rounded-full bg-black shadow-lg blur-[3px] transition-all duration-300 group-hover:blur-[4px]"></div>
     </div>
-  );
-};
+  )
+}
 
-export default LocationPin;
+export default LocationPin
 
 {
   /*<div className="relative  cursor-pointer z-10">

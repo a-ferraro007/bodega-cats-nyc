@@ -18,5 +18,5 @@ export {
   useLngLatSearch,
   useMapUpdate,
   useNewFeatureMutation,
-  useSearch
+  useSearch,
 }

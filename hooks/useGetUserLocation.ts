@@ -11,19 +11,19 @@ const getUserLocation = (cb: Function) => {
         } else
           cb(<LngLat>{
             lng: -73.990000682489714,
-            lat: 40.73423383278248
+            lat: 40.73423383278248,
           })
       },
       (e) => {
         console.error('Error  retrieving location', e)
         cb(<LngLat>{
           lng: -73.990000682489714,
-          lat: 40.73423383278248
+          lat: 40.73423383278248,
         })
       },
       {
         enableHighAccuracy: true,
-        timeout: 10000
+        timeout: 10000,
       }
     )
   }
@@ -32,7 +32,7 @@ const getUserLocation = (cb: Function) => {
 const useGetUserLocation = (): LngLat => {
   const [location, setLocation] = useState<LngLat>({
     lng: -73.990000682489714,
-    lat: 40.73423383278248
+    lat: 40.73423383278248,
   })
   useEffect(() => {
     getUserLocation((location: LngLat) => {

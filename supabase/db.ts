@@ -3,11 +3,15 @@ import supabase from '.'
 
 const selectFromFeature = async (query: Array<string>) => {
   try {
-    const { data, error } = await supabase.from('MapBox_Feature').select(...query)
+    const { data, error } = await supabase
+      .from('MapBox_Feature')
+      .select(...query)
     if (error) throw error
     return data
   } catch (error) {
-    throw new Error('error fetching FeatureCollection geo_json', { cause: error })
+    throw new Error('error fetching FeatureCollection geo_json', {
+      cause: error,
+    })
   }
 }
 
@@ -28,11 +32,16 @@ const selectTopInArea = async (borough: string) => {
 
 const insertCatProperty = async (CatProperties: CatProperties) => {
   try {
-    const { data, error } = await supabase.from('Cat_Properties').insert(CatProperties).select('id')
+    const { data, error } = await supabase
+      .from('Cat_Properties')
+      .insert(CatProperties)
+      .select('id')
     if (error) throw error
     return data[0]
   } catch (error) {
-    throw new Error('error inserting into Cat_Properties table', { cause: error })
+    throw new Error('error inserting into Cat_Properties table', {
+      cause: error,
+    })
   }
 }
 
@@ -44,8 +53,15 @@ const insertMapBoxFeature = async (tableData: MapBoxFeature, catId: number) => {
     if (error) throw error
     return data
   } catch (error) {
-    throw new Error('error inserting into MapBox_Feature table', { cause: error })
+    throw new Error('error inserting into MapBox_Feature table', {
+      cause: error,
+    })
   }
 }
 
-export { selectFromFeature, selectTopInArea, insertCatProperty, insertMapBoxFeature }
+export {
+  selectFromFeature,
+  selectTopInArea,
+  insertCatProperty,
+  insertMapBoxFeature,
+}

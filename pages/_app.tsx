@@ -1,7 +1,11 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { useState } from 'react'
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
@@ -10,7 +14,7 @@ import { trpc } from '../utils/trpc'
 
 function MyApp({
   Component,
-  pageProps
+  pageProps,
 }: AppProps<{
   initialSession: Session
 }>) {
@@ -19,8 +23,7 @@ function MyApp({
   return (
     <SessionContextProvider
       supabaseClient={supabaseClient}
-      initialSession={pageProps.initialSession}
-    >
+      initialSession={pageProps.initialSession}>
       <Component {...pageProps} />
       <ReactQueryDevtools />
     </SessionContextProvider>
