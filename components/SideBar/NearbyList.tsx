@@ -5,7 +5,7 @@ const NearbyList = ({ nearby }: any) => {
   return (
     <div>
       <ul className="mt-2">
-        {nearby.length &&
+        {nearby.length > 0 &&
           nearby.map((feature: any) => {
             //console.log(feature)
             const { id, properties } = feature
