@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "precommit": "*.{js,ts,jsx,tsx}": "eslint --cache --fix && npx prettier --write *.{js,ts,jsx,tsx,css,md}",
+    "precommit": "eslint --cache --fix *.{js,ts,jsx,tsx} && npx prettier --write *.{js,ts,jsx,tsx,css,md}",
     "prepush": "npm run lint"
   },
   "dependencies": {
