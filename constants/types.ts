@@ -1,5 +1,5 @@
 //import { NewFeatureMutation } from './types';
-import {z} from 'zod'
+import { z } from 'zod'
 
 export const FormInputs = z.object({
   name: z.string(),

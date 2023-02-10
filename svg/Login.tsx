@@ -1,6 +1,6 @@
 type Props<T> = T
 
-const Login = ({classNames}: Props<any>) => {
+const Login = ({ classNames }: Props<any>) => {
   return (
     <svg
       className={classNames}
@@ -8,7 +8,8 @@ const Login = ({classNames}: Props<any>) => {
       height="30"
       viewBox="0 0 25 25"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg">
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <circle cx="12.5" cy="12.5" r="12" stroke="black" strokeWidth="0" />
       <circle cx="12.5" cy="10.5" r="5" stroke="black" />
       <path

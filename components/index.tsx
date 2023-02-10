@@ -5,4 +5,4 @@ import MapMarker from './Marker'
 import Popup from './Popup'
 import SearchBar from './SearchBar'
 
-export {AddressSearch, SideBar, Map, MapMarker, Popup, SearchBar}
+export { AddressSearch, SideBar, Map, MapMarker, Popup, SearchBar }

@@ -5,7 +5,7 @@ import {
   SearchLocation,
 } from './../constants/types'
 import create from 'zustand'
-import {subscribeWithSelector} from 'zustand/middleware'
+import { subscribeWithSelector } from 'zustand/middleware'
 
 type Marker<T> = T | null
 
@@ -36,12 +36,12 @@ const addressSearchStore = (set: any) => ({
   searchMarker: null,
   searchLocationState: <SearchLocation>{},
   setSearchLocationState: (searchLocationState: SearchLocation) =>
-    set(() => ({searchLocationState: searchLocationState})),
+    set(() => ({ searchLocationState: searchLocationState })),
   setSearchQuery: (searchQuery: string) =>
-    set(() => ({searchQuery: searchQuery})),
+    set(() => ({ searchQuery: searchQuery })),
   setSearchFocus: (searchFocus: boolean) =>
-    set(() => ({searchFocus: searchFocus})),
-  setSearchResult: (result: any) => set(() => ({result: result})),
+    set(() => ({ searchFocus: searchFocus })),
+  setSearchResult: (result: any) => set(() => ({ result: result })),
   setSearchMarker: (searchMarker: Marker<mapboxgl.Marker>) => ({
     ...searchMarker,
   }),
@@ -50,8 +50,8 @@ const addressSearchStore = (set: any) => ({
 const featureStore = (set: any) => ({
   features: new Map(),
   isLoading: false,
-  setFeatures: (features: any) => set(() => ({features: new Map(features)})),
-  setIsLoading: (isLoading: boolean) => set(() => ({isLoading})),
+  setFeatures: (features: any) => set(() => ({ features: new Map(features) })),
+  setIsLoading: (isLoading: boolean) => set(() => ({ isLoading })),
 })
 
 interface StoreState {
@@ -80,9 +80,9 @@ const store = (set: any) => ({
       showMobileMap: showMobileMap,
     })),
 
-  setMapRef: (mapRef: mapboxgl.Map) => set(() => ({mapRef: mapRef})),
-  setAuthState: (authState: boolean) => set(() => ({authState: authState})),
-  setShow: (show: boolean) => set(() => ({show: show})),
+  setMapRef: (mapRef: mapboxgl.Map) => set(() => ({ mapRef: mapRef })),
+  setAuthState: (authState: boolean) => set(() => ({ authState: authState })),
+  setShow: (show: boolean) => set(() => ({ show: show })),
 })
 
 export const useStore = create<StoreState>()(

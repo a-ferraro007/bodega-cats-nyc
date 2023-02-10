@@ -1,6 +1,6 @@
-import {ChangeEvent, KeyboardEvent, useRef} from 'react'
-import {useAddressSearchStore, useStore} from '../store'
-import {useDebounce, useSearch} from '../hooks'
+import { ChangeEvent, KeyboardEvent, useRef } from 'react'
+import { useAddressSearchStore, useStore } from '../store'
+import { useDebounce, useSearch } from '../hooks'
 
 const SearchBar = () => {
   const {
@@ -10,7 +10,7 @@ const SearchBar = () => {
     searchMarker,
   } = useAddressSearchStore((state) => state)
   const debounce = useDebounce(query, 250)
-  const {data, isFetching, isLoading, isSuccess} = useSearch(debounce)
+  const { data, isFetching, isLoading, isSuccess } = useSearch(debounce)
   const map = useStore((state) => state.mapRef)
   const isFocused = useRef(null)
 
@@ -26,18 +26,18 @@ const SearchBar = () => {
 
   const HandleInputEnterEvent = (e: KeyboardEvent) => {
     if (e.key === 'Enter' && data && data.length > 0) {
-      map.flyTo({center: data[0].Feature.geometry.coordinates})
+      map.flyTo({ center: data[0].Feature.geometry.coordinates })
     }
   }
 
   const variants = {
     container: {
-      active: {top: 0, height: '100%'},
-      close: {bottom: '2.5rem', height: '0px'},
+      active: { top: 0, height: '100%' },
+      close: { bottom: '2.5rem', height: '0px' },
     },
     input: {
-      active: {width: '100%'},
-      close: {width: '75%'},
+      active: { width: '100%' },
+      close: { width: '75%' },
     },
   }
   //rounded-[15px]
