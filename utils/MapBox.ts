@@ -15,4 +15,4 @@ const createAddressString = (propertyAddress: string, context: any) => {
   }
 }
 
-export { setUpData, createAddressString }
+export {setUpData, createAddressString}

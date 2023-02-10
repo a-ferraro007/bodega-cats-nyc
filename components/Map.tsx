@@ -36,8 +36,11 @@ const Map = ({ lnglat, address }: SearchLocation) => {
   })
   useMapUpdate(data)
   useEffect(() => {
-    console.log('ISLOADING', isLoading)
-    setIsLoading(isLoading)
+    if (!isLoading) {
+      setTimeout(() => {
+        setIsLoading(isLoading)
+      }, 2000)
+    } else setIsLoading(isLoading)
   }, [isLoading, setIsLoading])
 
   const getCameraLngLat = (): LngLat => {
@@ -131,7 +134,8 @@ const Map = ({ lnglat, address }: SearchLocation) => {
     <>
       <div
         className="bodega-cats relative h-full w-full"
-        ref={mapContainer}></div>
+        ref={mapContainer}
+      ></div>
       {show && (
         <div className="absolute top-4 left-6 mx-auto flex justify-center">
           <button
@@ -139,7 +143,8 @@ const Map = ({ lnglat, address }: SearchLocation) => {
             onClick={() => {
               setKey(currentPositionRef.current)
               setShow(false)
-            }}>
+            }}
+          >
             search this area
           </button>
         </div>

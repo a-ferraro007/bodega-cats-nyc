@@ -1,6 +1,6 @@
 type Props<T> = T
 
-const Login = ({ classNames }: Props<any>) => {
+const Login = ({classNames}: Props<any>) => {
   return (
     <svg
       className={classNames}

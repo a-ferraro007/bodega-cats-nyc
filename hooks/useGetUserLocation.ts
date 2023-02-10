@@ -1,13 +1,13 @@
-import { LngLat } from '../constants/types'
-import { useEffect, useState } from 'react'
+import {LngLat} from '../constants/types'
+import {useEffect, useState} from 'react'
 
 const getUserLocation = (cb: Function) => {
   if (navigator) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         if (position) {
-          const { longitude: lng, latitude: lat } = position.coords
-          cb({ lng, lat })
+          const {longitude: lng, latitude: lat} = position.coords
+          cb({lng, lat})
         } else
           cb(<LngLat>{
             lng: -73.990000682489714,
@@ -43,4 +43,4 @@ const useGetUserLocation = (): LngLat => {
   return location
 }
 
-export { useGetUserLocation, getUserLocation }
+export {useGetUserLocation, getUserLocation}

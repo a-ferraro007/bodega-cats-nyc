@@ -2,15 +2,14 @@ import Arrow from '../../svg/Arrow'
 import { returnNewMarker } from '../../utils/MapMarker'
 import BoroughBadge from './BoroughBadge'
 
-const FeaturedList = ({ data }: any) => {
+const FeaturedList = ({ topFeatures }: any) => {
   return (
     <>
-      {data.length > 0 && (
+      {topFeatures.length > 0 && (
         <ol className="-mr-6 flex overflow-x-auto pb-6">
-          {data.map((feature: any) => {
+          {topFeatures.map((feature: any) => {
             const { id, MapBox_Feature, name, locality, image } = feature
-            const { address } = MapBox_Feature //[0]
-            //feature.marker = returnNewMarker(feature, true, image)
+            const { address } = MapBox_Feature
             return (
               <li
                 key={id}

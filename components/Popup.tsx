@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
-const Popup = ({ feature }: any) => {
-  const { properties } = feature
+const Popup = ({feature}: any) => {
+  const {properties} = feature
   //console.log()
   //const Rating = () => {
   //  const arr = []

@@ -1,10 +1,9 @@
-import React from 'react'
 import BoroughBadge from './BoroughBadge'
 
 const NearbyList = ({ nearby }: any) => {
   return (
     <div>
-      <ul className="mt-2">
+      <ul>
         {nearby.length > 0 &&
           nearby.map((feature: any) => {
             //console.log(feature)
@@ -15,7 +14,8 @@ const NearbyList = ({ nearby }: any) => {
               <li
                 key={id}
                 className="my-4 cursor-pointer list-none rounded-[15px] border-[1px] border-[#dad8d2] px-4 py-6 transition-all duration-200 last:mb-0 hover:bg-[#f5f4f1]"
-                tabIndex={0}>
+                tabIndex={0}
+              >
                 <span className="text-md block pb-1 font-nunito font-bold">
                   {name}
                 </span>

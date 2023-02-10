@@ -1,12 +1,12 @@
 import Image from 'next/image'
-import { useStore } from '../store'
+import {useStore} from '../store'
 import FeatureMarker from '../svg/FeatureMarker'
 type MapMarkerProps = {
   image: string | undefined
   //ClickHandler: () => void
 }
 
-const MapMarker = ({ image }: MapMarkerProps) => {
+const MapMarker = ({image}: MapMarkerProps) => {
   return (
     <>
       {' '}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SearchIcon = ({ color = 'white', width = 25, height = 25 }) => {
+const SearchIcon = ({color = 'white', width = 25, height = 25}) => {
   //console.log({ color })
 
   return (

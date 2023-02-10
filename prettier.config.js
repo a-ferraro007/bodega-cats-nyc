@@ -4,6 +4,5 @@ module.exports = {
   tabWidth: 2,
   semi: false,
   singleQuote: true,
-  bracketSameLine: true,
-  bracketSpacing: false,
+  bracketSameLine: false,
 }

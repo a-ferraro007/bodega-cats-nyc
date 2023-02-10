@@ -1,9 +1,9 @@
-import mapboxgl, { FeatureIdentifier, MercatorCoordinate } from 'mapbox-gl'
-import { createRoot } from 'react-dom/client'
+import mapboxgl, {FeatureIdentifier, MercatorCoordinate} from 'mapbox-gl'
+import {createRoot} from 'react-dom/client'
 import LocationPin from '../components/LocationPin'
 import MapMarker from '../components/Marker'
 import Popup from '../components/Popup'
-import { LngLat } from '../constants/types'
+import {LngLat} from '../constants/types'
 
 const returnNewMarker = (
   feature: any,
@@ -56,4 +56,4 @@ const returnUserLocationMarker = (lnglat: LngLat): mapboxgl.Marker => {
   }).setLngLat(lnglat)
 }
 
-export { returnNewMarker, returnUserLocationMarker }
+export {returnNewMarker, returnUserLocationMarker}
