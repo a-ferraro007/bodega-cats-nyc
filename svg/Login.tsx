@@ -1,4 +1,4 @@
-type Props<T> = T
+type Props<T> = T // WHY?
 
 const Login = ({ classNames }: Props<any>) => {
   return (

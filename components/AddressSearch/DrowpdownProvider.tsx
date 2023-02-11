@@ -10,10 +10,8 @@ const DropdownProvider = ({ children }: any) => {
   const [data, setData] = useState<any>({})
   const [openDropdown, setOpenDropdown] = useState(false)
   const [inputFocus, setInputFocus] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  //// NOTE: you *might* need to memoize this value
-  //// Learn more in http://kcd.im/optimize-context
-  //const value = {state, dispatch}
   return (
     <DropdownContext.Provider
       value={{
@@ -29,6 +27,8 @@ const DropdownProvider = ({ children }: any) => {
         setOpenDropdown,
         inputFocus,
         setInputFocus,
+        isLoading,
+        setIsLoading,
       }}
     >
       {children}
@@ -39,7 +39,7 @@ const DropdownProvider = ({ children }: any) => {
 function useDropdown(): any {
   const context = useContext(DropdownContext)
   if (context === undefined) {
-    throw new Error('useCount must be used within a CountProvider')
+    throw new Error('useDropdown must be used within a CountProvider')
   }
   return context
 }

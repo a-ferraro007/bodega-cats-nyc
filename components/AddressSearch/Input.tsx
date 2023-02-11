@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react'
 import { useAddressSearchStore } from '../../store'
-import { useDebounce } from '../../hooks'
+import { useDebounce, useLoadingDebounce } from '../../hooks'
 import { trpc } from '../../utils/trpc'
 import { useDropdown } from './DrowpdownProvider'
 
@@ -21,26 +21,24 @@ const AddressSearchBar = ({ address }: any) => {
     openDropdown,
     setInputFocus,
     inputFocus,
+    //isLoading: contextIsLoading,
+    setIsLoading,
   } = useDropdown()
   const debounce = useDebounce(query, 500)
   const [inputValue, setInputValue] = useState<string>(address)
-  const { data, isFetching, isSuccess } = trpc.searchByAddress.useQuery(
-    debounce,
-    {
+  const { data, isSuccess, isLoading, isFetching } =
+    trpc.searchByAddress.useQuery(debounce, {
       enabled: debounce?.length > 0,
       refetchOnWindowFocus: false,
-    }
-  )
+    })
+  useLoadingDebounce(isLoading, setIsLoading, 300)
+  console.log(isLoading, isFetching, isSuccess, 'isLoading')
 
   useEffect(() => {
-    if (isFetching) {
-      if (inputFocus) {
-        setOpenDropdown(true)
-      } else {
-        setOpenDropdown(false)
-      }
+    if (isLoading) {
+      setOpenDropdown(inputFocus)
     }
-  }, [inputFocus, isFetching, setOpenDropdown])
+  }, [inputFocus, isLoading, setOpenDropdown])
 
   useMemo(() => {
     setInputValue(address)
@@ -83,14 +81,3 @@ const AddressSearchBar = ({ address }: any) => {
 }
 
 export default AddressSearchBar
-
-//const variants = {
-//  container: {
-//    active: { top: 0, height: '100%' },
-//    close: { bottom: '2.5rem', height: '0px' },
-//  },
-//  input: {
-//    active: { width: '100%' },
-//    close: { width: '75%' },
-//  },
-//}
