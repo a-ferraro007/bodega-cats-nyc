@@ -1,35 +1,39 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
-import { useState } from 'react'
-import { fetchFeatures, useFeatures } from '../hooks/Features'
-import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
-import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
-import { useStore } from '../store'
-import { dehydrate, QueryClient } from '@tanstack/react-query'
-import Layout from '../components/Layout'
+import { useEffect } from 'react'
+import { useAddressSearchStore, useStore } from '../store'
 import Map from '../components/Map'
-
-export async function getServerSideProps() {
-  const queryClient = new QueryClient()
-
-  await queryClient.prefetchQuery(['features'], fetchFeatures)
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient)
-    }
-  }
-}
+import AddressSearch from '../components/AddressSearch'
+import MapIcon from '../svg/MapIcon'
+import SearchIcon from '../svg/SearchIcon'
+import FeatureList from '../components/SideBar'
+import { useGetUserLocation } from '../hooks/useGetUserLocation'
+import { SearchLocation } from '../constants/types'
+import { trpc } from '../utils/trpc'
+import Login from '../svg/Login'
 
 const Home: NextPage = ({}) => {
-  const { data } = useFeatures()
-  const [_, setAuth] = useState(false)
-  const user = useUser()
-  const { supabaseClient, session } = useSessionContext()
-  const authState = useStore((state) => state.authState)
-  const [addBtn, setAddBtn] = useState(false)
+  const lnglat = useGetUserLocation()
+  const mapRef = useStore((state) => state.mapRef)
+  const showMobileMap = useStore((state) => state.showMobileMap)
+  const setShowMobileMap = useStore((state) => state.setShowMobileMap)
+  const { setSearchLocationState, searchLocationState, setSearchMarker } =
+    useAddressSearchStore((state) => state)
+  const { data } = trpc.searchByLngLat.useQuery(lnglat, {
+    enabled: !!lnglat,
+  })
+
+  useEffect(() => {
+    if (lnglat && data) {
+      const location: SearchLocation = {
+        feature_id: data.feature_id,
+        lnglat,
+        address: data.address,
+      }
+      setSearchLocationState(location)
+    }
+  }, [setSearchLocationState, data, lnglat])
 
   return (
     <>
@@ -42,56 +46,46 @@ const Home: NextPage = ({}) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="fixed w-full top-0 left-0 md:static mx-0 md:mx-3 h-screen overflow-hidden">
-        <div className="hidden md:block">
-          <h1 className="my-6 md:mt-10 text-3xl md:text-[50px] font-baloo text-primaryGold font-bold">
-            {' '}
-            Bodega Cats
+      <main className="relative h-screen w-screen overflow-hidden">
+        <nav className="flex h-[70px] w-full items-center justify-between gap-4 border-b-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white p-4 md:h-20 md:gap-14 md:p-6">
+          <h1 className="font-baloo text-lg font-bold leading-none text-primaryGold md:text-2xl">
+            Bodega <br /> Cats
+            <span className="font-baloo text-xs font-bold italic leading-none text-graphite md:text-sm">
+              of nyc
+            </span>
           </h1>
-        </div>
-        <Layout>
-          {!data ? (
-            <div key={'load'} className="text-3xl text-black">
-              {' '}
-              ... loading{' '}
-            </div>
-          ) : (
-            <Map
-              key={'mobile'}
-              geo_json={data}
-              addBtn={addBtn}
-              setAddBtn={setAddBtn}
-              setAuth={setAuth}
-            />
-          )}
-        </Layout>
-        {!user && authState && (
-          <div className="absolute left-0 right-0 top-40 max-w-xs  bg-white rounded-md shadow-[0_6px_30px_-10px] mx-auto p-4">
-            <button
-              className="font-baloo font-medium w-full text-right"
-              onClick={() => setAuth(false)}
-            >
-              {' '}
-              close
-            </button>
-            <p className="font-baloo font-bold text-lg text-center">
-              {' '}
-              log in with Google to add a new cat{' '}
-            </p>
-            <Auth
-              redirectTo="http://localhost:3000/"
-              appearance={{ theme: ThemeSupa }}
-              supabaseClient={supabaseClient}
-              providers={['google']}
-              socialLayout="horizontal"
-              onlyThirdPartyProviders={true}
-            />
+          <AddressSearch />
+          <button className="rounded-[10px] bg-[#f5f4f1] p-2">
+            <Login classNames="-translate-y-[.2rem]" />
+          </button>
+        </nav>
+
+        <div className="relative flex h-container flex-row">
+          <div className="w-full md:w-map-container">
+            {searchLocationState.lnglat && <Map {...searchLocationState} />}
           </div>
-        )}
+          <FeatureList />
+          <button
+            className="absolute bottom-20 right-10 z-20 block rounded-full bg-primaryBlue p-4 text-white md:hidden"
+            onClick={() => {
+              //console.log(showMobileMap)
+              setShowMobileMap(!showMobileMap)
+            }}
+          >
+            {showMobileMap && <MapIcon />}
+            {!showMobileMap && <SearchIcon />}
+          </button>
+        </div>
       </main>
+
       <footer></footer>
     </>
   )
 }
 
 export default Home
+
+//const [_, setAuth] = useState(false)
+//const user = useUser()
+//const { supabaseClient } = useSessionContext()
+//const authState = useStore((state) => state.authState)

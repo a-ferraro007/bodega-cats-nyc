@@ -7,10 +7,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'qgcfwfccxzfbuurkaawl.supabase.co',
-        pathname: '/storage/v1/object/public/cat-images/**'
-      }
-    ]
-  }
+        pathname: '/storage/v1/object/public/cat-images/**',
+      },
+    ],
+  },
 }
 
 module.exports = nextConfig

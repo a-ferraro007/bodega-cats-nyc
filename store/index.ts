@@ -1,54 +1,96 @@
 import mapboxgl from 'mapbox-gl'
-import { DrawerState, FeatureDrawerState } from './../constants/types'
+import {
+  DrawerState,
+  FeatureDrawerState,
+  SearchLocation,
+} from './../constants/types'
 import create from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
 
 type Marker<T> = T | null
-interface StoreState {
+
+interface FeatureStore {
   features: Map<any, any>
-  drawerState: DrawerState
-  isDrawerOpen: boolean
-  mapRef: mapboxgl.Map
-  searchMarker: Marker<mapboxgl.Marker>
-  featureDrawerState: FeatureDrawerState
-  authState: boolean
+  isLoading: boolean
+  setFeatures: (features: any) => void
+  setIsLoading: (isLoading: boolean) => void
+}
+
+interface AddressSearchStore {
   searchQuery: string
+  searchResult: any
   searchFocus: boolean
-  setDrawerOpen: (isDrawerOpen: boolean) => void
-  setDrawerState: (drawerState: DrawerState) => void
-  setFeatureDrawerState: (featureDrawerState: FeatureDrawerState) => void
-  updateMapState: (featureMapUpdate: any) => void
-  setMapRef: (mapRef: mapboxgl.Map) => void
-  setSearchMarker: (searchMarker: Marker<mapboxgl.Marker>) => void
-  setAuthState: (authState: boolean) => void
+  searchMarker: Marker<mapboxgl.Marker>
+  searchLocationState: SearchLocation
+  setSearchLocationState: (searchLocation: SearchLocation) => void
   setSearchQuery: (searchQuery: string) => void
   setSearchFocus: (setSearchFocus: boolean) => void
+  setSearchResult: (result: any) => void
+  setSearchMarker: (searchMarker: Marker<mapboxgl.Marker>) => void
+}
+
+const addressSearchStore = (set: any) => ({
+  searchQuery: '',
+  searchResult: {},
+  searchFocus: false,
+  searchMarker: null,
+  searchLocationState: <SearchLocation>{},
+  setSearchLocationState: (searchLocationState: SearchLocation) =>
+    set(() => ({ searchLocationState: searchLocationState })),
+  setSearchQuery: (searchQuery: string) =>
+    set(() => ({ searchQuery: searchQuery })),
+  setSearchFocus: (searchFocus: boolean) =>
+    set(() => ({ searchFocus: searchFocus })),
+  setSearchResult: (result: any) => set(() => ({ result: result })),
+  setSearchMarker: (searchMarker: Marker<mapboxgl.Marker>) => ({
+    ...searchMarker,
+  }),
+})
+
+const featureStore = (set: any) => ({
+  features: new Map(),
+  isLoading: false,
+  setFeatures: (features: any) => set(() => ({ features: new Map(features) })),
+  setIsLoading: (isLoading: boolean) => set(() => ({ isLoading })),
+})
+
+interface StoreState {
+  mapRef: mapboxgl.Map
+  searchMarker: Marker<mapboxgl.Marker>
+  authState: boolean
+
+  show: boolean
+  showMobileMap: boolean
+
+  setShowMobileMap: (showMobileMap: boolean) => void
+
+  setShow: (show: boolean) => void
+  setMapRef: (mapRef: mapboxgl.Map) => void
+  setAuthState: (authState: boolean) => void
 }
 
 const store = (set: any) => ({
-  features: new Map(),
-  drawerState: <DrawerState>{
-    searchDrawerIsActive: false,
-    featureDrawerIsActive: false
-  },
-  isDrawerOpen: false,
   mapRef: <mapboxgl.Map>{},
   searchMarker: null,
-  featureDrawerState: <FeatureDrawerState>{},
   authState: false,
-  searchQuery: '',
-  searchFocus: false,
-  setDrawerOpen: (isDrawerOpen: boolean) => set(() => ({ isDrawerOpen: isDrawerOpen })),
-  setDrawerState: (drawerState: DrawerState) => set(() => ({ drawerState: drawerState })),
-  setFeatureDrawerState: (featureDrawerState: FeatureDrawerState) =>
-    set(() => ({ featureDrawerState: featureDrawerState })),
-  updateMapState: (mapUpdate: any) => set(() => ({ featureMap: mapUpdate })),
+  show: false,
+  showMobileMap: false,
+  setShowMobileMap: (showMobileMap: boolean) =>
+    set(() => ({
+      showMobileMap: showMobileMap,
+    })),
+
   setMapRef: (mapRef: mapboxgl.Map) => set(() => ({ mapRef: mapRef })),
-  setSearchMarker: (searchMarker: Marker<mapboxgl.Marker>) =>
-    set(() => (searchMarker ? { searchMarker: searchMarker } : null)),
   setAuthState: (authState: boolean) => set(() => ({ authState: authState })),
-  setSearchQuery: (searchQuery: string) => set(() => ({ searchQuery: searchQuery })),
-  setSearchFocus: (searchFocus: boolean) => set(() => ({ searchFocus: searchFocus }))
+  setShow: (show: boolean) => set(() => ({ show: show })),
 })
 
-export const useStore = create<StoreState>()(subscribeWithSelector<StoreState>(store))
+export const useStore = create<StoreState>()(
+  subscribeWithSelector<StoreState>(store)
+)
+export const useFeatureStore = create<FeatureStore>()(
+  subscribeWithSelector<FeatureStore>(featureStore)
+)
+export const useAddressSearchStore = create<AddressSearchStore>()(
+  subscribeWithSelector<AddressSearchStore>(addressSearchStore)
+)
