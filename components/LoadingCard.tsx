@@ -7,7 +7,7 @@ const LoadingCard = ({ fullWidth }: LoadingCardProps) => {
   const width = fullWidth ? 'w-full' : 'w-72'
   return (
     <div
-      className={`group mb-3 flex h-40  animate-pulse cursor-pointer flex-col justify-between rounded-[15px] border border-zinc-400 bg-zinc-300 p-4 opacity-50 transition-all duration-300 ${width}`}
+      className={`group mb-3 flex h-40  animate-pulse cursor-pointer flex-col justify-between rounded-[15px] border border-[#dad8d2] bg-[#f5f4f1] p-4 transition-all duration-300 ${width}`}
     ></div>
   )
 }

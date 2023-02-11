@@ -4,12 +4,11 @@ import { trpc } from '../../utils/trpc'
 import NearbyList from './NearbyList'
 import FeaturedList from './FeaturedList'
 import LoadingList from './LoadingList'
-import shallow from 'zustand/shallow'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useCardListSize } from '../../hooks'
 import AnimationPrescense from '../AnimationPrescense'
 
 const SideBar = () => {
-  const size = useRef<number>()
+  const size = useCardListSize('height')
   const showMobileMap = useStore((state) => state.showMobileMap)
   const { features: featureMap, isLoading } = useFeatureStore((state) => state)
   const { data: topFeatures } = trpc.selectTopInArea.useQuery(
@@ -26,9 +25,16 @@ const SideBar = () => {
     return array
   }, [featureMap])
 
-  useEffect(() => {
-    size.current = Math.round(window.innerHeight / 180)
-  }, [])
+  const listAnimationProps = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: {
+      delay: 0,
+      ease: 'linear',
+      duration: 0.25,
+    },
+  }
 
   return (
     <div
@@ -86,34 +92,16 @@ const SideBar = () => {
         <div>
           <p className="mb-2 font-nunito text-lg font-semibold">Nearby</p>
           {isLoading && (
-            <AnimationPrescense
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                delay: 0,
-                ease: 'easeInOut',
-                duration: 0.5,
-              }}
-            >
+            <AnimationPrescense {...listAnimationProps}>
               <LoadingList
                 fullWidth={true}
-                size={size.current ? size.current : 10}
+                size={size ? size : 10}
                 flexDirection={'flex-col'}
               />
             </AnimationPrescense>
           )}
           {!isLoading && featureArray && (
-            <AnimationPrescense
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                delay: 0,
-                ease: 'easeInOut',
-                duration: 0.5,
-              }}
-            >
+            <AnimationPrescense {...listAnimationProps}>
               <NearbyList nearby={featureArray} />
             </AnimationPrescense>
           )}

@@ -1,6 +1,6 @@
 import mapboxgl, { MercatorCoordinate } from 'mapbox-gl'
 import { useEffect, useRef, useState } from 'react'
-import { useMapUpdate } from '../hooks'
+import { useLoadingDebounce, useMapUpdate } from '../hooks'
 import { useAddressSearchStore, useFeatureStore, useStore } from '../store'
 import { setUpData } from '../utils/MapBox'
 import { LngLat, SearchLocation } from '../constants/types'
@@ -35,18 +35,19 @@ const Map = ({ lnglat, address }: SearchLocation) => {
     enabled: true,
   })
   useMapUpdate(data)
-  useEffect(() => {
-    let handler: NodeJS.Timeout
-    if (!isLoading) {
-      handler = setTimeout(() => {
-        setIsLoading(isLoading)
-      }, 500)
-    } else setIsLoading(isLoading)
+  useLoadingDebounce(isLoading, setIsLoading, 300)
+  //useEffect(() => {
+  //let handler: NodeJS.Timeout
+  //if (!isLoading) {
+  //  handler = setTimeout(() => {
+  //    setIsLoading(isLoading)
+  //  }, 300)
+  //} else setIsLoading(isLoading)
 
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [isLoading, setIsLoading])
+  //  return () => {
+  //    clearTimeout(handler)
+  //  }
+  //}, [isLoading, setIsLoading])
 
   const getCameraLngLat = (): LngLat => {
     if (!map.current) return {} as LngLat
