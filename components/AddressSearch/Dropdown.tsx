@@ -4,6 +4,7 @@ import { useAddressSearchStore } from '../../store'
 import CatFace from '../../svg/CatFace'
 import AnimationPrescense from '../AnimationPrescense'
 import { useDropdown } from './DrowpdownProvider'
+import LoadingDropdown from './LoadingDropdown'
 
 const Dropdown = () => {
   const { data, setOpenDropdown, openDropdown, isLoading } = useDropdown()
@@ -66,7 +67,7 @@ const Dropdown = () => {
             )}
             {isLoading && (
               <AnimationPrescense {...dropDownAnimationProps}>
-                <CatFace classNames={`mx-auto mt-6 animate-bounce`} />
+                <LoadingDropdown />
               </AnimationPrescense>
             )}
             {!isLoading && data?.length === 0 && (

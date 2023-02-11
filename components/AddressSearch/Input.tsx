@@ -32,7 +32,6 @@ const AddressSearchBar = ({ address }: any) => {
       refetchOnWindowFocus: false,
     })
   useLoadingDebounce(isLoading, setIsLoading, 300)
-  console.log(isLoading, isFetching, isSuccess, 'isLoading')
 
   useEffect(() => {
     if (isLoading) {
