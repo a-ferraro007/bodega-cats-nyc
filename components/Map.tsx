@@ -36,18 +36,6 @@ const Map = ({ lnglat, address }: SearchLocation) => {
   })
   useMapUpdate(data)
   useLoadingDebounce(isLoading, setIsLoading, 300)
-  //useEffect(() => {
-  //let handler: NodeJS.Timeout
-  //if (!isLoading) {
-  //  handler = setTimeout(() => {
-  //    setIsLoading(isLoading)
-  //  }, 300)
-  //} else setIsLoading(isLoading)
-
-  //  return () => {
-  //    clearTimeout(handler)
-  //  }
-  //}, [isLoading, setIsLoading])
 
   const getCameraLngLat = (): LngLat => {
     if (!map.current) return {} as LngLat
