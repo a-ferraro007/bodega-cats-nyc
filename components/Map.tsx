@@ -7,6 +7,7 @@ import { LngLat, SearchLocation } from '../constants/types'
 import { trpc } from '../utils/trpc'
 import { returnUserLocationMarker } from '../utils/MapMarker'
 import shallow from 'zustand/shallow'
+import CatFace from '../svg/CatFace'
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA'
@@ -127,9 +128,13 @@ const Map = ({ lnglat, address }: SearchLocation) => {
   return (
     <>
       <div
-        className="bodega-cats relative h-full w-full"
+        className="bodega-cats relative flex h-full w-full justify-center"
         ref={mapContainer}
-      ></div>
+      >
+        {!map.current && (
+          <CatFace classNames={`self-center mt-6 animate-bounce static z-10`} />
+        )}
+      </div>
       {show && (
         <div className="absolute top-4 left-6 mx-auto flex justify-center">
           <button
@@ -168,3 +173,6 @@ const getDistance = (lngLat1: LngLat, lngLat2: LngLat): number => {
 }
 
 export default Map
+{
+  /*<CatFace classNames={`mx-auto mt-6 animate-bounce`} />*/
+}

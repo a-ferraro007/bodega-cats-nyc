@@ -38,7 +38,7 @@ const SideBar = () => {
 
   return (
     <div
-      className={`absolute z-10 h-full w-full bg-white md:static  md:w-side-bar ${
+      className={`absolute z-10 h-full w-full border-l-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white md:static md:w-side-bar ${
         showMobileMap ? '' : 'hidden md:block'
       }`}
     >
@@ -73,7 +73,7 @@ const SideBar = () => {
         <div className=""></div>
       </div>*/}
 
-      <div className="flex flex-col p-6">
+      <div className="flex flex-col  p-6">
         <div className="mb-6 max-w-[250px] self-end">
           <button className="w-full rounded-[10px] bg-dark-blue-radial-gradient p-2 px-4 font-nunito text-lg font-semibold text-white transition-all duration-300 hover:scale-[1.03]">
             new cat
