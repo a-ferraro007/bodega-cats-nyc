@@ -13,31 +13,26 @@ import { trpc } from '../../utils/trpc'
 import { useDropdown } from './DrowpdownProvider'
 
 const AddressSearchBar = ({ address }: any) => {
-  const {
-    setQuery,
-    query,
-    setData,
-    setOpenDropdown,
-    openDropdown,
-    setInputFocus,
-    inputFocus,
-    //isLoading: contextIsLoading,
-    setIsLoading,
-  } = useDropdown()
+  const { setQuery, query, setData, setOpenDropdown, setIsLoading } =
+    useDropdown()
   const debounce = useDebounce(query, 500)
+  const [isInputFocused, setisInputFocused] = useState(false)
   const [inputValue, setInputValue] = useState<string>(address)
-  const { data, isSuccess, isLoading, isFetching } =
-    trpc.searchByAddress.useQuery(debounce, {
-      enabled: debounce?.length > 0,
-      refetchOnWindowFocus: false,
-    })
+  const { data, isLoading } = trpc.searchByAddress.useQuery(debounce, {
+    refetchOnWindowFocus: false,
+  })
   useLoadingDebounce(isLoading, setIsLoading, 300)
 
   useEffect(() => {
-    if (isLoading) {
-      setOpenDropdown(inputFocus)
+    if (
+      (query.length === 0 && isInputFocused && inputValue === address) ||
+      (query && isInputFocused)
+    ) {
+      setOpenDropdown(true)
+    } else {
+      setOpenDropdown(false)
     }
-  }, [inputFocus, isLoading, setOpenDropdown])
+  }, [isLoading, isInputFocused, setOpenDropdown, query])
 
   useMemo(() => {
     setInputValue(address)
@@ -48,7 +43,11 @@ const AddressSearchBar = ({ address }: any) => {
     setData(data)
   }, [data, setData])
 
-  const handleOnFocus = () => setInputFocus(true)
+  useEffect(() => {
+    console.log('query', query.length)
+  })
+
+  const handleOnFocus = () => setisInputFocused(true)
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
@@ -56,7 +55,7 @@ const AddressSearchBar = ({ address }: any) => {
   }
 
   const handleOnBlur = () => {
-    setInputFocus(false)
+    setisInputFocused(false)
     setInputValue(inputValue || address)
   }
 

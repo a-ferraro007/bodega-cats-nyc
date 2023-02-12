@@ -6,16 +6,15 @@ import { useAddressSearchStore, useStore } from '../store'
 import Map from '../components/Map'
 import AddressSearch from '../components/AddressSearch'
 import MapIcon from '../svg/MapIcon'
-import SearchIcon from '../svg/SearchIcon'
 import FeatureList from '../components/SideBar'
 import { useGetUserLocation } from '../hooks/useGetUserLocation'
 import { SearchLocation } from '../constants/types'
 import { trpc } from '../utils/trpc'
 import Login from '../svg/Login'
+import Lines from '../svg/Lines'
 
 const Home: NextPage = ({}) => {
   const lnglat = useGetUserLocation()
-  const mapRef = useStore((state) => state.mapRef)
   const showMobileMap = useStore((state) => state.showMobileMap)
   const setShowMobileMap = useStore((state) => state.setShowMobileMap)
   const { setSearchLocationState, searchLocationState, setSearchMarker } =
@@ -66,14 +65,14 @@ const Home: NextPage = ({}) => {
           </div>
           <FeatureList />
           <button
-            className="absolute bottom-20 right-10 z-20 block rounded-full bg-primaryBlue p-4 text-white md:hidden"
+            className="absolute bottom-20 right-10 z-20 block rounded-full bg-dark-blue-radial-gradient p-4 text-white md:hidden"
             onClick={() => {
               //console.log(showMobileMap)
               setShowMobileMap(!showMobileMap)
             }}
           >
             {showMobileMap && <MapIcon />}
-            {!showMobileMap && <SearchIcon />}
+            {!showMobileMap && <Lines />}
           </button>
         </div>
       </main>

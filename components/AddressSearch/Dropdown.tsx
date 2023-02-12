@@ -1,13 +1,13 @@
-import { KeyboardEvent, useEffect } from 'react'
+import { KeyboardEvent, useEffect, useState } from 'react'
 import { SearchLocation } from '../../constants/types'
 import { useAddressSearchStore } from '../../store'
-import CatFace from '../../svg/CatFace'
 import AnimationPrescense from '../AnimationPrescense'
 import { useDropdown } from './DrowpdownProvider'
 import LoadingDropdown from './LoadingDropdown'
 
 const Dropdown = () => {
-  const { data, setOpenDropdown, openDropdown, isLoading } = useDropdown()
+  const { data, query, openDropdown, setOpenDropdown, isLoading } =
+    useDropdown()
   const setSearchLocationState = useAddressSearchStore(
     (state) => state.setSearchLocationState
   )
@@ -26,6 +26,7 @@ const Dropdown = () => {
       HandleOnClick(selected)
     }
   }
+  console.log('log', isLoading)
 
   const dropDownAnimationProps = {
     initial: { opacity: 0 },
@@ -73,7 +74,7 @@ const Dropdown = () => {
             {!isLoading && data?.length === 0 && (
               <span className="block w-full text-center font-nunito font-semibold">
                 {' '}
-                address not found
+                {query.length ? 'address not found' : 'enter an address'}
               </span>
             )}
           </div>
