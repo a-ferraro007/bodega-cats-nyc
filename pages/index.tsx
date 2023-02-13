@@ -54,8 +54,8 @@ const Home: NextPage = ({}) => {
             </span>
           </h1>
           <AddressSearch />
-          <button className="rounded-[10px] bg-[#f5f4f1] p-2">
-            <Login classNames="-translate-y-[.2rem]" />
+          <button className="rounded-[10px] bg-[#f5f4f1] p-3">
+            <Login />
           </button>
         </nav>
 

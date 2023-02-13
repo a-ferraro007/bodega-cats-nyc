@@ -5,7 +5,8 @@ import NearbyList from './NearbyList'
 import FeaturedList from './FeaturedList'
 import LoadingList from './LoadingList'
 import { useCardListSize } from '../../hooks'
-import AnimationPrescense from '../AnimationPrescense'
+import MotionDiv from '../MotionDiv'
+import { AnimatePresence } from 'framer-motion'
 
 const SideBar = () => {
   const size = useCardListSize('height')
@@ -37,17 +38,18 @@ const SideBar = () => {
   }
 
   return (
-    <div
-      className={`absolute z-10 h-full w-full border-l-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white md:static md:w-side-bar ${
-        showMobileMap ? '' : 'hidden md:block'
-      }`}
-    >
-      {/*
+    <AnimatePresence>
+      <div
+        className={`absolute z-10 h-full w-full border-l-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white md:static md:w-side-bar ${
+          showMobileMap ? '' : 'hidden md:block'
+        }`}
+      >
+        {/*
       border-l-[1px] border-b-[.5px] border-[rgba(0,0,0,.2)]
       border-b-[rgba(0,0,0,.5)] border border-solid */}
-      {/*dad8d2  [rgba(0,0,0,.4)]*/}
+        {/*dad8d2  [rgba(0,0,0,.4)]*/}
 
-      {/*<div className="flex flex-row gap-3 mx-6 border-b border-b-[#dad8d2]">
+        {/*<div className="flex flex-row gap-3 mx-6 border-b border-b-[#dad8d2]">
         <div className="self-center">
           <SearchIcon color={'#6e6e6e'} width={20} height={20} />
         </div>
@@ -73,47 +75,48 @@ const SideBar = () => {
         <div className=""></div>
       </div>*/}
 
-      <div className="flex flex-col  p-6">
-        <div className="mb-6 max-w-[250px] self-end">
-          <button className="w-full rounded-[10px] bg-dark-blue-radial-gradient p-2 px-4 font-nunito text-lg font-semibold text-white transition-all duration-300 hover:scale-[1.03]">
-            new cat
-          </button>
-        </div>
-        <div>
-          <p className="mb-3 font-nunito text-lg font-semibold">
-            Top in New York
-          </p>
-          {topFeatures ? (
-            <FeaturedList topFeatures={topFeatures} />
-          ) : (
-            <LoadingList size={10} />
-          )}
-        </div>
-        <div>
-          <p className="mb-2 font-nunito text-lg font-semibold">Nearby</p>
-          {isLoading && (
-            <AnimationPrescense {...listAnimationProps}>
-              <LoadingList
-                fullWidth={true}
-                size={size ? size : 10}
-                flexDirection={'flex-col'}
-              />
-            </AnimationPrescense>
-          )}
-          {!isLoading && featureArray && (
-            <AnimationPrescense {...listAnimationProps}>
-              <NearbyList nearby={featureArray} />
-            </AnimationPrescense>
-          )}
-          {!isLoading && topFeatures && featureArray.length <= 0 && (
-            <span className="block w-full text-center font-nunito font-normal">
-              {' '}
-              no cats nearby :({' '}
-            </span>
-          )}
+        <div className="flex flex-col  p-6">
+          <div className="mb-6 max-w-[250px] self-end">
+            <button className="w-full rounded-[10px] bg-dark-blue-radial-gradient p-2 px-4 font-nunito text-lg font-semibold text-white transition-all duration-300 hover:scale-[1.03]">
+              new cat
+            </button>
+          </div>
+          <div>
+            <p className="mb-3 font-nunito text-lg font-semibold">
+              Top in New York
+            </p>
+            {topFeatures ? (
+              <FeaturedList topFeatures={topFeatures} />
+            ) : (
+              <LoadingList size={10} />
+            )}
+          </div>
+          <div>
+            <p className="mb-2 font-nunito text-lg font-semibold">Nearby</p>
+            {isLoading && (
+              <MotionDiv {...listAnimationProps} key="loading-list">
+                <LoadingList
+                  fullWidth={true}
+                  size={size ? size : 10}
+                  flexDirection={'flex-col'}
+                />
+              </MotionDiv>
+            )}
+            {!isLoading && featureArray && (
+              <MotionDiv {...listAnimationProps} key="nearby-list">
+                <NearbyList nearby={featureArray} />
+              </MotionDiv>
+            )}
+            {!isLoading && topFeatures && featureArray.length <= 0 && (
+              <span className="block w-full text-center font-nunito font-normal">
+                {' '}
+                no cats nearby :({' '}
+              </span>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </AnimatePresence>
   )
 }
 

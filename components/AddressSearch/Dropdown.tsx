@@ -1,7 +1,9 @@
+import { AnimatePresence } from 'framer-motion'
 import { KeyboardEvent, useEffect, useState } from 'react'
 import { SearchLocation } from '../../constants/types'
 import { useAddressSearchStore } from '../../store'
-import AnimationPrescense from '../AnimationPrescense'
+import MotionDiv from '../MotionDiv'
+import AnimationPrescense from '../MotionDiv'
 import { useDropdown } from './DrowpdownProvider'
 import LoadingDropdown from './LoadingDropdown'
 
@@ -26,7 +28,6 @@ const Dropdown = () => {
       HandleOnClick(selected)
     }
   }
-  console.log('log', isLoading)
 
   const dropDownAnimationProps = {
     initial: { opacity: 0 },
@@ -34,18 +35,18 @@ const Dropdown = () => {
     exit: { opacity: 0 },
     transition: {
       delay: 0,
-      ease: 'easeIn',
-      duration: 0.2,
+      ease: 'linear',
+      duration: 0.25,
     },
   }
 
   return (
-    <>
-      {openDropdown && (
-        <>
-          <div className="absolute top-16 left-0 right-0 z-20 mx-auto min-h-[250px] w-[98%] rounded-[10px] bg-white shadow-5xl md:top-12">
-            {!isLoading && (
-              <AnimationPrescense {...dropDownAnimationProps}>
+    <div className="absolute top-16 left-0 right-0 z-20">
+      <AnimatePresence>
+        {openDropdown && (
+          <MotionDiv {...dropDownAnimationProps} key="drop-down">
+            <div className="mx-auto min-h-[250px] w-[98%] rounded-[10px] bg-white shadow-5xl md:top-12">
+              {!isLoading && (
                 <ul className="h-full max-h-[250px] overflow-scroll p-4">
                   {data?.map(
                     ({ feature_id, address, lnglat }: SearchLocation) => {
@@ -64,23 +65,19 @@ const Dropdown = () => {
                     }
                   )}
                 </ul>
-              </AnimationPrescense>
-            )}
-            {isLoading && (
-              <AnimationPrescense {...dropDownAnimationProps}>
-                <LoadingDropdown />
-              </AnimationPrescense>
-            )}
-            {!isLoading && data?.length === 0 && (
-              <span className="block w-full text-center font-nunito font-semibold">
-                {' '}
-                {query.length ? 'address not found' : 'enter an address'}
-              </span>
-            )}
-          </div>
-        </>
-      )}
-    </>
+              )}
+              {isLoading && <LoadingDropdown />}
+              {!isLoading && data?.length === 0 && (
+                <span className="block w-full text-center font-nunito font-semibold">
+                  {' '}
+                  {query.length ? 'address not found' : 'enter an address'}
+                </span>
+              )}
+            </div>
+          </MotionDiv>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }
 
