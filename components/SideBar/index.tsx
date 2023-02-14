@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useFeatureStore, useStore } from '../../store'
+import { useAddressSearchStore, useFeatureStore, useStore } from '../../store'
 import { trpc } from '../../utils/trpc'
 import NearbyList from './NearbyList'
 import FeaturedList from './FeaturedList'
