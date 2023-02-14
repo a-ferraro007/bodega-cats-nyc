@@ -39,6 +39,7 @@ module.exports = {
       },
       height: {
         container: 'calc(100% - 4rem)',
+        sideBarContainer: 'calc(100% - 1rem)',
       },
       width: {
         'side-bar': '25rem',
