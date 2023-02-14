@@ -34,8 +34,8 @@ const Dropdown = () => {
     exit: { opacity: 0 },
     transition: {
       delay: 0,
-      ease: 'easeIn',
-      duration: 0.2,
+      ease: 'linear',
+      duration: 0.25,
     },
   }
 
