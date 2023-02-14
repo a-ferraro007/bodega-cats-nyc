@@ -15,7 +15,7 @@ const SideBar = () => {
   const { data } = trpc.selectTopInArea.useQuery('Brooklyn', {
     enabled: true,
   })
-  const featureArray = useMemo(() => {
+  const memoizedFeatures = useMemo(() => {
     const array: Array<any> = []
     featureMap.forEach(({ feature }) => {
       array.push(feature)
@@ -41,38 +41,7 @@ const SideBar = () => {
           showMobileMap ? '' : 'hidden md:block'
         }`}
       >
-        {/*
-      border-l-[1px] border-b-[.5px] border-[rgba(0,0,0,.2)]
-      border-b-[rgba(0,0,0,.5)] border border-solid */}
-        {/*dad8d2  [rgba(0,0,0,.4)]*/}
-
-        {/*<div className="flex flex-row gap-3 mx-6 border-b border-b-[#dad8d2]">
-        <div className="self-center">
-          <SearchIcon color={'#6e6e6e'} width={20} height={20} />
-        </div>
-        <div className="flex-grow h-12">
-          <input
-            className="bg-transparent w-full h-12 text-[#6e6e6e] text-lg font-light font-nunito outline-none transition-all duration-500 placeholder:text-[#6e6e6e]"
-            placeholder="search an area"
-            id={'mobile-search-input'}
-            //ref={isFocused}
-            required={true}
-            type="search"
-            //value={query}
-            //onChange={(e) => HandleOnChange(e)}
-            //onKeyDown={(e) => HandleInputEnterEvent(e)}
-            onFocus={() => {
-              //setSearchFocus(true)
-            }}
-            onBlur={() => {}}
-            autoFocus={true}
-            autoComplete="none"
-          />
-        </div>
-        <div className=""></div>
-      </div>*/}
-
-        <div className="flex flex-col  p-6">
+        <div className="flex h-sideBarContainer flex-col p-6">
           <div className="mb-6 max-w-[250px] self-end">
             <button className="w-full rounded-[10px] bg-dark-blue-radial-gradient p-2 px-4 font-nunito text-lg font-semibold text-white transition-colors duration-300 hover:scale-[1.03]">
               new cat
@@ -88,8 +57,8 @@ const SideBar = () => {
               <LoadingList size={10} />
             )}
           </div>
-          <div>
-            <p className="mb-2 font-nunito text-lg font-semibold">Nearby</p>
+          <p className="mb-2 font-nunito text-lg font-semibold">Nearby</p>
+          <div className="overflow-scroll">
             {isLoading && (
               <MotionDiv {...listAnimationProps} framerKey="loading-list">
                 <LoadingList
@@ -99,12 +68,11 @@ const SideBar = () => {
                 />
               </MotionDiv>
             )}
-            {!isLoading && featureArray && (
+            {!isLoading && memoizedFeatures.length > 0 ? (
               <MotionDiv {...listAnimationProps} framerKey="nearby-list">
-                <NearbyList nearby={featureArray} />
+                <NearbyList data={memoizedFeatures} />
               </MotionDiv>
-            )}
-            {!isLoading && data && featureArray.length <= 0 && (
+            ) : (
               <span className="block w-full text-center font-nunito font-normal">
                 no cats nearby 😿
               </span>
