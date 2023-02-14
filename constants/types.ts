@@ -8,23 +8,20 @@ export const FormInputs = z.object({
   search: z.string(),
   file: z.string().optional(),
 })
-export type FormInputs = z.infer<typeof FormInputs>
 
 export const zLngLat = z.object({
   lng: z.number(),
   lat: z.number(),
 })
-type lnglat = z.infer<typeof zLngLat>
-
-export interface LngLat extends lnglat {}
 
 export const CatProperties = z.object({
+  created_at: z.string(),
+  id: z.number(),
   name: z.string(),
   rating: z.number(),
   image: z.string(),
   locality: z.string(),
 })
-export type CatProperties = z.infer<typeof CatProperties>
 
 //CHANGE TO DATA TRANSPORT TYPE
 export const MapBoxFeature = z.object({
@@ -34,7 +31,6 @@ export const MapBoxFeature = z.object({
   geo_json: z.any(),
   //cat_id: z.optional(z.number()) //
 })
-export type MapBoxFeature = z.infer<typeof MapBoxFeature>
 
 export const ParsedFeature = z.object({
   feature_id: z.string(),
@@ -43,13 +39,19 @@ export const ParsedFeature = z.object({
   address: z.string(),
   locality: z.string(),
 })
-export type ParsedFeature = z.infer<typeof ParsedFeature>
 
 export const zNewFeatureMutation = z.object({
   MapBoxFeature: MapBoxFeature,
   CatProperties: CatProperties,
 })
-export type NewFeatureMutation = z.infer<typeof zNewFeatureMutation>
+
+export const zFeature = CatProperties.extend({
+  MapBox_Feature: z.array(MapBoxFeature),
+})
+
+export const zRowId = z.object({
+  id: z.number(),
+})
 
 export interface ParsedAddressFeature {
   feature_id: string
@@ -105,4 +107,23 @@ export interface SearchLocation {
 export interface ParsedSearchLocation {
   feature_id: string
   address: string
+}
+
+export interface MarkerFeature {
+  marker: mapboxgl.Marker
+  feature: Feature
+}
+
+type lnglat = z.infer<typeof zLngLat>
+export type CatProperties = z.infer<typeof CatProperties>
+export type FormInputs = z.infer<typeof FormInputs>
+export type ParsedFeature = z.infer<typeof ParsedFeature>
+export type MapBoxFeature = z.infer<typeof MapBoxFeature>
+export type RowId = z.infer<typeof zRowId>
+export type NewFeatureMutation = z.infer<typeof zNewFeatureMutation>
+export type Feature = z.infer<typeof zFeature>
+export interface LngLat extends lnglat {}
+export interface TopFeatureInterface extends Feature {}
+export interface FeatureInterface extends Feature {
+  MapBox_Feature: MapBoxFeature[]
 }

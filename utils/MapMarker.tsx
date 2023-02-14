@@ -3,13 +3,15 @@ import { createRoot } from 'react-dom/client'
 import LocationPin from '../components/LocationPin'
 import MapMarker from '../components/Marker'
 import Popup from '../components/Popup'
-import { LngLat } from '../constants/types'
+import { Feature, LngLat } from '../constants/types'
 
 const returnNewMarker = (
-  feature: any,
+  feature: Feature,
   setPopup = true,
   image?: string
 ): mapboxgl.Marker => {
+  const { MapBox_Feature } = feature
+  const { geo_json } = MapBox_Feature[0]
   const mContainer = document.createElement('div')
   const mRoot = createRoot(mContainer)
   mRoot.render(<MapMarker image={image} />)
@@ -19,20 +21,18 @@ const returnNewMarker = (
       element: mContainer,
       clickTolerance: 25,
       scale: 1,
-    }).setLngLat(feature.geometry.coordinates)
+    }).setLngLat(geo_json.geometry.coordinates)
   }
   const pContainer = document.createElement('div')
   const pRoot = createRoot(pContainer)
   pRoot.render(<Popup feature={feature} />)
-
-  //console.log(setPopup)
 
   const popup = new mapboxgl.Popup({
     closeButton: false,
     closeOnClick: true,
     offset: 35,
   })
-    .setLngLat(feature.geometry.coordinates)
+    .setLngLat(geo_json.geometry.coordinates)
     .setDOMContent(pContainer)
 
   return new mapboxgl.Marker({
@@ -40,7 +40,7 @@ const returnNewMarker = (
     clickTolerance: 25,
     scale: 1,
   })
-    .setLngLat(feature.geometry.coordinates)
+    .setLngLat(geo_json.geometry.coordinates)
     .setPopup(popup)
 }
 

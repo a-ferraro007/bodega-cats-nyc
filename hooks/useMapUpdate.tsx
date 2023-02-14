@@ -1,41 +1,45 @@
 import { useEffect } from 'react'
+import { Feature, FeatureInterface, MarkerFeature } from '../constants/types'
 import { useFeatureStore, useStore } from '../store'
 import { returnNewMarker } from '../utils/MapMarker'
 
-const useMapUpdate = (data: any) => {
+const useMapUpdate = (features: FeatureInterface[] | undefined) => {
   const { features: featureStateMap, setFeatures: updateMapState } =
     useFeatureStore((state) => state)
 
   useEffect(() => {
-    if (!data) return
-    const { features } = data
     if (!features) return
 
     if (featureStateMap.size === 0) {
-      features.forEach((feature: any) => {
-        const marker = returnNewMarker(feature, true, feature.properties.image)
-        featureStateMap.set(feature.id, { marker, feature })
+      features.forEach((feature: Feature) => {
+        const { MapBox_Feature } = feature
+        const marker = returnNewMarker(feature, true, feature.image)
+        featureStateMap.set(MapBox_Feature[0].feature_id, { marker, feature })
       })
     } else {
-      const fetchedFeaturesMap = new Map()
-      features.forEach((feature: any) => {
-        fetchedFeaturesMap.set(feature.id, feature)
+      const fetchedFeaturesMap = new Map<string, Feature>()
+      features.forEach((feature: Feature) => {
+        const { MapBox_Feature } = feature
+        fetchedFeaturesMap.set(MapBox_Feature[0].feature_id, feature)
       })
 
-      featureStateMap.forEach((_: any, key: any) => {
+      featureStateMap.forEach((_: MarkerFeature, key: string) => {
         if (!fetchedFeaturesMap.has(key)) {
-          const { marker } = featureStateMap.get(key)
-          featureStateMap.delete(key)
-          marker.remove()
+          const marketFeature = featureStateMap.get(key)
+          if (marketFeature) {
+            const { marker } = marketFeature
+            featureStateMap.delete(key)
+            marker.remove()
+          }
         } else {
           fetchedFeaturesMap.forEach((feature, key) => {
             if (!featureStateMap.has(key)) {
-              const marker = returnNewMarker(
+              const { MapBox_Feature } = feature
+              const marker = returnNewMarker(feature, true, feature.image)
+              featureStateMap.set(MapBox_Feature[0].feature_id, {
+                marker,
                 feature,
-                true,
-                feature.properties.image
-              )
-              featureStateMap.set(feature.id, { marker, feature })
+              })
             }
           })
         }
@@ -45,7 +49,7 @@ const useMapUpdate = (data: any) => {
     updateMapState(featureStateMap)
 
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [features])
 }
 
 export default useMapUpdate

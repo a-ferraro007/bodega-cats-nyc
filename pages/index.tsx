@@ -12,6 +12,7 @@ import { SearchLocation } from '../constants/types'
 import { trpc } from '../utils/trpc'
 import Login from '../svg/Login'
 import Lines from '../svg/Lines'
+import CatFace from '../svg/CatFace'
 
 const Home: NextPage = ({}) => {
   const lnglat = useGetUserLocation()
@@ -60,16 +61,20 @@ const Home: NextPage = ({}) => {
         </nav>
 
         <div className="relative flex h-container flex-row">
-          <div className="w-full md:w-map-container">
-            {searchLocationState.lnglat && <Map {...searchLocationState} />}
+          <div className="flex w-full justify-center md:w-map-container">
+            {searchLocationState.lnglat && <Map {...searchLocationState} />}{' '}
+            {!searchLocationState.lnglat && (
+              <CatFace
+                classNames={`self-center mt-6 animate-bounce static z-10`}
+              />
+            )}
           </div>
           <FeatureList />
           <button
-            className="absolute bottom-20 right-10 z-20 block rounded-full bg-dark-blue-radial-gradient p-4 text-white md:hidden"
-            onClick={() => {
-              //console.log(showMobileMap)
-              setShowMobileMap(!showMobileMap)
-            }}
+            className={`absolute bottom-20 right-10 z-20 block rounded-full ${
+              false ? 'bg-dark-blue-radial-gradient' : 'bg-graphite'
+            }  b p-4 text-white md:hidden`}
+            onClick={() => setShowMobileMap(!showMobileMap)}
           >
             {showMobileMap && <MapIcon />}
             {!showMobileMap && <Lines />}

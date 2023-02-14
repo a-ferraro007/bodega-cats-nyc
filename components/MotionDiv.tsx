@@ -6,7 +6,7 @@ const MotionDiv = ({
   animate,
   exit,
   transition,
-  key,
+  framerKey,
 }: any) => {
   return (
     <motion.div
@@ -14,7 +14,7 @@ const MotionDiv = ({
       animate={animate}
       exit={exit}
       transition={transition}
-      key={key}
+      key={framerKey}
     >
       {children}
     </motion.div>

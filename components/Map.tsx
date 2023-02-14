@@ -130,15 +130,11 @@ const Map = ({ lnglat, address }: SearchLocation) => {
       <div
         className="bodega-cats relative flex h-full w-full justify-center"
         ref={mapContainer}
-      >
-        {!map.current && (
-          <CatFace classNames={`self-center mt-6 animate-bounce static z-10`} />
-        )}
-      </div>
+      ></div>
       {show && (
         <div className="absolute top-4 left-6 mx-auto flex justify-center">
           <button
-            className="h-10 w-48 rounded-full bg-blue-800 font-roboto text-sm font-normal text-white transition-all duration-300  hover:scale-[1.03] hover:shadow-md"
+            className="h-10 w-48 rounded-full bg-graphite font-roboto text-sm font-normal text-white transition-all duration-300  hover:scale-[1.03] hover:shadow-md"
             onClick={() => {
               setKey(currentPositionRef.current)
               setShow(false)

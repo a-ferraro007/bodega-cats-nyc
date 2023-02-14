@@ -1,7 +1,9 @@
 import mapboxgl from 'mapbox-gl'
 import {
   DrawerState,
+  Feature,
   FeatureDrawerState,
+  MarkerFeature,
   SearchLocation,
 } from './../constants/types'
 import create from 'zustand'
@@ -10,9 +12,9 @@ import { subscribeWithSelector } from 'zustand/middleware'
 type Marker<T> = T | null
 
 interface FeatureStore {
-  features: Map<any, any>
+  features: Map<string, MarkerFeature>
   isLoading: boolean
-  setFeatures: (features: any) => void
+  setFeatures: (features: Map<string, MarkerFeature>) => void
   setIsLoading: (isLoading: boolean) => void
 }
 
@@ -48,9 +50,10 @@ const addressSearchStore = (set: any) => ({
 })
 
 const featureStore = (set: any) => ({
-  features: new Map(),
+  features: new Map<string, MarkerFeature>(),
   isLoading: false,
-  setFeatures: (features: any) => set(() => ({ features: new Map(features) })),
+  setFeatures: (features: Map<String, MarkerFeature>) =>
+    set(() => ({ features: new Map(features) })),
   setIsLoading: (isLoading: boolean) => set(() => ({ isLoading })),
 })
 

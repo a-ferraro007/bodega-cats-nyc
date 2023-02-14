@@ -12,12 +12,9 @@ const SideBar = () => {
   const size = useCardListSize('height')
   const showMobileMap = useStore((state) => state.showMobileMap)
   const { features: featureMap, isLoading } = useFeatureStore((state) => state)
-  const { data: topFeatures } = trpc.selectTopInArea.useQuery(
-    'queryKeyRef.current',
-    {
-      enabled: true,
-    }
-  )
+  const { data } = trpc.selectTopInArea.useQuery('Brooklyn', {
+    enabled: true,
+  })
   const featureArray = useMemo(() => {
     const array: Array<any> = []
     featureMap.forEach(({ feature }) => {
@@ -77,7 +74,7 @@ const SideBar = () => {
 
         <div className="flex flex-col  p-6">
           <div className="mb-6 max-w-[250px] self-end">
-            <button className="w-full rounded-[10px] bg-dark-blue-radial-gradient p-2 px-4 font-nunito text-lg font-semibold text-white transition-all duration-300 hover:scale-[1.03]">
+            <button className="w-full rounded-[10px] bg-dark-blue-radial-gradient p-2 px-4 font-nunito text-lg font-semibold text-white transition-colors duration-300 hover:scale-[1.03]">
               new cat
             </button>
           </div>
@@ -85,8 +82,8 @@ const SideBar = () => {
             <p className="mb-3 font-nunito text-lg font-semibold">
               Top in New York
             </p>
-            {topFeatures ? (
-              <FeaturedList topFeatures={topFeatures} />
+            {data ? (
+              <FeaturedList topFeatures={data} />
             ) : (
               <LoadingList size={10} />
             )}
@@ -94,7 +91,7 @@ const SideBar = () => {
           <div>
             <p className="mb-2 font-nunito text-lg font-semibold">Nearby</p>
             {isLoading && (
-              <MotionDiv {...listAnimationProps} key="loading-list">
+              <MotionDiv {...listAnimationProps} framerKey="loading-list">
                 <LoadingList
                   fullWidth={true}
                   size={size ? size : 10}
@@ -103,14 +100,13 @@ const SideBar = () => {
               </MotionDiv>
             )}
             {!isLoading && featureArray && (
-              <MotionDiv {...listAnimationProps} key="nearby-list">
+              <MotionDiv {...listAnimationProps} framerKey="nearby-list">
                 <NearbyList nearby={featureArray} />
               </MotionDiv>
             )}
-            {!isLoading && topFeatures && featureArray.length <= 0 && (
+            {!isLoading && data && featureArray.length <= 0 && (
               <span className="block w-full text-center font-nunito font-normal">
-                {' '}
-                no cats nearby :({' '}
+                no cats nearby 😿
               </span>
             )}
           </div>

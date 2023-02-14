@@ -20,6 +20,7 @@ export const appRouter = router({
     return getFeatures(input)
   }),
   selectTopInArea: procedure.input(z.string()).query(({ input }) => {
+    console.log('selectTopInArea', input)
     return getTopInArea(input)
   }),
   searchByAddress: procedure

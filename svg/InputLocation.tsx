@@ -11,7 +11,7 @@ const InputLocation = () => {
       ></g>
       <g>
         {' '}
-        <g clip-path="url(#clip0_429_11046)">
+        <g clipPath="url(#clip0_429_11046)">
           {' '}
           <rect
             x="12"

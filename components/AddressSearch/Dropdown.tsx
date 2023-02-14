@@ -1,9 +1,8 @@
 import { AnimatePresence } from 'framer-motion'
-import { KeyboardEvent, useEffect, useState } from 'react'
+import { KeyboardEvent } from 'react'
 import { SearchLocation } from '../../constants/types'
 import { useAddressSearchStore } from '../../store'
 import MotionDiv from '../MotionDiv'
-import AnimationPrescense from '../MotionDiv'
 import { useDropdown } from './DrowpdownProvider'
 import LoadingDropdown from './LoadingDropdown'
 
@@ -35,8 +34,8 @@ const Dropdown = () => {
     exit: { opacity: 0 },
     transition: {
       delay: 0,
-      ease: 'linear',
-      duration: 0.25,
+      ease: 'easeIn',
+      duration: 0.2,
     },
   }
 
@@ -44,7 +43,7 @@ const Dropdown = () => {
     <div className="absolute top-16 left-0 right-0 z-20">
       <AnimatePresence>
         {openDropdown && (
-          <MotionDiv {...dropDownAnimationProps} key="drop-down">
+          <MotionDiv {...dropDownAnimationProps} framerKey="drop-down">
             <div className="mx-auto min-h-[250px] w-[98%] rounded-[10px] bg-white shadow-5xl md:top-12">
               {!isLoading && (
                 <ul className="h-full max-h-[250px] overflow-scroll p-4">
