@@ -35,11 +35,6 @@ const fetchAddressSearchResults = async (
           properties,
         } = feature
 
-        //const splitPlaceName = place_name?.split(',')
-        //let locality = context.find((item: any) => item.id.includes('locality'))?.text
-        //if (locality) locality = locality.charAt(0).toUpperCase() + locality.slice(1, locality.length)
-        //console.log({ properties })
-
         return <SearchLocation>{
           feature_id: id,
           address: place_name,

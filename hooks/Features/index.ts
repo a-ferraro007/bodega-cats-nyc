@@ -23,7 +23,6 @@ const filterByLngLat = (
 
   const validFeatures = data
     .filter((feature: Feature) => {
-      console.log('feature', feature)
       const coordinates =
         feature.MapBox_Feature[0].geo_json.geometry.coordinates
       const lng = coordinates[0]
