@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 import { useFeatureStore, useStore } from '../../store'
 import { trpc } from '../../utils/trpc'
 import NearbyList from './NearbyList'
