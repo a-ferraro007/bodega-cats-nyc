@@ -1,5 +1,3 @@
-import React from 'react'
-
 const InputLocation = () => {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -11,7 +9,7 @@ const InputLocation = () => {
       ></g>
       <g>
         {' '}
-        <g clip-path="url(#clip0_429_11046)">
+        <g clipPath="url(#clip0_429_11046)">
           {' '}
           <rect
             x="12"

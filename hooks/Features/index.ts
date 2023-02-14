@@ -1,37 +1,39 @@
-import { LngLat } from '../../constants/types'
+import { LngLat, FeatureInterface, Feature } from '../../constants/types'
 import { selectFromFeature } from '../../supabase/db'
 
 const DEG2RAD = Math.PI / 180
 const RAD2DEG = 180 / Math.PI
 const FULL_CIRCLE_RAD = Math.PI * 2
 
-const getFeatures = async (currentPosition: LngLat) => {
-  const data = await selectFromFeature(['geo_json'])
-  return {
-    type: 'FeatureCollection',
-    features: filterByLngLat(data, currentPosition),
-  }
+const getFeatures = async (
+  currentPosition: LngLat
+): Promise<FeatureInterface[]> => {
+  const data = await selectFromFeature()
+  return filterByLngLat(data, currentPosition)
 }
 
-const filterByLngLat = (data: any, lnglat: LngLat) => {
+const filterByLngLat = (
+  data: FeatureInterface[],
+  lnglat: LngLat
+): FeatureInterface[] => {
   const bounds = getBoundingCoordinates(2, lnglat)
   const min = bounds[0] //min[0] == lat, min[1] == lng
   const max = bounds[1]
+  console.log({ data })
 
   const validFeatures = data
-    .filter(({ geo_json }: any) => {
-      const { coordinates } = geo_json.geometry
+    .filter((feature: Feature) => {
+      console.log('feature', feature)
+      const coordinates =
+        feature.MapBox_Feature[0].geo_json.geometry.coordinates
       const lng = coordinates[0]
       const lat = coordinates[1]
 
       if (lng >= min[1] && lng <= max[1] && lat >= min[0] && lng <= max[0]) {
-        const { geometry } = geo_json
-        console.log(geometry)
-
-        return geo_json
+        return feature
       }
     })
-    .map(({ geo_json }: any) => geo_json)
+    .map((feature: Feature) => feature)
 
   return validFeatures.length > 0 ? validFeatures : []
 }

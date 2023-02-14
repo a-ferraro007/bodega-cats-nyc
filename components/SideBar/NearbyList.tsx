@@ -1,3 +1,4 @@
+import { Feature } from '../../constants/types'
 import BoroughBadge from './BoroughBadge'
 
 const NearbyList = ({ nearby }: any) => {
@@ -5,10 +6,11 @@ const NearbyList = ({ nearby }: any) => {
     <div>
       <ul>
         {nearby.length > 0 &&
-          nearby.map((feature: any) => {
-            //console.log(feature)
-            const { id, properties } = feature
-            const { address, name, locality } = properties
+          nearby.map((feature: Feature) => {
+            console.log(feature)
+            const { id, MapBox_Feature, locality, name } = feature
+            const { address } = MapBox_Feature[0]
+            console.log('nearby', locality)
 
             return (
               <li

@@ -1,13 +1,20 @@
-import { CatProperties, MapBoxFeature } from './../constants/types'
+import {
+  CatProperties,
+  MapBoxFeature,
+  RowId,
+  TopFeatureInterface,
+  FeatureInterface,
+} from './../constants/types'
 import supabase from '.'
 
-const selectFromFeature = async (query: Array<string>) => {
+const selectFromFeature = async (): Promise<FeatureInterface[]> => {
   try {
     const { data, error } = await supabase
-      .from('MapBox_Feature')
-      .select(...query)
+      .from('Cat_Properties')
+      .select(`*, MapBox_Feature(*)`)
     if (error) throw error
-    return data
+
+    return data as FeatureInterface[]
   } catch (error) {
     throw new Error('error fetching FeatureCollection geo_json', {
       cause: error,
@@ -15,22 +22,27 @@ const selectFromFeature = async (query: Array<string>) => {
   }
 }
 
-const selectTopInArea = async (borough: string) => {
+const selectTopInArea = async (
+  borough: string
+): Promise<TopFeatureInterface[]> => {
   try {
     const { data, error } = await supabase
       .from('Cat_Properties')
       .select(`*, MapBox_Feature (*)`)
-      .eq('locality', 'Brooklyn')
+      .eq('locality', borough)
       .order('rating', { ascending: false })
 
     if (error) throw error
-    return data
+
+    return data as TopFeatureInterface[]
   } catch (error) {
     throw new Error('error fetching top list in area', { cause: error })
   }
 }
 
-const insertCatProperty = async (CatProperties: CatProperties) => {
+const insertCatProperty = async (
+  CatProperties: CatProperties
+): Promise<RowId> => {
   try {
     const { data, error } = await supabase
       .from('Cat_Properties')
@@ -49,7 +61,7 @@ const insertMapBoxFeature = async (tableData: MapBoxFeature, catId: number) => {
   try {
     const { data, error } = await supabase
       .from('MapBox_Feature')
-      .insert({ ...tableData, cat_id: catId })
+      .insert({ ...tableData, cat_id: catId } as any) //TYPE THIS
     if (error) throw error
     return data
   } catch (error) {
