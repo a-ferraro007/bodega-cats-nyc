@@ -8,14 +8,14 @@ const SearchDrawer = () => {
   const HandleOnKeyDown = (e: KeyboardEvent, selected: FeatureDrawerState) => {}
 
   return (
-    <ul className="overflow-scroll px-4 pb-4">
+    <ul className="overflow-y-scroll">
       {data &&
         data.map((feature: FeatureDrawerState) => {
           const { ParsedFeature } = feature
           return (
             <li
               key={ParsedFeature?.feature_id}
-              className="my-4 cursor-pointer rounded-[15px] border-[1px] border-[#dad8d2] px-4 py-6 transition-all duration-200 last:mb-0 hover:bg-[#f5f4f1]"
+              className="my-4 cursor-pointer rounded-[15px] border-[1px] border-[#dad8d2] px-4 py-6 transition-all duration-200 first:mt-0 last:mb-0 hover:bg-[#f5f4f1]"
               //onClick={() => HandleOnClick(feature)}
               //onKeyDown={(e) => HandleOnKeyDown(e, feature)}
               tabIndex={0}
