@@ -4,7 +4,7 @@ import BoroughBadge from '../BoroughBadge'
 type NearbyListProps = {
   data: FeatureInterface[]
 }
-
+//className="overflow-y-auto"
 const NearbyList = ({ data }: NearbyListProps) => {
   return (
     <ul>

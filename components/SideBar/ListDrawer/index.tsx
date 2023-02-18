@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useMemo, useEffect } from 'react'
 import { Feature } from '../../../constants/types'
 import { useCardListSize, useIsMobile } from '../../../hooks'
@@ -39,6 +39,10 @@ const ListDrawer = () => {
       list_open: { opacity: 0 },
       list_close: { opacity: 1 },
     },
+    list_container: {
+      list_container_open: { diplay: 'none' },
+      list_container_close: { height: 'block' },
+    },
   }
 
   const AnimationProps = {
@@ -55,8 +59,19 @@ const ListDrawer = () => {
     },
     list: {
       initial: 'list_close',
-      animate: !isOpen ? 'list_close' : 'list_open',
+      //animate: 'list_close',
       variants: { ...Variants.list },
+      exit: { opacity: 0 },
+      transition: {
+        delay: 0,
+        ease: 'easeOut',
+        duration: 0.25,
+      },
+    },
+    list_container: {
+      initial: 'list_container_close',
+      animate: !isOpen ? 'list_container_close' : 'list_container_open',
+      variants: { ...Variants.list_container },
       exit: { opacity: 0 },
       transition: {
         delay: 0,
@@ -76,46 +91,47 @@ const ListDrawer = () => {
     },
   }
   return (
-    <>
-      <MotionDiv {...AnimationProps.list} framerKey="feature-list">
-        <p className="mb-3 font-nunito text-lg font-semibold">
-          Top in New York
-        </p>
-        {data ? <FeaturedList topFeatures={data} /> : <LoadingList size={10} />}
-      </MotionDiv>
-      <motion.p
-        {...AnimationProps.list}
-        className={`mb-2 font-nunito text-lg font-semibold`}
-        key="nearby-title"
-      >
-        Nearby
-      </motion.p>
-      <MotionDiv
-        {...AnimationProps.list}
-        classNames="overflow-y-auto"
-        framerKey="nearby-list"
-      >
-        {isLoading && (
-          <MotionDiv {...AnimationProps.list_load} framerKey="loading-list">
-            <LoadingList
-              fullWidth={true}
-              size={size ? size : 10}
-              flexDirection={'flex-col'}
-              scrollDirection={'overflow-y-scroll'}
-            />
-          </MotionDiv>
-        )}
-        {!isLoading && memoizedFeatures.length > 0 ? (
-          <MotionDiv {...AnimationProps.list_load} framerKey="nearby-list">
-            <NearbyList data={memoizedFeatures} />
-          </MotionDiv>
-        ) : (
-          <span className="block w-full text-center font-nunito font-normal">
-            no cats nearby 😿
-          </span>
-        )}
-      </MotionDiv>
-    </>
+    <AnimatePresence>
+      {!isOpen && (
+        <MotionDiv classNames="h-full flex flex-col gap-2 overflow-hidden">
+          <div>
+            <p className="mb-3 font-nunito text-lg font-semibold">
+              Top in New York
+            </p>
+            {data ? (
+              <FeaturedList topFeatures={data} />
+            ) : (
+              <LoadingList size={10} />
+            )}
+          </div>
+
+          <p className="font-nunito text-lg font-semibold" key="nearby-title">
+            Nearby
+          </p>
+          <div className="h-full overflow-y-auto">
+            {isLoading && (
+              <MotionDiv {...AnimationProps.list_load} framerKey="loading-list">
+                <LoadingList
+                  fullWidth={true}
+                  size={size ? size : 10}
+                  flexDirection={'flex-col'}
+                  scrollDirection={'overflow-y-hidden'}
+                />
+              </MotionDiv>
+            )}
+            {!isLoading && memoizedFeatures.length > 0 ? (
+              <MotionDiv {...AnimationProps.list_load} framerKey="nearby-list">
+                <NearbyList data={memoizedFeatures} />
+              </MotionDiv>
+            ) : (
+              <p className="w-full text-center font-nunito font-normal">
+                no cats nearby 😿
+              </p>
+            )}
+          </div>
+        </MotionDiv>
+      )}
+    </AnimatePresence>
   )
 }
 

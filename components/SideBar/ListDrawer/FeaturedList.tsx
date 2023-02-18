@@ -10,7 +10,7 @@ const FeaturedList = ({ topFeatures }: FeaturedListProps) => {
   return (
     <>
       {topFeatures.length > 0 && (
-        <ol className="-mr-6 flex overflow-x-auto pb-6">
+        <ol className="-mr-6 flex overflow-x-auto pb-4">
           {topFeatures.map((feature: Feature) => {
             const { id, MapBox_Feature, name, locality } = feature
             const { address } = MapBox_Feature[0]

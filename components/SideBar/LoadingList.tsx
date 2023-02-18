@@ -4,14 +4,14 @@ type LoadingListProps = {
   size: number
   fullWidth?: boolean
   flexDirection?: 'flex-row' | 'flex-col'
-  scrollDirection?: 'overflow-x-scroll' | 'overflow-y-scroll'
+  scrollDirection?: 'overflow-x-hidden' | 'overflow-y-hidden'
 }
 
 const LoadingList = ({
   size,
   fullWidth = false,
   flexDirection = 'flex-row',
-  scrollDirection = 'overflow-x-scroll',
+  scrollDirection = 'overflow-x-hidden',
 }: LoadingListProps) => {
   return (
     <ul className={`-mr-6 flex pb-6 ${scrollDirection} ${flexDirection}`}>
