@@ -8,6 +8,7 @@ import useLngLatSearch, { getLngLatResults } from './SearchByLatLng'
 import getTopInArea from './GetTopInArea'
 import useLoadingDebounce from './useLoadingDebounce'
 import useCardListSize from './useCardListSize'
+import useIsMobile from './useIsMobile'
 
 export {
   fetchAddressSearchResults,
@@ -18,6 +19,7 @@ export {
   useAddressSearch,
   useCardListSize,
   useDebounce,
+  useIsMobile,
   useLoadingDebounce,
   useLngLatSearch,
   useMapUpdate,

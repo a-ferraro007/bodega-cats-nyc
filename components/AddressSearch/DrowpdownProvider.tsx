@@ -1,9 +1,35 @@
-import { createContext, useContext, useState } from 'react'
-import shallow from 'zustand/shallow'
-import { useAddressSearchStore } from '../../store'
-const DropdownContext = createContext({})
+import { createContext, ReactNode, useContext, useState } from 'react'
 
-const DropdownProvider = ({ children }: any) => {
+type DropdownContextType = {
+  query: string
+  setQuery: (query: string) => void
+  searchLocation: any
+  setSearchLocation: (searchLocation: any) => void
+  data: any
+  setData: (data: any) => void
+  openDropdown: boolean
+  setOpenDropdown: (openDropdown: boolean) => void
+  isLoading: boolean
+  setIsLoading: (isLoading: boolean) => void
+}
+type DropdownProviderProps = {
+  children: ReactNode
+}
+
+const DropdownContext = createContext<DropdownContextType>({
+  query: '',
+  setQuery: () => {},
+  searchLocation: {},
+  setSearchLocation: () => {},
+  data: {},
+  setData: () => {},
+  openDropdown: false,
+  setOpenDropdown: () => {},
+  isLoading: false,
+  setIsLoading: () => {},
+})
+
+const DropdownProvider = ({ children }: DropdownProviderProps) => {
   const [searchLocation, setSearchLocation] = useState<any>({})
   const [query, setQuery] = useState('')
   const [data, setData] = useState<any>({})
@@ -30,12 +56,12 @@ const DropdownProvider = ({ children }: any) => {
   )
 }
 
-function useDropdown(): any {
+function useDropdownContext(): any {
   const context = useContext(DropdownContext)
   if (context === undefined) {
-    throw new Error('useDropdown must be used within a CountProvider')
+    throw new Error('useDropdownContext must be used within a DropdownProvider')
   }
   return context
 }
 
-export { DropdownProvider, useDropdown }
+export { DropdownProvider, useDropdownContext }
