@@ -20,7 +20,7 @@ const Popup = ({ feature }: PopupProps) => {
       <span className="font-nunito text-lg  font-bold"> {feature.name} </span>
 
       <div className="flex flex-row justify-end">
-        <div className="mr-1 rounded-sm bg-zinc-100 p-1">
+        <div className="mr-1 rounded-sm bg-[#f5f4f1] p-1">
           <svg
             className="fill-primaryGold stroke-primaryGold stroke-1"
             width="12"

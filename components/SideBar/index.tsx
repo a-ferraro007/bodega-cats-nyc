@@ -4,12 +4,17 @@ import { trpc } from '../../utils/trpc'
 import NearbyList from './NearbyList'
 import FeaturedList from './FeaturedList'
 import LoadingList from './LoadingList'
-import { useCardListSize } from '../../hooks'
+import { useCardListSize, useIsMobile } from '../../hooks'
 import MotionDiv from '../MotionDiv'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Feature } from '../../constants/types'
+import Close from '../../svg/Close'
+import InputLocation from '../../svg/InputLocation'
+import SearchIcon from '../../svg/SearchIcon'
+import AddDrawer from './AddDrawer'
 
 const SideBar = () => {
+  const isMobile = useIsMobile()
   const size = useCardListSize('height')
   const [isOpen, setIsOpen] = useState<boolean | null>(null)
   const showMobileMap = useStore((state) => state.showMobileMap)
@@ -25,39 +30,50 @@ const SideBar = () => {
     return array
   }, [featureMap])
 
-  const listLoadAnimationProps = {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    exit: { opacity: 0 },
-    transition: {
-      delay: 0,
-      ease: 'linear',
-      duration: 0.25,
+  const Variants = {
+    container: {
+      container_open: { width: '28rem' },
+      container_close: { width: '25rem' },
+    },
+    list: {
+      list_open: { opacity: 0 },
+      list_close: { opacity: 1 },
     },
   }
 
-  const ListVariants = {
-    open: { opacity: 0 },
-    close: { opacity: 1 },
-  }
-
-  const listAnimationProps = {
-    initial: 'close',
-    animate: isOpen ? 'open' : 'close',
-    variants: { ...ListVariants },
-    exit: { opacity: 0 },
-    transition: {
-      delay: 0,
-      ease: 'easeOut',
-      duration: 0.2,
+  const AnimationProps = {
+    container: {
+      initial: 'container_close',
+      animate: isOpen && !isMobile ? 'container_open' : 'container_close',
+      variants: { ...Variants.container },
+      exit: { opacity: 0 },
+      transition: {
+        delay: 0,
+        ease: 'linear',
+        duration: 0.25,
+      },
     },
-  }
-
-  const ContainerVariants = {
-    open: {
-      width: '40%',
+    list: {
+      initial: 'list_close',
+      animate: isOpen ? 'list_open' : 'list_close',
+      variants: { ...Variants.list },
+      exit: { opacity: 0 },
+      transition: {
+        delay: 0,
+        ease: 'easeOut',
+        duration: 0.25,
+      },
     },
-    closed: { width: '' },
+    list_load: {
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      exit: { opacity: 0 },
+      transition: {
+        delay: 0,
+        ease: 'linear',
+        duration: 0.25,
+      },
+    },
   }
 
   const handleNewCatCTA = () => {
@@ -71,32 +87,17 @@ const SideBar = () => {
   return (
     <AnimatePresence>
       <MotionDiv
+        {...AnimationProps.container}
         classNames={`absolute z-10 h-full w-full border-l-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white md:static md:w-side-bar ${
           showMobileMap ? '' : 'hidden md:block'
         }`}
-        initial={'closed'}
-        animate={isOpen ? 'open' : 'closed'}
         framerKey="sideBar-container"
-        variants={ContainerVariants}
       >
-        <MotionDiv
-          {...listAnimationProps}
-          classNames="flex h-sideBarContainer flex-col p-6"
-        >
-          <div className="mb-6 max-w-[250px] self-end">
-            <button
-              className="w-full rounded-[10px] bg-dark-blue-radial-gradient p-2 px-4 font-nunito text-lg font-semibold text-white transition-colors duration-300 hover:scale-[1.03]"
-              onClick={() => handleNewCatCTA()}
-            >
-              new cat
-            </button>
-          </div>
-          <div>
-            <p
-              className="mb-3 font-nunito text-lg font-semibold"
-              {...listAnimationProps}
-              key="top-title"
-            >
+        <div className="flex h-sideBarContainer flex-col p-6">
+          <AddDrawer isOpen={isOpen} handleNewCatCTA={handleNewCatCTA} />
+
+          <MotionDiv {...AnimationProps.list} framerKey="feature-list">
+            <p className="mb-3 font-nunito text-lg font-semibold">
               Top in New York
             </p>
             {data ? (
@@ -104,12 +105,22 @@ const SideBar = () => {
             ) : (
               <LoadingList size={10} />
             )}
-          </div>
-          <p className={`mb-2 font-nunito text-lg font-semibold`}>Nearby</p>
+          </MotionDiv>
+          <motion.p
+            {...AnimationProps.list}
+            className={`mb-2 font-nunito text-lg font-semibold`}
+            key="nearby-title"
+          >
+            Nearby
+          </motion.p>
 
-          <div className="overflow-y-auto">
+          <MotionDiv
+            {...AnimationProps.list}
+            classNames="overflow-y-auto"
+            framerKey="nearby-list"
+          >
             {isLoading && (
-              <MotionDiv {...listLoadAnimationProps} framerKey="loading-list">
+              <MotionDiv {...AnimationProps.list_load} framerKey="loading-list">
                 <LoadingList
                   fullWidth={true}
                   size={size ? size : 10}
@@ -119,7 +130,7 @@ const SideBar = () => {
               </MotionDiv>
             )}
             {!isLoading && memoizedFeatures.length > 0 ? (
-              <MotionDiv {...listLoadAnimationProps} framerKey="nearby-list">
+              <MotionDiv {...AnimationProps.list_load} framerKey="nearby-list">
                 <NearbyList data={memoizedFeatures} />
               </MotionDiv>
             ) : (
@@ -127,11 +138,20 @@ const SideBar = () => {
                 no cats nearby 😿
               </span>
             )}
-          </div>
-        </MotionDiv>
+          </MotionDiv>
+        </div>
       </MotionDiv>
     </AnimatePresence>
   )
 }
 
 export default SideBar
+
+{
+  /*<button
+className="w-full rounded-[10px] bg-dark-blue-radial-gradient p-2 px-4 font-nunito text-lg font-semibold text-white transition-colors duration-300 hover:scale-[1.03]"
+onClick={() => handleNewCatCTA()}
+>
+new cat
+</button>*/
+}
