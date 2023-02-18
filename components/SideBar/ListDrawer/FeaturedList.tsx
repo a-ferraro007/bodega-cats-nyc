@@ -1,7 +1,7 @@
-import { Feature, FeatureInterface } from '../../constants/types'
-import Arrow from '../../svg/Arrow'
-import { returnNewMarker } from '../../utils/MapMarker'
-import BoroughBadge from './BoroughBadge'
+import { Feature, FeatureInterface } from '../../../constants/types'
+import Arrow from '../../../svg/Arrow'
+import { returnNewMarker } from '../../../utils/MapMarker'
+import BoroughBadge from '../BoroughBadge'
 type FeaturedListProps = {
   topFeatures: FeatureInterface[]
 }

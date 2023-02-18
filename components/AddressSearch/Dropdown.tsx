@@ -3,12 +3,12 @@ import { KeyboardEvent } from 'react'
 import { SearchLocation } from '../../constants/types'
 import { useAddressSearchStore } from '../../store'
 import MotionDiv from '../MotionDiv'
-import { useDropdown } from './DrowpdownProvider'
+import { useDropdownContext } from './DrowpdownProvider'
 import LoadingDropdown from './LoadingDropdown'
 
 const Dropdown = () => {
   const { data, query, openDropdown, setOpenDropdown, isLoading } =
-    useDropdown()
+    useDropdownContext()
   const setSearchLocationState = useAddressSearchStore(
     (state) => state.setSearchLocationState
   )

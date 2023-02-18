@@ -1,5 +1,5 @@
-import { Feature, FeatureInterface } from '../../constants/types'
-import BoroughBadge from './BoroughBadge'
+import { Feature, FeatureInterface } from '../../../constants/types'
+import BoroughBadge from '../BoroughBadge'
 
 type NearbyListProps = {
   data: FeatureInterface[]

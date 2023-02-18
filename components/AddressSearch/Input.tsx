@@ -10,13 +10,13 @@ import {
 import { useAddressSearchStore } from '../../store'
 import { useDebounce, useLoadingDebounce } from '../../hooks'
 import { trpc } from '../../utils/trpc'
-import { useDropdown } from './DrowpdownProvider'
+import { useDropdownContext } from './DrowpdownProvider'
 import InputLocation from '../../svg/InputLocation'
 import Close from '../../svg/Close'
 
 const AddressSearchBar = ({ address }: any) => {
   const { setQuery, query, setData, setOpenDropdown, setIsLoading } =
-    useDropdown()
+    useDropdownContext()
   const debounce = useDebounce(query, 500)
   const [isInputFocused, setisInputFocused] = useState(false)
   const [inputValue, setInputValue] = useState<string>(address)
