@@ -29,7 +29,7 @@ const AddDrawer = () => {
     <>
       <div className="flex flex-row justify-end gap-3">
         <Input />
-        <div className="mb-6 max-w-[250px]">
+        <div className="mb-4 max-w-[250px]">
           <AddButton />
         </div>
       </div>
