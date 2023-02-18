@@ -1,10 +1,10 @@
-import { Feature, FeatureInterface } from '../../constants/types'
-import BoroughBadge from './BoroughBadge'
+import { Feature, FeatureInterface } from '../../../constants/types'
+import BoroughBadge from '../BoroughBadge'
 
 type NearbyListProps = {
   data: FeatureInterface[]
 }
-
+//className="overflow-y-auto"
 const NearbyList = ({ data }: NearbyListProps) => {
   return (
     <ul>
@@ -22,10 +22,7 @@ const NearbyList = ({ data }: NearbyListProps) => {
               <span className="text-md block pb-1 font-nunito font-bold">
                 {name}
               </span>
-              <p className="mb-4 font-roboto text-xs font-normal  ">
-                {' '}
-                {address}
-              </p>
+              <p className="mb-4 font-roboto text-xs font-normal"> {address}</p>
               <div className="border-b-[1px] border-solid border-[#dad8d2]"></div>
               {locality && (
                 <div className="pt-4">

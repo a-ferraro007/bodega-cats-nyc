@@ -10,13 +10,13 @@ import {
 import { useAddressSearchStore } from '../../store'
 import { useDebounce, useLoadingDebounce } from '../../hooks'
 import { trpc } from '../../utils/trpc'
-import { useDropdown } from './DrowpdownProvider'
+import { useDropdownContext } from './DrowpdownProvider'
 import InputLocation from '../../svg/InputLocation'
 import Close from '../../svg/Close'
 
 const AddressSearchBar = ({ address }: any) => {
   const { setQuery, query, setData, setOpenDropdown, setIsLoading } =
-    useDropdown()
+    useDropdownContext()
   const debounce = useDebounce(query, 500)
   const [isInputFocused, setisInputFocused] = useState(false)
   const [inputValue, setInputValue] = useState<string>(address)
@@ -65,9 +65,9 @@ const AddressSearchBar = ({ address }: any) => {
       </span>
       <div className="flex-grow">
         <input
-          className="font-regular h-full w-full bg-[#f5f4f1] font-nunito text-lg text-graphite outline-none transition-all  duration-500 placeholder:pl-1 placeholder:text-graphite"
+          className="font-regular h-full w-full bg-[#f5f4f1] font-nunito text-lg text-graphite outline-none transition-all  duration-500 placeholder:pl-1 placeholder:text-[rgb(93,93,93)]"
           placeholder="search an area"
-          id={'search-input'}
+          id="search-area-input"
           type="search"
           value={inputValue || ''}
           autoFocus={true}
@@ -80,7 +80,7 @@ const AddressSearchBar = ({ address }: any) => {
       <button
         className="p-[2px] outline-none md:p-1"
         onClick={() => {
-          document.getElementById('search-input')?.focus()
+          document.getElementById('search-area-input')?.focus()
           setInputValue('')
           setQuery('')
         }}

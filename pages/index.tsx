@@ -6,7 +6,7 @@ import { useAddressSearchStore, useStore } from '../store'
 import Map from '../components/Map'
 import AddressSearch from '../components/AddressSearch'
 import MapIcon from '../svg/MapIcon'
-import FeatureList from '../components/SideBar'
+import SideBar from '../components/SideBar'
 import { useGetUserLocation } from '../hooks/useGetUserLocation'
 import { SearchLocation } from '../constants/types'
 import { trpc } from '../utils/trpc'
@@ -56,8 +56,8 @@ const Home: NextPage = ({}) => {
             </span>
           </h1>
           <AddressSearch />
-          <button className="rounded-[10px] bg-[#f5f4f1] p-3">
-            <Login />
+          <button className="rounded-[10px] bg-[#f5f4f1] p-2 md:p-3">
+            <Login classNames="-translate-y-[.115rem] md:translate-y-0" />
           </button>
         </nav>
 
@@ -70,7 +70,7 @@ const Home: NextPage = ({}) => {
               />
             )}
           </div>
-          <FeatureList />
+          <SideBar />
           <button
             className={`absolute bottom-20 right-10 z-20 block rounded-full ${
               false ? 'bg-dark-blue-radial-gradient' : 'bg-graphite'
