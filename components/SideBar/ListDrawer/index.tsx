@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import { useMemo, useEffect } from 'react'
 import { Feature } from '../../../constants/types'
 import { useCardListSize, useIsMobile } from '../../../hooks'
