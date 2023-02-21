@@ -6,7 +6,7 @@ const AddButton = () => {
 
   const Variants = {
     add: {
-      add_open: { opacity: 1, rotate: 135 },
+      add_open: { opacity: 1, rotate: -45 },
       add_close: { opacity: 1, rotate: 0 },
     },
     input: {
@@ -24,7 +24,6 @@ const AddButton = () => {
       transition: {
         delay: 0,
         type: 'spring',
-        //ease: '',
         stiffness: 100,
         damping: 10,
         duration: 0.25,
@@ -38,7 +37,7 @@ const AddButton = () => {
       transition: {
         delay: 0,
         ease: 'linear',
-        duration: 0.1,
+        duration: 0.25,
       },
     },
   }
