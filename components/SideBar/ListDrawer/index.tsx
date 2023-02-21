@@ -94,7 +94,7 @@ const ListDrawer = () => {
     <AnimatePresence>
       {!isOpen && (
         <MotionDiv
-          {...AnimationProps.list_load}
+          {...AnimationProps.list}
           classNames="h-full flex flex-col gap-2"
           framerKey="feature-list-container"
         >
@@ -122,7 +122,7 @@ const ListDrawer = () => {
               </MotionDiv>
             )}
             {!isLoading && memoizedFeatures.length > 0 ? (
-              <MotionDiv {...AnimationProps.list_load} framerKey="nearby-list">
+              <MotionDiv {...AnimationProps.list} framerKey="nearby-list">
                 <NearbyList data={memoizedFeatures} />
               </MotionDiv>
             ) : (
