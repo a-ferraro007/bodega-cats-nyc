@@ -13,6 +13,7 @@ import { trpc } from '../utils/trpc'
 import Login from '../svg/Login'
 import Lines from '../svg/Lines'
 import CatFace from '../svg/CatFace'
+import { useSetHeight } from '../hooks'
 
 const Home: NextPage = ({}) => {
   const lnglat = useGetUserLocation()
@@ -47,7 +48,7 @@ const Home: NextPage = ({}) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="relative h-screen w-screen overflow-hidden">
+      <main className="relative h-full w-screen overflow-hidden">
         <nav className="flex h-[70px] w-full items-center justify-between gap-4 border-b-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white p-4 md:h-20 md:gap-14 md:p-6">
           <h1 className="font-baloo text-lg font-bold leading-none text-primaryGold md:text-2xl">
             Bodega <br /> Cats
