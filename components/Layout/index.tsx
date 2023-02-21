@@ -1,24 +1,12 @@
-import { useEffect, useState } from 'react'
-import { useIsMobile, useSetHeight } from '../../hooks'
+import { ReactNode, useEffect, useState } from 'react'
+import { useSetHeight } from '../../hooks'
+type LayoutProps = {
+  children: ReactNode
+}
 
-const Layout = ({ children }: any) => {
+const Layout = ({ children }: LayoutProps) => {
   const height = useSetHeight()
-  const isMobile = useIsMobile()
-  const [styleHeight, setStyleHeight] = useState<any>({
-    height: height && isMobile ? `${height}px` : '100vh',
-  })
-
-  useEffect(() => {
-    setStyleHeight({
-      height: height && isMobile ? `${height}px` : '100vh',
-    })
-  }, [height, setStyleHeight, isMobile])
-
-  if (!isMobile) {
-    return <div style={{ height: '100vh' }}>{children}</div>
-  }
-
-  return <>{height ? <div style={styleHeight}>{children}</div> : <></>}</>
+  return <>{height ? <div style={height}>{children}</div> : <></>}</>
 }
 
 export default Layout
