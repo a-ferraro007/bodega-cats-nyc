@@ -93,7 +93,11 @@ const ListDrawer = () => {
   return (
     <AnimatePresence>
       {!isOpen && (
-        <MotionDiv classNames="h-full flex flex-col gap-2">
+        <MotionDiv
+          {...AnimationProps.list_load}
+          classNames="h-full flex flex-col gap-2"
+          framerKey="feature-list-container"
+        >
           <div>
             <p className="mb-3 font-nunito text-lg font-semibold">
               Top in New York
