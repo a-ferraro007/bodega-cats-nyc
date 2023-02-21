@@ -109,9 +109,7 @@ const ListDrawer = () => {
             )}
           </div>
 
-          <p className="font-nunito text-lg font-semibold" key="nearby-title">
-            Nearby
-          </p>
+          <p className="font-nunito text-lg font-semibold">Nearby</p>
           <div className="h-full overflow-y-auto">
             {isLoading && (
               <MotionDiv {...AnimationProps.list_load} framerKey="loading-list">
