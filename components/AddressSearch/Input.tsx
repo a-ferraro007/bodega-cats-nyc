@@ -74,7 +74,6 @@ const AddressSearchBar = ({ address }: any) => {
           autoComplete="none"
           onChange={(e) => handleOnChange(e)}
           onFocus={() => handleOnFocus()}
-          tabIndex={0}
         />
       </div>
       <button
