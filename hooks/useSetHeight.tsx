@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
+import { getHeight } from '../utils/window'
+import useIsAfterFirstRender from './useIsAfterFirstRender'
 
 const useSetHeight = (): number | null => {
+  const isAfterFirstRender = useIsAfterFirstRender()
   const [height, setHeight] = useState<number | null>(getHeight)
 
   useEffect(() => {
+    if (!isAfterFirstRender) return
     function handleWindowSizeChange() {
-      console.log('window.innerHeight: ', window.innerHeight)
       const innerHeight = getHeight()
       setHeight(innerHeight)
     }
@@ -13,17 +16,8 @@ const useSetHeight = (): number | null => {
     return () => {
       window.removeEventListener('resize', handleWindowSizeChange)
     }
-  }, [])
+  }, [isAfterFirstRender])
   return height || null
-}
-
-function getHeight() {
-  if (!isClient()) return null
-  return window.innerHeight
-}
-
-function isClient() {
-  return typeof window !== 'undefined' && typeof document !== 'undefined'
 }
 
 export default useSetHeight

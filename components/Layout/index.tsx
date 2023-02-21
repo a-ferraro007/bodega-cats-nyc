@@ -1,4 +1,3 @@
-import React from 'react'
 import { useSetHeight } from '../../hooks'
 
 const Layout = ({ children }: any) => {
