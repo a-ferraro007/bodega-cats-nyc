@@ -17,7 +17,7 @@ const useSetHeight = (): number | null => {
       window.removeEventListener('resize', handleWindowSizeChange)
     }
   }, [isAfterFirstRender])
-  return height || null
+  return isAfterFirstRender ? height : null
 }
 
 export default useSetHeight
