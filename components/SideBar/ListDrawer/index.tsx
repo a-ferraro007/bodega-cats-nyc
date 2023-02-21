@@ -93,12 +93,11 @@ const ListDrawer = () => {
   return (
     <AnimatePresence>
       {!isOpen && (
-        <MotionDiv
-          {...AnimationProps.list}
-          classNames="h-full flex flex-col gap-2"
-          framerKey="feature-list-container"
-        >
-          <div>
+        <div className="flex h-full flex-col gap-2">
+          <MotionDiv
+            {...AnimationProps.list}
+            framerKey="feature-list-container"
+          >
             <p className="mb-3 font-nunito text-lg font-semibold">
               Top in New York
             </p>
@@ -107,7 +106,7 @@ const ListDrawer = () => {
             ) : (
               <LoadingList size={10} />
             )}
-          </div>
+          </MotionDiv>
 
           <p className="font-nunito text-lg font-semibold">Nearby</p>
           <div className="h-full overflow-y-auto">
@@ -131,7 +130,7 @@ const ListDrawer = () => {
               </p>
             )}
           </div>
-        </MotionDiv>
+        </div>
       )}
     </AnimatePresence>
   )
