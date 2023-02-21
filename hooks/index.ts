@@ -9,6 +9,7 @@ import getTopInArea from './GetTopInArea'
 import useLoadingDebounce from './useLoadingDebounce'
 import useCardListSize from './useCardListSize'
 import useIsMobile from './useIsMobile'
+import useSetHeight from './useSetHeight'
 
 export {
   fetchAddressSearchResults,
@@ -25,4 +26,5 @@ export {
   useMapUpdate,
   useNewFeatureMutation,
   useSearch,
+  useSetHeight,
 }
