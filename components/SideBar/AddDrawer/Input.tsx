@@ -48,7 +48,7 @@ const Input = () => {
       transition: {
         delay: 0,
         ease: 'linear',
-        duration: 0.25,
+        duration: 0.15,
       },
     },
     //input: {

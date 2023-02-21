@@ -93,7 +93,7 @@ const ListDrawer = () => {
   return (
     <AnimatePresence>
       {!isOpen && (
-        <MotionDiv classNames="h-full flex flex-col gap-2 overflow-hidden">
+        <MotionDiv classNames="h-full flex flex-col gap-2">
           <div>
             <p className="mb-3 font-nunito text-lg font-semibold">
               Top in New York
