@@ -13,7 +13,6 @@ import { trpc } from '../utils/trpc'
 import Login from '../svg/Login'
 import Lines from '../svg/Lines'
 import CatFace from '../svg/CatFace'
-import { useSetHeight } from '../hooks'
 
 const Home: NextPage = ({}) => {
   const lnglat = useGetUserLocation()

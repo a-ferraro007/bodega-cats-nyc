@@ -94,7 +94,7 @@ const ListDrawer = () => {
     <AnimatePresence>
       {!isOpen && (
         <MotionDiv
-          className="flex h-full flex-col gap-2"
+          classNames="flex h-full flex-col gap-2"
           {...AnimationProps.list}
           framerKey="feature-list-container"
         >
