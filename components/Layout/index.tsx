@@ -14,7 +14,11 @@ const Layout = ({ children }: any) => {
     })
   }, [height, setStyleHeight, isMobile])
 
-  return <div style={styleHeight}>{children}</div>
+  if (!isMobile) {
+    return <div style={{ height: '100vh' }}>{children}</div>
+  }
+
+  return <>{height ? <div style={styleHeight}>{children}</div> : <></>}</>
 }
 
 export default Layout
