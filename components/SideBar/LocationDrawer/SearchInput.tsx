@@ -6,14 +6,8 @@ import MotionDiv from '../../MotionDiv'
 import { useDrawerContext } from '../DrawerProvider'
 
 const SearchInput = () => {
-  const {
-    isOpen,
-    setIsOpen,
-    isInputFocused,
-    setisInputFocused,
-    inputValue,
-    setInputValue,
-  } = useDrawerContext()
+  const { isOpen, setisInputFocused, inputValue, setInputValue } =
+    useDrawerContext()
 
   const handleOnFocus = () => setisInputFocused(true)
 
@@ -25,19 +19,19 @@ const SearchInput = () => {
     setisInputFocused(false)
   }
 
-  useEffect(() => {
-    console.log('is open!: ', isOpen)
-  }, [isOpen])
+  //useEffect(() => {
+  //  console.log('is open!: ', isOpen)
+  //}, [isOpen])
 
   const Variants = {
     container: {
       container_open: { width: '100%', opacity: 1, visibility: 'visible' },
       container_close: { width: '25%', opacity: 0, visibility: 'hidden' },
     },
-    input: {
-      input_open: { opacity: 1, visibility: 'visible' },
-      input_close: { opacity: 0, visibility: 'hidden' },
-    },
+    //input: {
+    //  input_open: { opacity: 1, visibility: 'visible' },
+    //  input_close: { opacity: 0, visibility: 'hidden' },
+    //},
   }
   const AnimationProps = {
     container: {
@@ -65,7 +59,10 @@ const SearchInput = () => {
   }
 
   return (
-    <MotionDiv {...AnimationProps.container} framerKey="add-input">
+    <MotionDiv
+      {...AnimationProps.container}
+      framerKey={isOpen ? 'add-input-open' : 'add-input-close'}
+    >
       <div
         //{...AnimationProps.input}
         //framerKey="add-input-input"

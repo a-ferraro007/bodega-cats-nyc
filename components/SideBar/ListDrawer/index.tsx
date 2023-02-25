@@ -66,9 +66,9 @@ const ListDrawer = () => {
     },
     list_container: {
       initial: 'list_container_close',
-      animate: !isOpen ? 'list_container_close' : 'list_container_open',
+      animate: 'list_container_open', //!isOpen ? 'list_container_close' : 'list_container_open',
       variants: { ...Variants.list_container },
-      exit: { opacity: 0 },
+      exit: 'list_container_close',
       transition: {
         delay: 0,
         ease: 'easeOut',
@@ -89,7 +89,11 @@ const ListDrawer = () => {
   return (
     <AnimatePresence>
       {!isOpen && (
-        <MotionDiv classNames="h-full flex flex-col gap-2 overflow-hidden">
+        <MotionDiv
+          //{...AnimationProps.list}
+          classNames="h-full flex flex-col gap-2 overflow-hidden"
+          framerKey={!isOpen ? 'list-container-open' : 'list-container-close'}
+        >
           <div>
             <p className="mb-3 font-nunito text-lg font-semibold">
               Top in New York
@@ -116,7 +120,14 @@ const ListDrawer = () => {
               </MotionDiv>
             )}
             {!isLoading && memoizedFeatures.length > 0 ? (
-              <MotionDiv {...AnimationProps.list_load} framerKey="nearby-list">
+              <MotionDiv
+                {...AnimationProps.list_load}
+                framerKey={
+                  !isLoading && memoizedFeatures.length > 0
+                    ? 'nearby-list-open'
+                    : 'nearby-list-close'
+                }
+              >
                 <NearbyList data={memoizedFeatures} />
               </MotionDiv>
             ) : (

@@ -1,12 +1,18 @@
 import { useStore } from '../../store'
 import { AnimatePresence } from 'framer-motion'
-import NewLocationDrawer from './NewLocationDrawer'
+import LocationDrawer from './LocationDrawer'
 import { DrawerProvider, useDrawerContext } from './DrawerProvider'
 import ListDrawer from './ListDrawer'
+import CloseArrow from '../../svg/CloseArrow'
 
 const SideBar = () => {
   const showMobileMap = useStore((state) => state.showMobileMap)
-
+  const {
+    newLocation,
+    setNewLocation,
+    newLocationIsOpen,
+    setNewLocationIsOpen,
+  } = useDrawerContext()
   //const Variants = {
   //  container: {
   //    container_open: { width: '28rem' },
@@ -27,20 +33,32 @@ const SideBar = () => {
   //    },
   //  },
   //}
+  const handleBackBtnCick = () => {
+    setNewLocation(null)
+    setNewLocationIsOpen(false)
+  }
 
   return (
-    <DrawerProvider>
-      <div
-        className={`absolute z-10 h-full w-full border-l-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white md:static md:w-side-bar ${
-          showMobileMap ? '' : 'hidden md:block'
-        }`}
-      >
-        <div className=" flex h-sideBarContainer flex-col p-6">
-          <NewLocationDrawer />
-          <ListDrawer />
-        </div>
+    //<DrawerProvider>
+    <div
+      className={`absolute z-10 h-full w-full border-l-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white md:static md:w-side-bar ${
+        showMobileMap ? '' : 'hidden md:block'
+      }`}
+    >
+      <div className="relative flex h-sideBarContainer flex-col p-6">
+        {newLocation && (
+          <button
+            className="black absolute top-0 left-[-1.5rem] rounded-full bg-white p-1"
+            onClick={() => handleBackBtnCick()}
+          >
+            <CloseArrow />
+          </button>
+        )}
+        <LocationDrawer />
+        <ListDrawer />
       </div>
-    </DrawerProvider>
+    </div>
+    //</DrawerProevider>
   )
 }
 

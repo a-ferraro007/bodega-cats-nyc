@@ -15,6 +15,7 @@ import Lines from '../svg/Lines'
 import CatFace from '../svg/CatFace'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
+import { DrawerProvider } from '../components/SideBar/DrawerProvider'
 
 const Home: NextPage = ({}) => {
   const user = useUser()
@@ -81,7 +82,9 @@ const Home: NextPage = ({}) => {
               />
             )}
           </div>
-          <SideBar />
+          <DrawerProvider>
+            <SideBar />
+          </DrawerProvider>
           <button
             className={`absolute bottom-20 right-10 z-20 block rounded-full ${
               false ? 'bg-dark-blue-radial-gradient' : 'bg-graphite'

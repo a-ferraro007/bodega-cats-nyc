@@ -9,10 +9,19 @@ import { trpc } from '../../../../utils/trpc'
 import { useDrawerContext } from '../../DrawerProvider'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { useAuthStore } from '../../../../store'
+import MotionDiv from '../../../MotionDiv'
+import { AnimatePresence } from 'framer-motion'
+import CloseArrow from '../../../../svg/CloseArrow'
 
 const NewLocation = () => {
+  const utils = trpc.useContext()
   const { authStatus, setAuthStatus } = useAuthStore((state) => state)
-  const { newLocation, setNewLocation } = useDrawerContext()
+  const {
+    newLocation,
+    setNewLocation,
+    newLocationIsOpen,
+    setNewLocationIsOpen,
+  } = useDrawerContext()
   const [rating, setRating] = useState(0)
   const [hover, setHover] = useState(0)
   const user = useUser()
@@ -23,7 +32,11 @@ const NewLocation = () => {
     watch,
     formState: { errors },
   } = useForm<FormInputs>()
-  const newFeatureMutation = trpc.addLocation.useMutation()
+  const newFeatureMutation = trpc.addLocation.useMutation({
+    onSuccess() {
+      utils.selectFeatures.invalidate()
+    },
+  })
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     let sbImgURL
@@ -84,46 +97,11 @@ const NewLocation = () => {
   }, [newFeatureMutation.isSuccess])
 
   return (
-    <div className="z-10 h-full w-full overflow-scroll">
+    <div className="h-full w-full overflow-scroll">
       <form
         className="flex h-full flex-auto basis-full flex-col gap-6"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {/*<button
-          className="self-center translate-y-2 hover:bg-gray-100 focus:bg-gray-100 py-1 px-2 rounded-md transition-all duration-300"
-          onClick={(event: any) => {
-            event.preventDefault()
-            if (searchMarker) {
-              searchMarker.remove()
-              setSearchMarker(null)
-            }
-            if (query.length === 0) {
-              setDrawerState({ searchDrawerIsActive: false, featureDrawerIsActive: false })
-            } else {
-              setDrawerState({ searchDrawerIsActive: true, featureDrawerIsActive: false })
-            }
-          }}
-        >
-          <svg
-            width="15"
-            height="18"
-            viewBox="0 0 27 30"
-            fill="none"
-            className="hover:fill-black focus:fill-black"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.585786 13.5858C-0.195262 14.3668 -0.195262 15.6332 0.585786 16.4142L13.3137 29.1421C14.0948 29.9232 15.3611 29.9232 16.1421 29.1421C16.9232 28.3611 16.9232 27.0948 16.1421 26.3137L4.82843 15L16.1421 3.68629C16.9232 2.90524 16.9232 1.63891 16.1421 0.857864C15.3611 0.0768158 14.0948 0.0768158 13.3137 0.857864L0.585786 13.5858ZM27 13L2 13V17L27 17V13Z"
-              fill="#242424"
-            />
-          </svg>
-        </button>*/}
-        {/*<div className="flex flex-col">
-          <h2 className="text-2xl leading-6 font-nunito font-extrabold text-graphite text-center ">
-            {' '}
-            Add Cat{' '}
-          </h2>
-        </div>*/}
         <fieldset>
           <FileInput label="file" required={true} register={register} />
         </fieldset>
@@ -154,7 +132,7 @@ const NewLocation = () => {
             </fieldset>
             {/*</div>*/}
           </div>
-          <fieldset className="">
+          <fieldset>
             <label className="font-nunito text-sm font-bold">rating</label>
             <Rating
               rating={rating}

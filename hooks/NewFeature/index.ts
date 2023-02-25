@@ -1,8 +1,7 @@
 import { NewFeatureMutation } from './../../constants/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import supabase from '../../supabase'
 import { insertCatProperty, insertMapBoxFeature } from '../../supabase/db'
-//{ uuid, name, rating, image, geo_json, address, locality }: any,
+
 const newFeature = async ({
   CatProperties,
   MapBoxFeature,
