@@ -15,15 +15,14 @@ export const zLngLat = z.object({
 })
 
 export const CatProperties = z.object({
-  created_at: z.string(),
-  id: z.number(),
+  created_at: z.string().optional(),
+  id: z.number().optional(),
   name: z.string(),
   rating: z.number(),
   image: z.string(),
   locality: z.string(),
 })
 
-//CHANGE TO DATA TRANSPORT TYPE
 export const MapBoxFeature = z.object({
   feature_id: z.string(),
   user_id: z.string(),
@@ -47,6 +46,29 @@ export const zNewFeatureMutation = z.object({
 
 export const zFeature = CatProperties.extend({
   MapBox_Feature: z.array(MapBoxFeature),
+})
+
+export const zGeometry = z.object({
+  coordinates: z.array(z.number()).length(2),
+  type: z.string(),
+})
+
+export const zNewLocation = z.object({
+  ParsedFeature: ParsedFeature,
+  Feature: z.object({
+    id: z.string(),
+    type: z.string(),
+    geometry: zGeometry,
+    place_type: z.array(z.string()),
+    properties: z
+      .object({
+        address: z.string(),
+        name: z.string(),
+        rating: z.number(),
+        image: z.string().optional(),
+      })
+      .optional(),
+  }),
 })
 
 export const zRowId = z.object({
@@ -119,6 +141,7 @@ export type CatProperties = z.infer<typeof CatProperties>
 export type FormInputs = z.infer<typeof FormInputs>
 export type ParsedFeature = z.infer<typeof ParsedFeature>
 export type MapBoxFeature = z.infer<typeof MapBoxFeature>
+export type NewLocation = z.infer<typeof zNewLocation>
 export type RowId = z.infer<typeof zRowId>
 export type NewFeatureMutation = z.infer<typeof zNewFeatureMutation>
 export type Feature = z.infer<typeof zFeature>
@@ -127,3 +150,4 @@ export interface TopFeatureInterface extends Feature {}
 export interface FeatureInterface extends Feature {
   MapBox_Feature: MapBoxFeature[]
 }
+export interface NewLocationInterface extends NewLocation {}

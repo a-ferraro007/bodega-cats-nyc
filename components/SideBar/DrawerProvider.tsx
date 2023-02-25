@@ -6,9 +6,14 @@ import {
   useContext,
   useState,
 } from 'react'
+import { NewLocationInterface } from '../../constants/types'
 type DrawerContextType = {
   data: any
   setData: Dispatch<SetStateAction<any>> //(data: any) => void
+  newLocation: NewLocationInterface | null
+  setNewLocation: Dispatch<SetStateAction<any>>
+  newLocationIsOpen: boolean
+  setNewLocationIsOpen: Dispatch<SetStateAction<boolean>> //(newLocationIsOpen: boolean) => void
   isOpen: boolean
   setIsOpen: Dispatch<SetStateAction<boolean>> //(isOpen: boolean) => void
   inputValue: string
@@ -23,6 +28,10 @@ type DrawerProviderProps = {
 const DrawerContext = createContext<DrawerContextType>({
   data: null,
   setData: () => {},
+  newLocation: null,
+  setNewLocation: () => {},
+  newLocationIsOpen: false,
+  setNewLocationIsOpen: () => {},
   isOpen: true,
   setIsOpen: () => {},
   inputValue: '',
@@ -32,16 +41,22 @@ const DrawerContext = createContext<DrawerContextType>({
 })
 
 const DrawerProvider = ({ children }: DrawerProviderProps) => {
+  const [data, setData] = useState(null)
+  const [newLocation, setNewLocation] = useState(null)
+  const [newLocationIsOpen, setNewLocationIsOpen] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [isInputFocused, setisInputFocused] = useState(false)
   const [inputValue, setInputValue] = useState('')
-  const [data, setData] = useState(null)
 
   return (
     <DrawerContext.Provider
       value={{
         data,
         setData,
+        newLocation,
+        setNewLocation,
+        newLocationIsOpen,
+        setNewLocationIsOpen,
         isOpen,
         setIsOpen,
         inputValue,

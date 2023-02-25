@@ -26,10 +26,6 @@ const ListDrawer = () => {
     return array
   }, [featureMap])
 
-  useEffect(() => {
-    console.log(isOpen)
-  })
-
   const Variants = {
     container: {
       container_open: { width: '28rem' },

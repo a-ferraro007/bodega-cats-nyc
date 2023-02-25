@@ -10,10 +10,10 @@ const newFeature = async ({
   try {
     const { id } = await insertCatProperty(CatProperties)
     const data = await insertMapBoxFeature(MapBoxFeature, id)
-    //console.log('MUTATION RESPONSE: ', data)
+    console.log('MUTATION RESPONSE: ', data)
   } catch (error) {
     console.error(error)
-    return error
+    throw error
   }
 }
 

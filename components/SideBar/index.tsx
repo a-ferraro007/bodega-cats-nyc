@@ -1,6 +1,6 @@
 import { useStore } from '../../store'
 import { AnimatePresence } from 'framer-motion'
-import AddDrawer from './AddDrawer'
+import NewLocationDrawer from './NewLocationDrawer'
 import { DrawerProvider, useDrawerContext } from './DrawerProvider'
 import ListDrawer from './ListDrawer'
 
@@ -36,7 +36,7 @@ const SideBar = () => {
         }`}
       >
         <div className=" flex h-sideBarContainer flex-col p-6">
-          <AddDrawer />
+          <NewLocationDrawer />
           <ListDrawer />
         </div>
       </div>

@@ -57,6 +57,16 @@ const featureStore = (set: any) => ({
   setIsLoading: (isLoading: boolean) => set(() => ({ isLoading })),
 })
 
+interface AuthStore {
+  authStatus: boolean
+  setAuthStatus: (authState: boolean) => void
+}
+
+const authStore = (set: any) => ({
+  authStatus: false,
+  setAuthStatus: (authState: boolean) => set(() => ({ authState: authState })),
+})
+
 interface StoreState {
   mapRef: mapboxgl.Map
   searchMarker: Marker<mapboxgl.Marker>
@@ -90,6 +100,9 @@ const store = (set: any) => ({
 
 export const useStore = create<StoreState>()(
   subscribeWithSelector<StoreState>(store)
+)
+export const useAuthStore = create<AuthStore>()(
+  subscribeWithSelector<AuthStore>(authStore)
 )
 export const useFeatureStore = create<FeatureStore>()(
   subscribeWithSelector<FeatureStore>(featureStore)

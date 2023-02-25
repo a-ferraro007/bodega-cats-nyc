@@ -1,22 +1,38 @@
 import { KeyboardEvent } from 'react'
-import { FeatureDrawerState } from '../../../../constants/types'
+import {
+  FeatureDrawerState,
+  NewLocationInterface,
+} from '../../../../constants/types'
 import BoroughBadge from '../../BoroughBadge'
 import { useDrawerContext } from '../../DrawerProvider'
 
 const SearchDrawer = () => {
-  const { data } = useDrawerContext()
+  const {
+    data,
+    newLocationIsOpen,
+    setNewLocationIsOpen,
+    setNewLocation,
+    isOpen,
+    setIsOpen,
+  } = useDrawerContext()
   const HandleOnKeyDown = (e: KeyboardEvent, selected: FeatureDrawerState) => {}
+
+  const handleOnClick = (selected: NewLocationInterface) => {
+    setNewLocation(selected)
+    //setIsOpen(false)
+    setNewLocationIsOpen(true)
+  }
 
   return (
     <ul className="overflow-y-scroll">
       {data &&
-        data.map((feature: FeatureDrawerState) => {
+        data.map((feature: NewLocationInterface) => {
           const { ParsedFeature } = feature
           return (
             <li
               key={ParsedFeature?.feature_id}
               className="my-4 cursor-pointer rounded-[15px] border-[1px] border-[#dad8d2] px-4 py-6 transition-all duration-200 first:mt-0 last:mb-0 hover:bg-[#f5f4f1]"
-              //onClick={() => HandleOnClick(feature)}
+              onClick={() => handleOnClick(feature)}
               //onKeyDown={(e) => HandleOnKeyDown(e, feature)}
               tabIndex={0}
             >
