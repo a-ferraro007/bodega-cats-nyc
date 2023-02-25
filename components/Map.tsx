@@ -100,6 +100,7 @@ const Map = ({ lnglat, address }: SearchLocation) => {
       zoom: 14,
       maxBounds: [-74.26379, 40.3923, -73.667498, 40.94285],
       interactive: true,
+      attributionControl: false,
     })
     setMapRef(map.current)
 
