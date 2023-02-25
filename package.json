@@ -13,7 +13,6 @@
     "prepush": "npm run lint"
   },
   "dependencies": {
-    "@builder.io/partytown": "^0.7.5",
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "@supabase/auth-helpers-nextjs": "^0.4.4",
     "@supabase/auth-helpers-react": "^0.3.1",
