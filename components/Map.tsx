@@ -91,7 +91,7 @@ const Map = ({ lnglat, address }: SearchLocation) => {
     }
 
     map.current = new mapboxgl.Map({
-      container: mapContainer.current || '',
+      container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [
         currentPositionRef.current?.lng,
@@ -100,6 +100,7 @@ const Map = ({ lnglat, address }: SearchLocation) => {
       zoom: 14,
       maxBounds: [-74.26379, 40.3923, -73.667498, 40.94285],
       interactive: true,
+      attributionControl: false,
     })
     setMapRef(map.current)
 

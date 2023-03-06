@@ -17,7 +17,7 @@ import Close from '../../svg/Close'
 const AddressSearchBar = ({ address }: any) => {
   const { setQuery, query, setData, setOpenDropdown, setIsLoading } =
     useDropdownContext()
-  const debounce = useDebounce(query, 500)
+  const { debounce } = useDebounce(query, 500)
   const [isInputFocused, setisInputFocused] = useState(false)
   const [inputValue, setInputValue] = useState<string>(address)
   const { data, isLoading } = trpc.searchByAddress.useQuery(debounce, {

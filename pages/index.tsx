@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
-import { useEffect } from 'react'
-import { useAddressSearchStore, useStore } from '../store'
+import { useEffect, useState } from 'react'
+import { useAddressSearchStore, useAuthStore, useStore } from '../store'
 import Map from '../components/Map'
 import AddressSearch from '../components/AddressSearch'
 import MapIcon from '../svg/MapIcon'
@@ -13,9 +13,15 @@ import { trpc } from '../utils/trpc'
 import Login from '../svg/Login'
 import Lines from '../svg/Lines'
 import CatFace from '../svg/CatFace'
+import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
+import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
+import { DrawerProvider } from '../components/SideBar/DrawerProvider'
 
 const Home: NextPage = ({}) => {
+  const user = useUser()
   const lnglat = useGetUserLocation()
+  const { supabaseClient } = useSessionContext()
+  const { authStatus, setAuthStatus } = useAuthStore((state) => state)
   const showMobileMap = useStore((state) => state.showMobileMap)
   const setShowMobileMap = useStore((state) => state.setShowMobileMap)
   const { setSearchLocationState, searchLocationState } = useAddressSearchStore(
@@ -36,6 +42,9 @@ const Home: NextPage = ({}) => {
     }
   }, [setSearchLocationState, data, lnglat])
 
+  const handleProfileClick = () => {
+    console.log('profile clicked', user, supabaseClient, authStatus)
+  }
   return (
     <>
       <Head>
@@ -56,7 +65,10 @@ const Home: NextPage = ({}) => {
             </span>
           </h1>
           <AddressSearch />
-          <button className="rounded-[10px] bg-[#f5f4f1] p-2 md:p-3">
+          <button
+            className="rounded-[10px] bg-[#f5f4f1] p-2 md:p-3"
+            onClick={() => handleProfileClick()}
+          >
             <Login classNames="-translate-y-[.115rem] md:translate-y-0" />
           </button>
         </nav>
@@ -70,7 +82,9 @@ const Home: NextPage = ({}) => {
               />
             )}
           </div>
-          <SideBar />
+          <DrawerProvider>
+            <SideBar />
+          </DrawerProvider>
           <button
             className={`absolute bottom-20 right-10 z-20 block rounded-full ${
               false ? 'bg-dark-blue-radial-gradient' : 'bg-graphite'
@@ -81,6 +95,29 @@ const Home: NextPage = ({}) => {
             {!showMobileMap && <Lines />}
           </button>
         </div>
+        {!user && !authStatus && (
+          <div className="absolute left-0 right-0 top-40 mx-auto  max-w-xs rounded-md bg-white p-4 shadow-[0_6px_30px_-10px]">
+            <button
+              className="w-full text-right font-baloo font-medium"
+              onClick={() => setAuthStatus(true)}
+            >
+              {' '}
+              close
+            </button>
+            <p className="text-center font-baloo text-lg font-bold">
+              {' '}
+              log in with Google to add a new cat{' '}
+            </p>
+            <Auth
+              redirectTo="http://localhost:3000/"
+              appearance={{ theme: ThemeSupa }}
+              supabaseClient={supabaseClient}
+              providers={['google']}
+              socialLayout="horizontal"
+              onlyThirdPartyProviders={true}
+            />
+          </div>
+        )}
       </main>
 
       <footer></footer>
@@ -89,8 +126,3 @@ const Home: NextPage = ({}) => {
 }
 
 export default Home
-
-//const [_, setAuth] = useState(false)
-//const user = useUser()
-//const { supabaseClient } = useSessionContext()
-//const authState = useStore((state) => state.authState)
