@@ -16,12 +16,8 @@ import CloseArrow from '../../../../svg/CloseArrow'
 const NewLocation = () => {
   const utils = trpc.useContext()
   const { authStatus, setAuthStatus } = useAuthStore((state) => state)
-  const {
-    newLocation,
-    setNewLocation,
-    newLocationIsOpen,
-    setNewLocationIsOpen,
-  } = useDrawerContext()
+  const { newLocation, setNewLocation, newLocOpen, setNewLocOpen } =
+    useDrawerContext()
   const [rating, setRating] = useState(0)
   const [hover, setHover] = useState(0)
   const user = useUser()
@@ -47,6 +43,7 @@ const NewLocation = () => {
     } //handling not being logged in
     if (!newLocation) return
     const { ParsedFeature, Feature } = newLocation
+    console.log('user', user)
 
     const uuid = user.id
     const { name, address, file } = data
@@ -145,7 +142,7 @@ const NewLocation = () => {
         <fieldset className="flex flex-grow flex-col justify-end">
           <button
             type="submit"
-            className="w-full  rounded-md border-slate-200 bg-slate-200 px-3 py-2 font-nunito text-lg font-bold text-graphite transition-all duration-300 hover:bg-slate-300 hover:font-extrabold focus:bg-slate-300 focus:font-extrabold"
+            className="mb-4 w-full rounded-md border-slate-200 bg-slate-200 px-3 py-2 font-nunito text-lg font-bold text-graphite transition-all duration-300 hover:bg-slate-300 hover:font-extrabold focus:bg-slate-300 focus:font-extrabold"
           >
             submit
           </button>

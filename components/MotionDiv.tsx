@@ -9,10 +9,12 @@ const MotionDiv = ({
   transition,
   framerKey,
   variants,
+  layout,
 }: any) => {
   return (
     <motion.div
       className={classNames}
+      layout={layout}
       initial={initial}
       animate={animate}
       exit={exit}

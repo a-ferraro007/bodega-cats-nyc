@@ -7,45 +7,35 @@ import {
 import BoroughBadge from '../../BoroughBadge'
 import { useDrawerContext } from '../../DrawerProvider'
 
-const SearchDrawer = () => {
-  const {
-    data,
-    newLocationIsOpen,
-    setNewLocationIsOpen,
-    setNewLocation,
-    isOpen,
-    setIsOpen,
-  } = useDrawerContext()
+const SearchResults = () => {
+  const { data, newLocOpen, setNewLocOpen, setNewLocation, isOpen, setIsOpen } =
+    useDrawerContext()
   const HandleOnKeyDown = (e: KeyboardEvent, selected: FeatureDrawerState) => {}
 
   const handleOnClick = (selected: NewLocationInterface) => {
     setNewLocation(selected)
-    //setIsOpen(false)
-    setNewLocationIsOpen(true)
+    setNewLocOpen(true)
   }
 
-  // initial={{ opacity: 0 }}
-  //    animate={{ opacity: 1 }}
-  //    exit={{ opacity: 0 }}
-  //    transition={{
-  //      delay: 0,
-  //      ease: [0.85, 0, 0.15, 1],
-  //      duration: 0.25,
-  //    }}
-  //    key="unordered-list"
+  const Variants = {
+    search: {
+      search_open: { opacity: 1 },
+      search_close: { opacity: 0 },
+    },
+  }
 
   return (
-    <ul className="overflow-y-scroll">
+    <ul className="h-full overflow-y-scroll">
       {data &&
         data.map((feature: NewLocationInterface) => {
           const { ParsedFeature } = feature
           return (
             <li
-              key={ParsedFeature?.feature_id}
-              className="my-4 cursor-pointer rounded-[15px] border-[1px] border-[#dad8d2] px-4 py-6 transition-all duration-200 first:mt-0 last:mb-0 hover:bg-[#f5f4f1]"
+              className="my-4 cursor-pointer rounded-[15px] border-[1px] border-[#dad8d2] px-4 py-6 transition-all duration-200 first:mt-0  last:mb-0 hover:bg-[#f5f4f1]"
               onClick={() => handleOnClick(feature)}
               //onKeyDown={(e) => HandleOnKeyDown(e, feature)}
               tabIndex={0}
+              key={ParsedFeature?.feature_id}
             >
               <span className="text-md block pb-1 font-nunito font-bold">
                 {ParsedFeature?.name}
@@ -67,7 +57,7 @@ const SearchDrawer = () => {
   )
 }
 
-export default SearchDrawer
+export default SearchResults
 {
   /*<li
 key={ParsedFeature?.feature_id}

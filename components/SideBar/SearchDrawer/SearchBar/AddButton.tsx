@@ -1,8 +1,8 @@
 import { motion, AnimationProps } from 'framer-motion'
-import { useDrawerContext } from '../DrawerProvider'
+import { useDrawerContext } from '../../DrawerProvider'
 
 const AddButton = () => {
-  const { isOpen, setIsOpen } = useDrawerContext()
+  const { isOpen, setIsOpen, setInputValue, setData } = useDrawerContext()
 
   const Variants = {
     add: {
@@ -15,37 +15,14 @@ const AddButton = () => {
     },
   }
 
-  const AnimationProps = {
-    add: {
-      initial: 'add_close',
-      animate: isOpen ? 'add_open' : 'add_close',
-      variants: { ...Variants.add },
-      exit: { opacity: 0 },
-      transition: {
-        delay: 0,
-        type: 'spring',
-        stiffness: 100,
-        damping: 10,
-        duration: 0.25,
-      },
-    },
-    input: {
-      initial: 'input_close',
-      animate: isOpen ? 'input_open' : 'input_close',
-      variants: { ...Variants.input },
-      exit: { opacity: 0, width: '25%', visibility: 'hidden' },
-      transition: {
-        delay: 0,
-        ease: 'linear',
-        duration: 0.25,
-      },
-    },
-  }
-
   const handleNewCatCTA = () => {
     if (isOpen) {
       setIsOpen(false)
+      setInputValue('')
+      setData(null)
     } else {
+      console.log('new cat cta')
+
       setIsOpen(true)
     }
   }
@@ -56,12 +33,23 @@ const AddButton = () => {
       onClick={() => handleNewCatCTA()}
     >
       <motion.svg
-        {...AnimationProps.add}
-        className=""
+        layout
+        initial={'add_close'}
+        animate={isOpen ? 'add_open' : 'add_close'}
+        exit={'add_close'}
+        variants={Variants.add}
+        transition={{
+          delay: 0,
+          type: 'spring',
+          stiffness: 100,
+          damping: 10,
+          duration: 0.25,
+        }}
         width="30"
         height="30"
         viewBox="0 0 24 24"
         fill="none"
+        key={isOpen ? 'add-button-open' : 'add-button-close'}
       >
         <g strokeWidth="0"></g>
         <g

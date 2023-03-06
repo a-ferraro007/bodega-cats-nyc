@@ -9,7 +9,7 @@
 
 //const MobileSearchBar = () => {
 //  const query = useStore((state) => state.searchQuery)
-//  const debounce = useDebounce(query, 250)
+//  const { debounce } = useDebounce(query, 250)
 //  const { data, isFetching, isLoading, isSuccess } = useSearch(debounce)
 //  const map = useStore((state) => state.mapRef)
 //  const featuresMap = useStore((state) => state.features)

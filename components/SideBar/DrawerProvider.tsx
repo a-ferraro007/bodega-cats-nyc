@@ -4,22 +4,26 @@ import {
   ReactNode,
   SetStateAction,
   useContext,
+  useEffect,
+  useReducer,
   useState,
 } from 'react'
-import { NewLocationInterface } from '../../constants/types'
+import { FeatureDrawerState, NewLocationInterface } from '../../constants/types'
+import { useDebounce } from '../../hooks'
+import { trpc } from '../../utils/trpc'
 type DrawerContextType = {
   data: any
-  setData: Dispatch<SetStateAction<any>> //(data: any) => void
+  setData: any //(data: any) => void
   newLocation: NewLocationInterface | null
   setNewLocation: Dispatch<SetStateAction<any>>
-  newLocationIsOpen: boolean
-  setNewLocationIsOpen: Dispatch<SetStateAction<boolean>> //(newLocationIsOpen: boolean) => void
+  newLocOpen: boolean
+  setNewLocOpen: Dispatch<SetStateAction<boolean>> //(newLocationIsOpen: boolean) => void
   isOpen: boolean
   setIsOpen: Dispatch<SetStateAction<boolean>> //(isOpen: boolean) => void
   inputValue: string
   setInputValue: Dispatch<SetStateAction<string>> //(inputValue: string) => void
-  isInputFocused: boolean
-  setisInputFocused: Dispatch<SetStateAction<boolean>> //(isInputFocused: boolean) => void
+  inputFocused: boolean
+  setInputFocused: Dispatch<SetStateAction<boolean>> //(isInputFocused: boolean) => void
 }
 type DrawerProviderProps = {
   children: ReactNode
@@ -30,39 +34,58 @@ const DrawerContext = createContext<DrawerContextType>({
   setData: () => {},
   newLocation: null,
   setNewLocation: () => {},
-  newLocationIsOpen: false,
-  setNewLocationIsOpen: () => {},
+  newLocOpen: false,
+  setNewLocOpen: () => {},
   isOpen: true,
   setIsOpen: () => {},
   inputValue: '',
   setInputValue: () => {},
-  isInputFocused: false,
-  setisInputFocused: () => {},
+  inputFocused: false,
+  setInputFocused: () => {},
 })
 
 const DrawerProvider = ({ children }: DrawerProviderProps) => {
-  const [data, setData] = useState(null)
+  const [data, setData] = useState<FeatureDrawerState | undefined>()
   const [newLocation, setNewLocation] = useState(null)
-  const [newLocationIsOpen, setNewLocationIsOpen] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
-  const [isInputFocused, setisInputFocused] = useState(false)
+  const [newLocOpen, setNewLocOpen] = useReducer((state) => !state, false)
+  const [isOpen, setIsOpen] = useReducer((state) => !state, false)
+  const [inputFocused, setInputFocused] = useReducer((state) => !state, false)
   const [inputValue, setInputValue] = useState('')
+  const { debounce } = useDebounce(inputValue, 500)
+  const { data: searchData, isLoading } = trpc.searchByPlace.useQuery(
+    debounce,
+    {
+      refetchOnWindowFocus: false,
+    }
+  )
+
+  useEffect(() => {
+    setData(searchData as any)
+  }, [searchData, setData])
+
+  useEffect(() => {
+    if (!isOpen) setInputValue('')
+  }, [isOpen, setInputValue])
+
+  useEffect(() => {
+    console.log('new location: ', newLocation)
+  }, [newLocation])
 
   return (
     <DrawerContext.Provider
       value={{
         data,
-        setData,
         newLocation,
-        setNewLocation,
-        newLocationIsOpen,
-        setNewLocationIsOpen,
+        newLocOpen,
         isOpen,
-        setIsOpen,
         inputValue,
+        inputFocused,
+        setData,
+        setIsOpen,
+        setInputFocused,
         setInputValue,
-        isInputFocused,
-        setisInputFocused,
+        setNewLocOpen,
+        setNewLocation,
       }}
     >
       {children}

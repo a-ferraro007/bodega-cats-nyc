@@ -44,11 +44,12 @@ const insertCatProperty = async (
   CatProperties: CatProperties
 ): Promise<RowId> => {
   try {
-    console.log('inserting into Cat_Properties table', CatProperties)
+    //console.log('inserting into Cat_Properties table', CatProperties)
+    //console.log('inserting into Cat_Properties db', supabase)
 
     const { data, error } = await supabase
       .from('Cat_Properties')
-      .insert(CatProperties)
+      .insert({ ...CatProperties })
       .select('id')
     if (error) throw error
     return data[0]

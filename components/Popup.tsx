@@ -12,7 +12,6 @@ const Popup = ({ feature }: PopupProps) => {
           className="rounded-[3px]"
           width="40"
           height="40"
-          layout="responsive"
           src={feature.image}
           alt="cat image"
         />

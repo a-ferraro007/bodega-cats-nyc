@@ -1,8 +1,14 @@
 import React from 'react'
 
-const CloseArrow = () => {
+const CloseArrow = ({ rotate = 'rotate(0)' }) => {
   return (
-    <svg width={40} height={40} viewBox="0 0 24 24" fill="none">
+    <svg
+      width={40}
+      height={40}
+      transform={rotate}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
       <g stroke-width="0"></g>
       <g strokeLinecap="round" strokeLinejoin="round"></g>
       <g>
