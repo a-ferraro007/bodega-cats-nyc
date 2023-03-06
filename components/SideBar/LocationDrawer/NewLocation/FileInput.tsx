@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ChangeEvent, useEffect, useState } from 'react'
 import { Path, UseFormRegister } from 'react-hook-form'
-import { FormInputs } from '../../../constants/types'
+import { FormInputs } from '../../../../constants/types'
 
 type FileInputProps = {
   label: Path<FormInputs>
@@ -12,12 +12,12 @@ type FileInputProps = {
 const FileInputContainer = ({ children, image }: any) => {
   return (
     <div
-      className={`w-full h-80 mx-auto transition-all duration-500 rounded-lg cursor-pointer text-center relative bg-lightBlue peer`}
+      className={`peer relative mx-auto h-80 w-full cursor-pointer rounded-lg bg-lightBlue text-center transition-all duration-500`}
       //!image && 'bg-lightBlue hover:bg-mediumBlue'
       tabIndex={0}
     >
       <div
-        className={`flex flex-1 basis-full w-full h-full items-end justify-center z-10 absolute p-2`}
+        className={`absolute z-10 flex h-full w-full flex-1 basis-full items-end justify-center p-2`}
       >
         {children}
       </div>
@@ -27,7 +27,7 @@ const FileInputContainer = ({ children, image }: any) => {
           src={image}
           width="264"
           height="144"
-          className="w-full h-full rounded-lg absolute"
+          className="absolute h-full w-full rounded-lg"
         />
       )}
     </div>
@@ -53,7 +53,7 @@ const FileInput = ({ label, required, register }: FileInputProps) => {
   }
 
   useEffect(() => {
-    //console.log('FILE UPLOAD IMAGE:', image)
+    console.log('FILE UPLOAD IMAGE:', image)
   }, [image])
 
   return (
@@ -61,12 +61,12 @@ const FileInput = ({ label, required, register }: FileInputProps) => {
       <FileInputContainer image={image}>
         <label
           htmlFor="file-input"
-          className={`text-xs text-graphite font-bold font-nunito px-2 py-1 rounded-xl mb-2  shadow-xl transition-all duration-300 hover:-translate-y-[2px] cursor-pointer bg-white bg-opacity-60 backdrop-blur-lg`}
+          className={`mb-2 cursor-pointer rounded-xl bg-white bg-opacity-60 px-2 py-1 font-nunito  text-xs font-bold text-graphite shadow-xl backdrop-blur-lg transition-all duration-300 hover:-translate-y-[2px]`}
         >
           {!image && (
             <>
               <svg
-                className="inline mr-1 -translate-y-[1px]"
+                className="mr-1 inline -translate-y-[1px]"
                 width="12"
                 height="12"
                 viewBox="0 0 25 25"
@@ -84,7 +84,7 @@ const FileInput = ({ label, required, register }: FileInputProps) => {
           {image && (
             <>
               <svg
-                className="inline mr-1 -translate-y-[1px]"
+                className="mr-1 inline -translate-y-[1px]"
                 width="12"
                 height="12"
                 viewBox="0 0 30 24"
@@ -103,7 +103,7 @@ const FileInput = ({ label, required, register }: FileInputProps) => {
             id="file-input"
             required={required}
             {...register(label, {
-              onChange: (e) => HandleOnChange(e)
+              onChange: (e) => HandleOnChange(e),
             })}
             type="file"
             accept="image/*"

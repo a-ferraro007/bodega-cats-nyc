@@ -5,6 +5,7 @@ import {
   LngLat,
   ParsedSearchLocation,
   zNewFeatureMutation,
+  NewFeatureMutation,
 } from './../../constants/types'
 import {
   getFeatures,
@@ -20,7 +21,7 @@ export const appRouter = router({
     return getFeatures(input)
   }),
   selectTopInArea: procedure.input(z.string()).query(({ input }) => {
-    console.log('selectTopInArea', input)
+    //console.log('selectTopInArea', input)
     return getTopInArea(input)
   }),
   searchByAddress: procedure
@@ -33,7 +34,7 @@ export const appRouter = router({
   searchByPlace: procedure
     .input(z.string())
     .query(({ input }) => getSearchResults(input)),
-  addFeature: procedure.input(zNewFeatureMutation).mutation(({ input }) => {
+  addLocation: procedure.input(zNewFeatureMutation).mutation(({ input }) => {
     return newFeature(input)
   }),
 })
