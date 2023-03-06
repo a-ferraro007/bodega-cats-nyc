@@ -4,7 +4,6 @@ import { Feature } from '../../../constants/types'
 import { useCardListSize, useIsMobile } from '../../../hooks'
 import { useFeatureStore } from '../../../store'
 import { trpc } from '../../../utils/trpc'
-import MotionDiv from '../../MotionDiv'
 import { useDrawerContext } from '../DrawerProvider'
 import LoadingList from '../LoadingList'
 import FeaturedList from './FeaturedList'
@@ -29,66 +28,6 @@ const ListDrawer = () => {
     return array
   }, [featureMap])
 
-  const Variants = {
-    container: {
-      container_open: { width: '28rem' },
-      container_close: { width: '25rem' },
-    },
-    list: {
-      list_open: { opacity: 0 },
-      list_close: { opacity: 1 },
-    },
-    list_container: {
-      list_container_open: { diplay: 'none' },
-      list_container_close: { height: 'block' },
-    },
-  }
-
-  const AnimationProps = {
-    container: {
-      initial: 'container_close',
-      animate: !isOpen && !isMobile ? 'container_open' : 'container_close',
-      variants: { ...Variants.container },
-      exit: { opacity: 0 },
-      transition: {
-        delay: 0,
-        ease: 'linear',
-        duration: 0.25,
-      },
-    },
-    list: {
-      initial: 'list_close',
-      //animate: 'list_close',
-      variants: { ...Variants.list },
-      exit: { opacity: 0 },
-      transition: {
-        delay: 0,
-        ease: 'easeOut',
-        duration: 0.25,
-      },
-    },
-    list_container: {
-      initial: 'list_container_close',
-      animate: 'list_container_open', //!isOpen ? 'list_container_close' : 'list_container_open',
-      variants: { ...Variants.list_container },
-      exit: 'list_container_close',
-      transition: {
-        delay: 0,
-        ease: 'easeOut',
-        duration: 0.25,
-      },
-    },
-    list_load: {
-      initial: { opacity: 0 },
-      animate: { opacity: 1 },
-      exit: { opacity: 0 },
-      transition: {
-        delay: 0,
-        ease: 'linear',
-        duration: 0.25,
-      },
-    },
-  }
   return (
     <AnimatePresence>
       {!isOpen && (
@@ -126,9 +65,7 @@ const ListDrawer = () => {
             )}
           </div>
 
-          <p className="font-nunito text-lg font-semibold" key="nearby-title">
-            Nearby
-          </p>
+          <p className="font-nunito text-lg font-semibold">Nearby</p>
           <div className="h-full overflow-y-auto">
             {isLoading && (
               <motion.div

@@ -1,6 +1,8 @@
 export const getHeight = () => {
   if (!isClient()) return null
-  return window.innerHeight
+  return {
+    height: `${innerHeight}px`,
+  }
 }
 
 export const isClient = () => {

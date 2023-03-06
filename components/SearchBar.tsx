@@ -40,10 +40,9 @@ const SearchBar = () => {
       close: { width: '75%' },
     },
   }
-  //rounded-[15px]
+
   return (
     <>
-      {/* className="min-w-[250px]" */}
       <div className="flex-grow">
         <input
           className="text-md h-10 w-full rounded-[10px] border-[rgba(0,0,0,.5)] bg-[#f5f4f1] px-4 font-nunito font-bold text-graphite outline-none transition-all  duration-500 placeholder:text-graphite"
@@ -63,30 +62,6 @@ const SearchBar = () => {
           autoComplete="none"
         />
       </div>
-      {/*{(searchFocus || searchDrawerIsActive) && (
-        <Drawer>
-        <SearchDrawer />
-        </Drawer>
-      )}*/}
-      {/*<AnimatePresence>
-          {(searchFocus || searchDrawerIsActive) && (
-            <motion.div
-              className="block md:hidden "
-              key={'drawer-mobilee'}
-              {...{
-                initial: { height: '0px', opacity: 0 },
-                animate: { height: '100%', opacity: 1 },
-                exit: { height: '0px', opacity: 0 },
-                transition: { type: 'tween', duration: 0.3 }
-              }}
-            >
-              <Drawer>
-                <SearchDrawer />
-              </Drawer>
-            </motion.div>
-          )}
-        </AnimatePresence>*/}
-      {/*</div>*/}
     </>
   )
 }

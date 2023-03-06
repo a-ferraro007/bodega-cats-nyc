@@ -1,11 +1,12 @@
+import { ReactNode, useEffect, useState } from 'react'
 import { useSetHeight } from '../../hooks'
+type LayoutProps = {
+  children: ReactNode
+}
 
-const Layout = ({ children }: any) => {
+const Layout = ({ children }: LayoutProps) => {
   const height = useSetHeight()
-  const styleHeight = {
-    height: height ? `${height}px` : '100vh',
-  }
-  return <div style={styleHeight}>{children}</div>
+  return <>{height ? <div style={height}>{children}</div> : <></>}</>
 }
 
 export default Layout

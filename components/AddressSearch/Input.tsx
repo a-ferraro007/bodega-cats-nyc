@@ -70,7 +70,6 @@ const AddressSearchBar = ({ address }: any) => {
           id="search-area-input"
           type="search"
           value={inputValue || ''}
-          autoFocus={true}
           autoComplete="none"
           onChange={(e) => handleOnChange(e)}
           onFocus={() => handleOnFocus()}
