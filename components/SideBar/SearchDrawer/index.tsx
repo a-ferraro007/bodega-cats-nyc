@@ -29,7 +29,7 @@ const SearchDrawer = () => {
               transition={{
                 delay: 0,
                 ease: 'circOut',
-                duration: 0.2,
+                duration: 0.25,
               }}
               key={'search-drawer-location-close'}
               variants={Variants.search}

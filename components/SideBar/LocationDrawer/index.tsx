@@ -59,6 +59,7 @@ const LocationDrawer = () => {
           initial={isMobile ? 'location_mobile_close' : 'location_close'}
           animate={isMobile ? 'location_mobile_open' : 'location_open'}
           exit={isMobile ? 'location_mobile_close' : 'location_close'}
+          transition={{ delay: 0, ease: 'circOut', duration: 0.25 }}
           key={newLocOpen ? 'location_open' : 'location_close'}
           variants={Variants.location}
         >
