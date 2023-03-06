@@ -7,7 +7,7 @@ import BoroughBadge from './BoroughBadge'
 
 const SearchDrawer = () => {
   const query = useStore((state) => state.searchQuery)
-  const debounce = useDebounce(query, 250)
+  const { debounce } = useDebounce(query, 250)
   const { data, isFetching, isLoading, isSuccess, isFetched } =
     useSearch(debounce)
   const map = useStore((state) => state.mapRef)

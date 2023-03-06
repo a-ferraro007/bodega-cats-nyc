@@ -14,7 +14,11 @@ const LoadingList = ({
   scrollDirection = 'overflow-x-hidden',
 }: LoadingListProps) => {
   return (
-    <ul className={`-mr-6 flex pb-6 ${scrollDirection} ${flexDirection}`}>
+    <ul
+      className={`${
+        flexDirection === 'flex-row' ? '-mr-6' : ''
+      } flex pb-6 ${scrollDirection} ${flexDirection}`}
+    >
       {new Array<number>(size).fill(0).map((_, i) => (
         <li key={i} className="pr-4">
           {' '}

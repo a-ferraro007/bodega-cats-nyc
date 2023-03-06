@@ -91,7 +91,7 @@ const Map = ({ lnglat, address }: SearchLocation) => {
     }
 
     map.current = new mapboxgl.Map({
-      container: mapContainer.current || '',
+      container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [
         currentPositionRef.current?.lng,

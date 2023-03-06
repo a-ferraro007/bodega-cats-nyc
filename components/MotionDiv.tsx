@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 const MotionDiv = ({
   children,
@@ -9,10 +9,12 @@ const MotionDiv = ({
   transition,
   framerKey,
   variants,
+  layout,
 }: any) => {
   return (
     <motion.div
       className={classNames}
+      layout={layout}
       initial={initial}
       animate={animate}
       exit={exit}

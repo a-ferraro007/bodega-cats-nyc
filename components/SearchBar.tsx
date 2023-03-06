@@ -9,7 +9,7 @@ const SearchBar = () => {
     setSearchFocus,
     searchMarker,
   } = useAddressSearchStore((state) => state)
-  const debounce = useDebounce(query, 250)
+  const { debounce } = useDebounce(query, 250)
   const { data, isFetching, isLoading, isSuccess } = useSearch(debounce)
   const map = useStore((state) => state.mapRef)
   const isFocused = useRef(null)
