@@ -109,7 +109,7 @@ const Home: NextPage = ({}) => {
               log in with Google to add a new cat{' '}
             </p>
             <Auth
-              redirectTo={process.env.REDIRECT_URL}
+              redirectTo={process.env.NEXT_PUBLIC_REDIRECT_URL}
               appearance={{ theme: ThemeSupa }}
               supabaseClient={supabaseClient}
               providers={['google']}
