@@ -27,9 +27,9 @@ const LocationDrawer = () => {
   const Variants = {
     location: {
       location_open: { x: 0, opacity: 1 },
-      location_close: { x: '300%', opacity: 1 },
-      location_mobile_close: { y: '300%', opacity: 1 },
-      location_mobile_open: { y: 25, opacity: 1 },
+      location_close: { x: '100%', opacity: 1 },
+      location_mobile_close: { y: '100%', opacity: 1 },
+      location_mobile_open: { y: 30, opacity: 1 },
     },
     search: {
       search_open: { opacity: 1 },
@@ -47,11 +47,11 @@ const LocationDrawer = () => {
   }
 
   return (
-    <>
+    <AnimatePresence>
       {newLocOpen && (
         <motion.div
           layout
-          className={`h-full w-full bg-white p-6 ${
+          className={`absolute top-0 right-0 h-full w-full bg-white p-6 ${
             isMobile
               ? 'rounded-t-[15px] shadow-[0px_-5px_7px_rgb(0,0,0,.15)]'
               : ''
@@ -59,13 +59,13 @@ const LocationDrawer = () => {
           initial={isMobile ? 'location_mobile_close' : 'location_close'}
           animate={isMobile ? 'location_mobile_open' : 'location_open'}
           exit={isMobile ? 'location_mobile_close' : 'location_close'}
-          transition={{ delay: 0, ease: 'circOut', duration: 0.25 }}
-          key={newLocOpen ? 'location_open' : 'location_close'}
+          transition={{ delay: 0, ease: 'circOut', duration: 0.35 }}
+          key={'location_open'}
           variants={Variants.location}
         >
           {newLocOpen && (
             <button
-              className={`absolute  rounded-full bg-white p-1 ${
+              className={`absolute rounded-full bg-white p-1 shadow-[0px_-5px_7px_rgb(0,0,0,.15)] ${
                 !isMobile
                   ? 'left-[-1.5rem] top-0'
                   : 'right-[1.5rem] -top-6 z-10'
@@ -78,7 +78,7 @@ const LocationDrawer = () => {
           <NewLocation />
         </motion.div>
       )}
-    </>
+    </AnimatePresence>
   )
 }
 

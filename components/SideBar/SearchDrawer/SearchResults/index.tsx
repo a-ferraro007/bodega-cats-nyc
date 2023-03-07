@@ -17,13 +17,6 @@ const SearchResults = () => {
     setNewLocOpen(true)
   }
 
-  const Variants = {
-    search: {
-      search_open: { opacity: 1 },
-      search_close: { opacity: 0 },
-    },
-  }
-
   return (
     <ul className="h-full overflow-y-scroll">
       {data &&

@@ -22,8 +22,7 @@ const Home: NextPage = ({}) => {
   const lnglat = useGetUserLocation()
   const { supabaseClient } = useSessionContext()
   const { authStatus, setAuthStatus } = useAuthStore((state) => state)
-  const showMobileMap = useStore((state) => state.showMobileMap)
-  const setShowMobileMap = useStore((state) => state.setShowMobileMap)
+  const { showMobileMap, setShowMobileMap } = useStore((state) => state)
   const { setSearchLocationState, searchLocationState } = useAddressSearchStore(
     (state) => state
   )
@@ -45,11 +44,6 @@ const Home: NextPage = ({}) => {
   const handleProfileClick = () => {
     console.log('profile clicked', user, supabaseClient, authStatus)
   }
-
-  console.log(
-    'process.env.NEXT_PUBLIC_REDIRECT_URL',
-    process.env.NEXT_PUBLIC_REDIRECT_URL
-  )
 
   return (
     <>
@@ -88,6 +82,8 @@ const Home: NextPage = ({}) => {
               />
             )}
           </div>
+
+          {/* This Provider is dumb & doesn't make sense, move back to a store. */}
           <DrawerProvider>
             <SideBar />
           </DrawerProvider>
@@ -95,10 +91,12 @@ const Home: NextPage = ({}) => {
             className={`absolute bottom-20 right-10 z-20 block rounded-full ${
               false ? 'bg-dark-blue-radial-gradient' : 'bg-graphite'
             }  b p-4 text-white md:hidden`}
-            onClick={() => setShowMobileMap(!showMobileMap)}
+            onClick={() => {
+              const state = showMobileMap
+              setShowMobileMap(!state)
+            }}
           >
-            {showMobileMap && <MapIcon />}
-            {!showMobileMap && <Lines />}
+            {showMobileMap ? <Lines /> : <MapIcon />}
           </button>
         </div>
         {!user && !authStatus && (

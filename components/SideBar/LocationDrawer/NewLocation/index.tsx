@@ -14,14 +14,15 @@ import { AnimatePresence } from 'framer-motion'
 import CloseArrow from '../../../../svg/CloseArrow'
 
 const NewLocation = () => {
+  const user = useUser()
+  const { session } = useSessionContext()
   const utils = trpc.useContext()
+  const [rating, setRating] = useState(0)
+  const [hover, setHover] = useState(0)
   const { authStatus, setAuthStatus } = useAuthStore((state) => state)
   const { newLocation, setNewLocation, newLocOpen, setNewLocOpen } =
     useDrawerContext()
-  const [rating, setRating] = useState(0)
-  const [hover, setHover] = useState(0)
-  const user = useUser()
-  const { session } = useSessionContext()
+
   const {
     register,
     handleSubmit,
@@ -31,6 +32,8 @@ const NewLocation = () => {
   const newFeatureMutation = trpc.addLocation.useMutation({
     onSuccess() {
       utils.selectFeatures.invalidate()
+      setNewLocOpen(false)
+      setNewLocation(null)
     },
   })
 
@@ -102,13 +105,10 @@ const NewLocation = () => {
         <fieldset>
           <FileInput label="file" required={true} register={register} />
         </fieldset>
-        <div className="px-6">
+        <div className="px-4">
           {' '}
-          <div className="mb-8 flex flex-col gap-4">
-            {/*className="mb-8"*/}
-
-            {/*<div className="self-center">*/}
-            <fieldset className="mb-8">
+          <div className="flex flex-col gap-6">
+            <fieldset>
               <Input
                 id="name-input"
                 label="name"
@@ -117,7 +117,6 @@ const NewLocation = () => {
                 required={true}
               />
             </fieldset>
-            {/*className="mb-4"*/}
             <fieldset>
               <Input
                 id="address-input"
@@ -127,22 +126,21 @@ const NewLocation = () => {
                 defaultValue={newLocation?.ParsedFeature?.address}
               />
             </fieldset>
-            {/*</div>*/}
+            <fieldset>
+              <label className="font-nunito text-sm font-bold">rating</label>
+              <Rating
+                rating={rating}
+                hover={hover}
+                setRating={setRating}
+                setHover={setHover}
+              />
+            </fieldset>
           </div>
-          <fieldset>
-            <label className="font-nunito text-sm font-bold">rating</label>
-            <Rating
-              rating={rating}
-              hover={hover}
-              setRating={setRating}
-              setHover={setHover}
-            />
-          </fieldset>
         </div>
         <fieldset className="flex flex-grow flex-col justify-end">
           <button
             type="submit"
-            className="mb-4 w-full rounded-md border-slate-200 bg-slate-200 px-3 py-2 font-nunito text-lg font-bold text-graphite transition-all duration-300 hover:bg-slate-300 hover:font-extrabold focus:bg-slate-300 focus:font-extrabold"
+            className="mb-8 w-full rounded-md border-slate-200 bg-slate-200 px-3 py-2 font-nunito text-lg font-bold text-graphite transition-all duration-300 hover:bg-slate-300 hover:font-extrabold focus:bg-slate-300 focus:font-extrabold"
           >
             submit
           </button>

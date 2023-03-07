@@ -17,15 +17,16 @@ const SearchDrawer = () => {
 
   return (
     <>
-      {!newLocOpen && (
+      {/*{!newLocOpen && (*/}
+      <>
+        <SearchBar />
         <AnimatePresence>
-          <SearchBar />
           {data?.length > 0 && (
             <motion.div
               className="h-full overflow-hidden"
-              initial={'search_close'}
-              animate={data?.length > 0 ? 'search_open' : 'search_close'}
-              exit={{ opacity: 0 }}
+              //initial={'search_close'}
+              //animate={data?.length > 0 ? 'search_open' : 'search_close'}
+              //exit={{ opacity: 0 }}
               transition={{
                 delay: 0,
                 ease: 'circOut',
@@ -37,14 +38,15 @@ const SearchDrawer = () => {
               <SearchResults />
             </motion.div>
           )}
-          {inputValue.length > 0 && data?.length === 0 && (
-            //add link to submit bug report for missing location
-            <p className="w-full text-center font-nunito font-normal">
-              no location found 😿
-            </p>
-          )}
         </AnimatePresence>
-      )}
+        {inputValue.length > 0 && data?.length === 0 && (
+          //add link to submit bug report for missing location
+          <p className="w-full text-center font-nunito font-normal">
+            no location found 😿
+          </p>
+        )}
+      </>
+      {/*)}*/}
     </>
   )
 }

@@ -9,7 +9,7 @@ type InputProps = {
   register: UseFormRegister<FormInputs>
   required?: boolean
   defaultValue?: any
-  variant?: string
+  classNames?: string
 }
 
 const Input = ({
@@ -19,30 +19,10 @@ const Input = ({
   defaultValue,
   required,
   register,
-  variant = 'default',
+  classNames = '',
 }: InputProps) => {
-  let classNames
-  switch (variant) {
-    case 'outline':
-      classNames = {
-        input:
-          'w-full h-10 px-4 text-sm font-semibold font-nunito peer bg-slate-200 rounded-md outline-none disabled:cursor-not-allowed',
-        label:
-          'text-lg font-semibold font-nunito transform transition-all duration-500 absolute top-0 left-0 h-full flex items-center pl-2 group-focus-within:text-sm  group-focus-within:h-1/2  group-focus-within:-translate-y-[11px] group-focus-within:pl-0 peer-valid:-translate-y-[11px] peer-valid:h-1/2 peer-valid:pl-0 peer-valid:text-sm peer-read-only:-translate-y-[11px] peer-read-only:h-1/2 peer-read-only:pl-0 peer-read-only:text-sm pointer-events-none',
-      }
-      break
-    default:
-      classNames = {
-        input:
-          'w-full h-10 px-4 text-sm font-semibold font-nunito peer outline-none disabled:cursor-not-allowed rounded-[15px] bg-[rgba(0,0,0,.1)] active:bg-[rgba(0,0,0,.06)] focus-within:bg-[rgba(0,0,0,.06)] transition-all duration-500 text-graphite',
-        label:
-          'text-lg font-semibold font-nunito transform transition-all duration-500 absolute top-0 left-0 h-full flex items-center pl-2 group-focus-within:text-sm  group-focus-within:h-1/2  group-focus-within:-translate-y-full group-focus-within:pl-0 peer-valid:-translate-y-full peer-valid:h-1/2 peer-valid:pl-0 peer-valid:text-sm peer-read-only:-translate-y-full peer-read-only:h-1/2 peer-read-only:pl-0 peer-read-only:text-sm pointer-events-none text-graphite',
-      }
-      break
-  }
-
   return (
-    <div className="group relative w-full">
+    <div className="font-regular flex h-10 w-full flex-row gap-1 rounded-[10px] border-[rgba(0,0,0,.5)] bg-[#f5f4f1] px-2 font-nunito text-lg text-graphite outline-none transition-all duration-500  placeholder:text-graphite md:gap-3 md:px-4">
       <input
         id={id}
         defaultValue={defaultValue}
@@ -50,9 +30,8 @@ const Input = ({
         required={required}
         type={type}
         {...register(label)}
-        className={classNames.input}
+        className="font-regular placeholder:text-md h-full w-full bg-[#f5f4f1] font-nunito text-lg text-graphite outline-none transition-all duration-500 placeholder:pl-1 placeholder:text-base placeholder:text-[rgb(93,93,93)]"
       />
-      <label className={classNames.label}>{label}</label>
     </div>
   )
 }
