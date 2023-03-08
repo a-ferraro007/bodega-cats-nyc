@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import { trpc } from '../utils/trpc'
-import { Layout } from '../components'
+import LayoutProvider from '../providers/LayoutProvider'
 
 function MyApp({
   Component,
@@ -14,18 +14,16 @@ function MyApp({
   initialSession: Session
 }>) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient())
-  console.log('supabaseClient', supabaseClient)
 
   return (
-    <SessionContextProvider
-      supabaseClient={supabaseClient}
-      initialSession={pageProps.initialSession}
-    >
-      <Layout>
+    <LayoutProvider>
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
+      >
         <Component {...pageProps} />
-      </Layout>
-      <ReactQueryDevtools />
-    </SessionContextProvider>
+      </SessionContextProvider>
+    </LayoutProvider>
   )
 }
 
