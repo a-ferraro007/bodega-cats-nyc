@@ -16,6 +16,7 @@ import CatFace from '../svg/CatFace'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { DrawerProvider } from '../components/SideBar/DrawerProvider'
+import Logo from '../svg/Logo'
 const { search } = trpc
 
 const Home: NextPage = ({}) => {
@@ -58,22 +59,18 @@ const Home: NextPage = ({}) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="relative h-full w-screen overflow-hidden">
-        <nav className="flex h-[70px] w-full items-center justify-between gap-4 border-b-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white p-4 md:h-20 md:gap-14 md:p-6">
-          <h1 className="font-baloo text-lg font-bold leading-none text-primaryGold md:text-2xl">
-            Bodega <br /> Cats
-            <span className="font-baloo text-xs font-bold italic leading-none text-graphite md:text-sm">
-              of nyc
-            </span>
-          </h1>
+        <nav className="flex h-[70px] w-full items-center justify-between gap-4 border-b-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white p-4 px-2 md:h-20 md:gap-6 md:p-6 md:px-2">
+          <span className="max-w-[75px] md:max-w-[115px]">
+            <Logo />
+          </span>
           <AddressSearch />
           <button
-            className="rounded-[10px] bg-[#f5f4f1] p-2 md:p-3"
+            className="rounded-[10px] bg-[#f5f4f1] p-[.625rem] md:p-3"
             onClick={() => handleProfileClick()}
           >
             <Login classNames="-translate-y-[.115rem] md:translate-y-0" />
           </button>
         </nav>
-
         <div className="relative flex h-container flex-row">
           <div className="flex w-full justify-center md:w-map-container">
             {searchLocationState.lnglat && <Map {...searchLocationState} />}{' '}
