@@ -1,12 +1,6 @@
 import UserMarker from '../svg/UserMarker'
-//type MapMarkerProps = {
-//  image: string | undefined
-//  //ClickHandler: () => void
-//}
 
 const LocationPin = () => {
-  //console.log('L PIN')
-
   return (
     <div className="group">
       <button

@@ -4,7 +4,7 @@ import Rating from './Rating'
 import Input from './Input'
 import FileInput from './FileInput'
 import { FormInputs, NewFeatureMutation } from '../../../../constants/types'
-import supabase from '../../../../supabase'
+import supabase from '../../../../server/supabase'
 import { trpc } from '../../../../utils/trpc'
 import { useDrawerContext } from '../../DrawerProvider'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
@@ -12,6 +12,7 @@ import { useAuthStore } from '../../../../store'
 import MotionDiv from '../../../MotionDiv'
 import { AnimatePresence } from 'framer-motion'
 import CloseArrow from '../../../../svg/CloseArrow'
+const { insert } = trpc
 
 const NewLocation = () => {
   const user = useUser()
@@ -19,9 +20,8 @@ const NewLocation = () => {
   const utils = trpc.useContext()
   const [rating, setRating] = useState(0)
   const [hover, setHover] = useState(0)
-  const { authStatus, setAuthStatus } = useAuthStore((state) => state)
-  const { newLocation, setNewLocation, newLocOpen, setNewLocOpen } =
-    useDrawerContext()
+  const { setAuthStatus } = useAuthStore((state) => state)
+  const { newLocation, setNewLocation, setNewLocOpen } = useDrawerContext()
 
   const {
     register,
@@ -29,9 +29,9 @@ const NewLocation = () => {
     watch,
     formState: { errors },
   } = useForm<FormInputs>()
-  const newFeatureMutation = trpc.addLocation.useMutation({
+  const newFeatureMutation = insert.newLocation.useMutation({
     onSuccess() {
-      utils.selectFeatures.invalidate()
+      utils.select.invalidate()
       setNewLocOpen(false)
       setNewLocation(null)
     },
@@ -46,7 +46,6 @@ const NewLocation = () => {
     } //handling not being logged in
     if (!newLocation) return
     const { ParsedFeature, Feature } = newLocation
-    console.log('user', user)
 
     const uuid = user.id
     const { name, address, file } = data
@@ -84,9 +83,7 @@ const NewLocation = () => {
         geo_json,
       },
     }
-
     console.log('MUTATION REQ DATA:', mutationReqData)
-
     newFeatureMutation.mutate(mutationReqData)
   }
 

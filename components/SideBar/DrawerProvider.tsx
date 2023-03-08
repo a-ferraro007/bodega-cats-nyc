@@ -11,6 +11,7 @@ import {
 import { FeatureDrawerState, NewLocationInterface } from '../../constants/types'
 import { useDebounce } from '../../hooks'
 import { trpc } from '../../utils/trpc'
+const { search } = trpc
 type DrawerContextType = {
   data: any
   setData: any //(data: any) => void
@@ -52,7 +53,7 @@ const DrawerProvider = ({ children }: DrawerProviderProps) => {
   const [inputFocused, setInputFocused] = useReducer((state) => !state, false)
   const [inputValue, setInputValue] = useState('')
   const { debounce } = useDebounce(inputValue, 500)
-  const { data: searchData, isLoading } = trpc.searchByPlace.useQuery(
+  const { data: searchData, isLoading } = search.searchByPlace.useQuery(
     debounce,
     {
       refetchOnWindowFocus: false,
@@ -66,10 +67,6 @@ const DrawerProvider = ({ children }: DrawerProviderProps) => {
   useEffect(() => {
     if (!isOpen) setInputValue('')
   }, [isOpen, setInputValue])
-
-  useEffect(() => {
-    console.log('new location: ', newLocation)
-  }, [newLocation])
 
   return (
     <DrawerContext.Provider

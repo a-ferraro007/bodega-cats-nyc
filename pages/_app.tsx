@@ -14,6 +14,7 @@ function MyApp({
   initialSession: Session
 }>) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient())
+  console.log('supabaseClient', supabaseClient)
 
   return (
     <SessionContextProvider

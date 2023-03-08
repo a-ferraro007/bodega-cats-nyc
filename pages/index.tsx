@@ -16,6 +16,7 @@ import CatFace from '../svg/CatFace'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { DrawerProvider } from '../components/SideBar/DrawerProvider'
+const { search } = trpc
 
 const Home: NextPage = ({}) => {
   const user = useUser()
@@ -26,7 +27,7 @@ const Home: NextPage = ({}) => {
   const { setSearchLocationState, searchLocationState } = useAddressSearchStore(
     (state) => state
   )
-  const { data } = trpc.searchByLngLat.useQuery(lnglat, {
+  const { data } = search.searchByLngLat.useQuery(lnglat, {
     enabled: !!lnglat,
   })
 

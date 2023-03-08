@@ -1,15 +1,26 @@
-import { LngLat, FeatureInterface, Feature } from '../../constants/types'
-import { selectFromFeature } from '../../supabase/db'
+import { SupabaseClient } from '@supabase/supabase-js'
+import { FeatureInterface, Feature, LngLat } from '../../../constants/types'
+import { selectFromFeature, selectTopInArea } from '../../supabase/db'
+
+const getTopInArea = async (borough: string, supabase: SupabaseClient) => {
+  return await selectTopInArea(borough, supabase)
+}
 
 const DEG2RAD = Math.PI / 180
 const RAD2DEG = 180 / Math.PI
 const FULL_CIRCLE_RAD = Math.PI * 2
 
 const getFeatures = async (
-  currentPosition: LngLat
+  currentPosition: LngLat,
+  supabase: any
 ): Promise<FeatureInterface[]> => {
-  const data = await selectFromFeature()
-  return filterByLngLat(data, currentPosition)
+  try {
+    const data = await selectFromFeature(supabase)
+    return filterByLngLat(data, currentPosition)
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
 }
 
 const filterByLngLat = (
@@ -19,7 +30,6 @@ const filterByLngLat = (
   const bounds = getBoundingCoordinates(2, lnglat)
   const min = bounds[0] //min[0] == lat, min[1] == lng
   const max = bounds[1]
-  console.log({ data })
 
   const validFeatures = data
     .filter((feature: Feature) => {
@@ -78,4 +88,4 @@ const getBoundingCoordinates = (distance: number, lnglat: any) => {
   ]
 }
 
-export default getFeatures
+export { getTopInArea, getFeatures }

@@ -4,10 +4,13 @@ import {
   RowId,
   TopFeatureInterface,
   FeatureInterface,
-} from './../constants/types'
+} from '../../constants/types'
 import supabase from '.'
+import { SupabaseClient } from '@supabase/supabase-js'
 
-const selectFromFeature = async (): Promise<FeatureInterface[]> => {
+const selectFromFeature = async (
+  supabase: SupabaseClient
+): Promise<FeatureInterface[]> => {
   try {
     const { data, error } = await supabase
       .from('Cat_Properties')
@@ -23,7 +26,8 @@ const selectFromFeature = async (): Promise<FeatureInterface[]> => {
 }
 
 const selectTopInArea = async (
-  borough: string
+  borough: string,
+  supabase: SupabaseClient
 ): Promise<TopFeatureInterface[]> => {
   try {
     const { data, error } = await supabase
@@ -41,11 +45,11 @@ const selectTopInArea = async (
 }
 
 const insertCatProperty = async (
-  CatProperties: CatProperties
+  CatProperties: CatProperties,
+  supabase: SupabaseClient
 ): Promise<RowId> => {
   try {
-    //console.log('inserting into Cat_Properties table', CatProperties)
-    //console.log('inserting into Cat_Properties db', supabase)
+    console.log('inserting into Cat_Properties', supabase)
 
     const { data, error } = await supabase
       .from('Cat_Properties')
@@ -60,7 +64,11 @@ const insertCatProperty = async (
   }
 }
 
-const insertMapBoxFeature = async (tableData: MapBoxFeature, catId: number) => {
+const insertMapBoxFeature = async (
+  tableData: MapBoxFeature,
+  catId: number,
+  supabase: SupabaseClient
+) => {
   try {
     const { data, error } = await supabase
       .from('MapBox_Feature')

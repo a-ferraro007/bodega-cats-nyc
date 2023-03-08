@@ -7,8 +7,8 @@ import { LngLat, SearchLocation } from '../constants/types'
 import { trpc } from '../utils/trpc'
 import { returnUserLocationMarker } from '../utils/MapMarker'
 import shallow from 'zustand/shallow'
-import CatFace from '../svg/CatFace'
 
+const { select } = trpc
 mapboxgl.accessToken =
   'pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA'
 
@@ -32,7 +32,7 @@ const Map = ({ lnglat, address }: SearchLocation) => {
   const setMapRef = useStore((state) => state.setMapRef)
   const setShow = useStore((state) => state.setShow)
   const show = useStore((state) => state.show)
-  const { data, isLoading } = trpc.selectFeatures.useQuery(queryKeyRef, {
+  const { data, isLoading } = select.selectFeatures.useQuery(queryKeyRef, {
     enabled: true,
   })
   useMapUpdate(data)
@@ -84,7 +84,7 @@ const Map = ({ lnglat, address }: SearchLocation) => {
   }, [searchLocationState, map.current])
 
   useEffect(() => {
-    if (!mapContainer.current || !data || !currentPositionRef.current) return
+    if (!mapContainer.current || !currentPositionRef.current) return
     if (map.current) {
       setUpData(map.current, featureMap)
       return
@@ -106,10 +106,8 @@ const Map = ({ lnglat, address }: SearchLocation) => {
 
     map.current.on('load', () => {
       if (map.current && map && data) {
-        //console.log('GEO', data)
         map.current.addSource('unclustered-bodega-cats', {
           type: 'geojson',
-          data: data as any,
         })
         setUpData(map.current, featureMap)
       }

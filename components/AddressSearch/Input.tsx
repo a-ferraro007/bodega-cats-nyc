@@ -13,6 +13,7 @@ import { trpc } from '../../utils/trpc'
 import { useDropdownContext } from './DrowpdownProvider'
 import InputLocation from '../../svg/InputLocation'
 import Close from '../../svg/Close'
+const { search } = trpc
 
 const AddressSearchBar = ({ address }: any) => {
   const { setQuery, query, setData, setOpenDropdown, setIsLoading } =
@@ -20,7 +21,7 @@ const AddressSearchBar = ({ address }: any) => {
   const { debounce } = useDebounce(query, 500)
   const [isInputFocused, setisInputFocused] = useState(false)
   const [inputValue, setInputValue] = useState<string>(address)
-  const { data, isLoading } = trpc.searchByAddress.useQuery(debounce, {
+  const { data, isLoading } = search.searchByAddress.useQuery(debounce, {
     refetchOnWindowFocus: false,
   })
   useLoadingDebounce(isLoading, setIsLoading, 300)

@@ -8,18 +8,16 @@ import { useDrawerContext } from '../DrawerProvider'
 import LoadingList from '../LoadingList'
 import FeaturedList from './FeaturedList'
 import NearbyList from './NearbyList'
-
+const { select } = trpc
 const ListDrawer = () => {
   const isMobile = useIsMobile()
   const size = useCardListSize('height')
   const { isOpen } = useDrawerContext()
   const { features: featureMap, isLoading } = useFeatureStore((state) => state)
-  const { data, isLoading: isTopInAreaLoading } = trpc.selectTopInArea.useQuery(
-    'Brooklyn',
-    {
+  const { data, isLoading: isTopInAreaLoading } =
+    select.selectTopInArea.useQuery('Brooklyn', {
       enabled: true,
-    }
-  )
+    })
   const memoizedFeatures = useMemo<Array<Feature>>(() => {
     const array: Array<Feature> = []
     featureMap.forEach(({ feature }) => {
