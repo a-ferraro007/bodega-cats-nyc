@@ -138,7 +138,7 @@ const NewLocation = () => {
         <fieldset className="flex flex-grow flex-col justify-end">
           <button
             type="submit"
-            className="mb-8 w-full rounded-md border-slate-200 bg-slate-200 px-3 py-2 font-nunito text-lg font-bold text-graphite transition-all duration-300 hover:bg-slate-300 hover:font-extrabold focus:bg-slate-300 focus:font-extrabold"
+            className="mb-8 w-full rounded-md border-[#dad8d2] bg-[#f5f4f1] px-3 py-2 font-nunito text-lg font-bold text-graphite transition-all duration-300 hover:bg-slate-300 hover:font-extrabold focus:bg-slate-300 focus:font-extrabold"
           >
             submit
           </button>

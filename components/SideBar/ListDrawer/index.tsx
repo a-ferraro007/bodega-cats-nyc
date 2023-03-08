@@ -27,11 +27,19 @@ const ListDrawer = () => {
   }, [featureMap])
 
   return (
-    <>
+    <AnimatePresence>
       {!isOpen && (
-        <div className="flex h-full flex-col gap-2 overflow-hidden">
+        <motion.div
+          className="flex h-full flex-col overflow-hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ delay: 0, ease: 'linear', duration: 0.25 }}
+          layout
+          key={isOpen ? `hide-drawer` : `show-drawer`}
+        >
           <div>
-            <p className="mb-3 font-nunito text-lg font-semibold">
+            <p className="mb-2  font-nunito text-lg font-semibold transition-all duration-300 ">
               Top in New York
             </p>
             <AnimatePresence>
@@ -50,7 +58,7 @@ const ListDrawer = () => {
             </AnimatePresence>
           </div>
 
-          <p className="font-nunito text-lg font-semibold">Nearby</p>
+          <p className="my-1 font-nunito text-lg font-semibold">Nearby</p>
           <div className="h-full overflow-y-auto">
             <AnimatePresence>
               {isLoading ? (
@@ -75,9 +83,9 @@ const ListDrawer = () => {
               )}
             </AnimatePresence>
           </div>
-        </div>
+        </motion.div>
       )}
-    </>
+    </AnimatePresence>
   )
 }
 

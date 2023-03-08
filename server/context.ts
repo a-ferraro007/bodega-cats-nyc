@@ -1,8 +1,7 @@
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { inferAsyncReturnType, initTRPC } from '@trpc/server'
 import * as trpcNext from '@trpc/server/adapters/next'
-import { Database } from '../constants/supabase'
-//import supabase from './supabase'
+import { Database } from '../constants/types'
 
 export const createContext = async ({
   req,
