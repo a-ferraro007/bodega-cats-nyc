@@ -10,6 +10,7 @@ type InputProps = {
   required?: boolean
   defaultValue?: any
   classNames?: string
+  placeholder?: string
 }
 
 const Input = ({
