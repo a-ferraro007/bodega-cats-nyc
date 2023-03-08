@@ -110,6 +110,7 @@ const NewLocation = () => {
                 id="name-input"
                 label="name"
                 type="name"
+                placeholder="name"
                 register={register}
                 required={true}
               />

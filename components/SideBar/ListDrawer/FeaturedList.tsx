@@ -1,14 +1,23 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { Feature, FeatureInterface } from '../../../constants/types'
 import Arrow from '../../../svg/Arrow'
 import { returnNewMarker } from '../../../utils/MapMarker'
 import BoroughBadge from '../BoroughBadge'
 type FeaturedListProps = {
   topFeatures: FeatureInterface[]
+  isLoading: boolean
 }
 
-const FeaturedList = ({ topFeatures }: FeaturedListProps) => {
+const FeaturedList = ({ topFeatures, isLoading }: FeaturedListProps) => {
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ delay: 0, ease: 'linear', duration: 0.25 }}
+      layout
+      key={isLoading ? 'featured-list-open' : 'featured-list-close'}
+    >
       {topFeatures.length > 0 && (
         <ol className="-mr-6 flex overflow-x-auto pb-4">
           {topFeatures.map((feature: Feature) => {
@@ -53,7 +62,7 @@ const FeaturedList = ({ topFeatures }: FeaturedListProps) => {
           </div>
         </ol>
       )}
-    </>
+    </motion.div>
   )
 }
 

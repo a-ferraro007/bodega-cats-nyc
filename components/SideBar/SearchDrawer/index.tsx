@@ -24,9 +24,6 @@ const SearchDrawer = () => {
           {data?.length > 0 && (
             <motion.div
               className="h-full overflow-hidden"
-              //initial={'search_close'}
-              //animate={data?.length > 0 ? 'search_open' : 'search_close'}
-              //exit={{ opacity: 0 }}
               transition={{
                 delay: 0,
                 ease: 'circOut',

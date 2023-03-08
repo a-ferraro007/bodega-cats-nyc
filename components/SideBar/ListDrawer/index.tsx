@@ -27,89 +27,57 @@ const ListDrawer = () => {
   }, [featureMap])
 
   return (
-    <AnimatePresence>
+    <>
       {!isOpen && (
         <div className="flex h-full flex-col gap-2 overflow-hidden">
           <div>
             <p className="mb-3 font-nunito text-lg font-semibold">
               Top in New York
             </p>
-            {data ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0, ease: 'linear', duration: 0.25 }}
-                layout
-                key={data ? 'featured-list-open' : 'featured-list-close'}
-              >
-                <FeaturedList topFeatures={data} />
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0, ease: 'linear', duration: 0.25 }}
-                layout
-                key={
-                  isTopInAreaLoading
-                    ? 'loading-top-loading'
-                    : 'loading-top-loaded'
-                }
-              >
-                <LoadingList size={10} />
-              </motion.div>
-            )}
+            <AnimatePresence>
+              {!isTopInAreaLoading && data && data.length > 0 ? (
+                <FeaturedList
+                  topFeatures={data}
+                  isLoading={isTopInAreaLoading}
+                />
+              ) : (
+                <LoadingList
+                  size={10}
+                  isLoading={isTopInAreaLoading}
+                  fKey="feature"
+                />
+              )}
+            </AnimatePresence>
           </div>
 
           <p className="font-nunito text-lg font-semibold">Nearby</p>
           <div className="h-full overflow-y-auto">
-            {isLoading && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0, ease: 'linear', duration: 0.25 }}
-                layout
-                key={
-                  isTopInAreaLoading
-                    ? 'loading-nearby-loading'
-                    : 'loading-nearby-loaded'
-                }
-              >
+            <AnimatePresence>
+              {isLoading ? (
                 <LoadingList
                   fullWidth={true}
                   size={size ? size : 10}
                   flexDirection={'flex-col'}
                   scrollDirection={'overflow-y-hidden'}
+                  isLoading={isLoading}
+                  fKey={'nearby'}
                 />
-              </motion.div>
-            )}
-            {!isLoading && memoizedFeatures.length > 0 ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0, ease: 'linear', duration: 0.25 }}
-                layout
-                key={
-                  !isLoading && memoizedFeatures.length > 0
-                    ? 'nearby-list-open'
-                    : 'nearby-list-close'
-                }
-              >
-                <NearbyList data={memoizedFeatures} />
-              </motion.div>
-            ) : (
-              <p className="w-full text-center font-nunito font-normal">
-                no cats nearby 😿
-              </p>
-            )}
+              ) : (
+                <>
+                  {memoizedFeatures.length > 0 ? (
+                    <NearbyList data={memoizedFeatures} isLoading={isLoading} />
+                  ) : (
+                    <p className="w-full text-center font-nunito font-normal">
+                      no cats nearby 😿
+                    </p>
+                  )}
+                </>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       )}
-    </AnimatePresence>
+    </>
   )
 }
 

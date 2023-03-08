@@ -1,13 +1,23 @@
+import { motion } from 'framer-motion'
 import { Feature, FeatureInterface } from '../../../constants/types'
 import BoroughBadge from '../BoroughBadge'
 
 type NearbyListProps = {
   data: FeatureInterface[]
+  isLoading: boolean
 }
+
 //className="overflow-y-auto"
-const NearbyList = ({ data }: NearbyListProps) => {
+const NearbyList = ({ data, isLoading }: NearbyListProps) => {
   return (
-    <ul>
+    <motion.ul
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ delay: 0, ease: 'linear', duration: 0.25 }}
+      layout
+      key={isLoading ? `loading-nearby` : `loaded-nearby`}
+    >
       {data.length > 0 &&
         data.map((feature: Feature) => {
           const { id, MapBox_Feature, locality, name } = feature
@@ -32,7 +42,7 @@ const NearbyList = ({ data }: NearbyListProps) => {
             </li>
           )
         })}
-    </ul>
+    </motion.ul>
   )
 }
 

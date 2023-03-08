@@ -51,7 +51,7 @@ const addressSearchStore = (set: any) => ({
 
 const featureStore = (set: any) => ({
   features: new Map<string, MarkerFeature>(),
-  isLoading: false,
+  isLoading: true,
   setFeatures: (features: Map<String, MarkerFeature>) =>
     set(() => ({ features: new Map(features) })),
   setIsLoading: (isLoading: boolean) => set(() => ({ isLoading })),

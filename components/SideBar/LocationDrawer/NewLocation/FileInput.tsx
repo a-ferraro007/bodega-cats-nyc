@@ -72,13 +72,13 @@ const FileInput = ({ label, required, register }: FileInputProps) => {
           {!image && (
             <>
               <AddPhoto />
-              add a photo
+              <span>add a photo</span>
             </>
           )}{' '}
           {image && (
             <>
               <ChangePhoto />
-              change photo
+              <span>change photo</span>
             </>
           )}
           <input
