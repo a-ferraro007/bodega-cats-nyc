@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Feature, FeatureInterface } from '../../../constants/types'
 import BoroughBadge from '../BoroughBadge'
 import Card from './Card'
+import CardV2 from './CardV2'
 
 type NearbyListProps = {
   data: FeatureInterface[]
@@ -27,7 +28,7 @@ const NearbyList = ({ data, isLoading }: NearbyListProps) => {
       {data.length > 0 &&
         data.map((feature: Feature) => {
           const { id } = feature
-          return <Card classNames={classNames} feature={feature} key={id} />
+          return <CardV2 classNames={classNames} feature={feature} key={id} />
         })}
     </motion.ul>
   )

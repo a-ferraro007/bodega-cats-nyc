@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useMemo, useEffect } from 'react'
+import { useMemo } from 'react'
 import { Feature } from '../../../constants/types'
 import { useCardListSize, useIsMobile } from '../../../hooks'
 import { useFeatureStore } from '../../../store'
@@ -9,8 +9,8 @@ import LoadingList from '../LoadingList'
 import FeaturedList from './FeaturedList'
 import NearbyList from './NearbyList'
 const { select } = trpc
+
 const ListDrawer = () => {
-  const isMobile = useIsMobile()
   const size = useCardListSize('height')
   const { isOpen } = useDrawerContext()
   const { features: featureMap, isLoading } = useFeatureStore((state) => state)

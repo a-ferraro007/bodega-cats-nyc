@@ -4,6 +4,7 @@ import Arrow from '../../../svg/Arrow'
 import { returnNewMarker } from '../../../utils/MapMarker'
 import BoroughBadge from '../BoroughBadge'
 import Card from './Card'
+import CardV2 from './CardV2'
 type FeaturedListProps = {
   topFeatures: FeatureInterface[]
   isLoading: boolean
@@ -28,7 +29,7 @@ const FeaturedList = ({ topFeatures, isLoading }: FeaturedListProps) => {
         <ol className="-mr-6 flex overflow-x-auto pb-4">
           {topFeatures.map((feature: Feature) => {
             const { id } = feature
-            return <Card classNames={classNames} feature={feature} key={id} />
+            return <CardV2 classNames={classNames} feature={feature} key={id} />
           })}
           <div className="group flex-shrink-0 flex-grow-0 basis-11 pr-6">
             <button className="flex h-full w-40 cursor-pointer flex-col items-center justify-center gap-4 rounded-[15px] border border-[#dad8d2] hover:bg-[#f5f4f1]">
