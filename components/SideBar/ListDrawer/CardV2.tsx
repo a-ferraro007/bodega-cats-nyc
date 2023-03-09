@@ -16,17 +16,8 @@ const CardV2 = ({ feature, classNames }: CardProps) => {
       tabIndex={0}
     >
       <div
-        className={`group m-0 flex cursor-pointer flex-row-reverse gap-2 rounded-[15px] transition-all duration-300 hover:bg-[#f5f4f1] ${cardContainer} max-h-[16rem] border border-[#dad8d2] p-3`}
+        className={`group m-0 flex cursor-pointer gap-2 rounded-[15px] transition-all duration-300 hover:bg-[#f5f4f1] ${cardContainer} max-h-[16rem] border border-[#dad8d2] p-3`}
       >
-        <div className="relative h-[7rem] w-full max-w-[7rem] flex-grow overflow-hidden rounded-[10px]">
-          <Image
-            className="h-full w-full object-cover"
-            alt="feature image"
-            src={src}
-            //placeholder="blur"
-            fill
-          />
-        </div>
         <div className=" rounded-b-[15px] bg-white transition-all duration-300 group-hover:bg-[#f5f4f1] ">
           <div className="p-3">
             <span className="text-md block pb-1 font-nunito font-bold">
@@ -40,6 +31,16 @@ const CardV2 = ({ feature, classNames }: CardProps) => {
               </div>
             )}
           </div>
+        </div>
+        <div className="relative h-[7rem] w-full max-w-[7rem] flex-grow overflow-hidden rounded-[10px]">
+          <Image
+            className="h-full w-full object-cover"
+            alt="feature image"
+            src={src}
+            //placeholder="blur"
+            fill
+          />
+          <div className="shadow-[inset_0_0_0_1px_rgb(0 ,0 ,0, .6)] pointer-events-none absolute inset-0 rounded-[15px]"></div>
         </div>
       </div>
     </li>
