@@ -16,13 +16,14 @@ const CardV2 = ({ feature, classNames }: CardProps) => {
       tabIndex={0}
     >
       <div
-        className={`group m-0 flex cursor-pointer gap-2 rounded-[15px] transition-all duration-300 hover:bg-[#f5f4f1] ${cardContainer} max-h-[16rem] border border-[#dad8d2] p-3`}
+        className={`group m-0 flex cursor-pointer flex-row-reverse gap-2 rounded-[15px] transition-all duration-300 hover:bg-[#f5f4f1] ${cardContainer} max-h-[16rem] border border-[#dad8d2] p-3`}
       >
-        <div className="relative h-[7rem] w-full max-w-[7rem] flex-grow overflow-hidden rounded-[15px] border border-b-0 border-[#dad8d2]">
+        <div className="relative h-[7rem] w-full max-w-[7rem] flex-grow overflow-hidden rounded-[10px]">
           <Image
             className="h-full w-full object-cover"
             alt="feature image"
             src={src}
+            //placeholder="blur"
             fill
           />
         </div>
