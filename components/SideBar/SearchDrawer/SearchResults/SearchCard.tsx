@@ -1,16 +1,25 @@
 import BoroughBadge from '../../BoroughBadge'
-import { SearchCardProps } from '../../../../constants/types'
+import {
+  NewLocationInterface,
+  SearchCardProps,
+} from '../../../../constants/types'
+import { useDrawerContext } from '../../DrawerProvider'
 
 const SearchCard = ({ location, classNames }: SearchCardProps) => {
-  const { name, address, locality } = location
+  const { setNewLocation, setNewLocOpen } = useDrawerContext()
+  const { ParsedFeature } = location
+  const { name, address, locality } = ParsedFeature
   const { listItem, cardContainer } = classNames
+
+  const handleOnClick = (selected: NewLocationInterface) => {
+    setNewLocation(selected)
+    setNewLocOpen(true)
+  }
 
   return (
     <li
       className={`${listItem}`}
-      onClick={() => {
-        console.log(location)
-      }}
+      onClick={() => handleOnClick(location)}
       tabIndex={0}
     >
       <div
