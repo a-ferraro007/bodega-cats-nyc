@@ -137,7 +137,7 @@ export interface ListCardProps {
 }
 
 export interface SearchCardProps {
-  location: ParsedFeature
+  location: NewLocationInterface
   classNames: { listItem: string; cardContainer: string }
 }
 

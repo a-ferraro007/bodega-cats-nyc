@@ -9,28 +9,21 @@ import { useDrawerContext } from '../../DrawerProvider'
 import SearchCard from './SearchCard'
 
 const SearchResults = () => {
-  const { data, newLocOpen, setNewLocOpen, setNewLocation, isOpen, setIsOpen } =
-    useDrawerContext()
+  const { data } = useDrawerContext()
 
   const HandleOnKeyDown = (e: KeyboardEvent, selected: FeatureDrawerState) => {}
 
-  const handleOnClick = (selected: NewLocationInterface) => {
-    setNewLocation(selected)
-    setNewLocOpen(true)
-  }
-
   return (
-    <ul className="h-full overflow-y-scroll">
+    <ul className="h-full scroll-m-4 overflow-y-scroll">
       {data &&
         data.map((location: NewLocationInterface, i: number) => {
-          const { ParsedFeature } = location
           return (
             <SearchCard
               classNames={{
                 listItem: 'mb-4 last:mb-0',
                 cardContainer: 'w-full',
               }}
-              location={ParsedFeature}
+              location={location}
               key={i}
             />
           )
