@@ -6,10 +6,12 @@ import {
 } from '../../../../constants/types'
 import BoroughBadge from '../../BoroughBadge'
 import { useDrawerContext } from '../../DrawerProvider'
+import SearchCard from './SearchCard'
 
 const SearchResults = () => {
   const { data, newLocOpen, setNewLocOpen, setNewLocation, isOpen, setIsOpen } =
     useDrawerContext()
+
   const HandleOnKeyDown = (e: KeyboardEvent, selected: FeatureDrawerState) => {}
 
   const handleOnClick = (selected: NewLocationInterface) => {
@@ -20,30 +22,17 @@ const SearchResults = () => {
   return (
     <ul className="h-full overflow-y-scroll">
       {data &&
-        data.map((feature: NewLocationInterface) => {
-          const { ParsedFeature } = feature
+        data.map((location: NewLocationInterface, i: number) => {
+          const { ParsedFeature } = location
           return (
-            <li
-              className="my-4 cursor-pointer rounded-[15px] border-[1px] border-[#dad8d2] px-4 py-6 transition-all duration-200 first:mt-0  last:mb-0 hover:bg-[#f5f4f1]"
-              onClick={() => handleOnClick(feature)}
-              //onKeyDown={(e) => HandleOnKeyDown(e, feature)}
-              tabIndex={0}
-              key={ParsedFeature?.feature_id}
-            >
-              <span className="text-md block pb-1 font-nunito font-bold">
-                {ParsedFeature?.name}
-              </span>
-              <p className="mb-4 font-roboto text-xs font-normal  ">
-                {' '}
-                {ParsedFeature?.address}
-              </p>
-
-              {ParsedFeature?.locality && (
-                <div className="border-t-[1px] border-solid border-[#dad8d2] pt-4">
-                  <BoroughBadge locality={ParsedFeature?.locality} />
-                </div>
-              )}
-            </li>
+            <SearchCard
+              classNames={{
+                listItem: 'mb-4 last:mb-0',
+                cardContainer: 'w-full',
+              }}
+              location={ParsedFeature}
+              key={i}
+            />
           )
         })}
     </ul>

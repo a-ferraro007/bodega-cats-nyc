@@ -4,7 +4,7 @@ const Login = ({ classNames }: Props<any>) => {
   return (
     <svg
       className={classNames}
-      fill="#000000"
+      fill="#242424"
       width="25"
       height="25"
       viewBox="0 0 24 24"

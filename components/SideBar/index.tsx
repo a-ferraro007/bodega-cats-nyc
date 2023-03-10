@@ -12,7 +12,7 @@ const SideBar = () => {
 
   return (
     <div
-      className={`absolute z-10 h-full w-full border-l-[.5px] border-solid border-[rgba(0,0,0,.2)] bg-white md:static md:w-side-bar ${
+      className={`absolute z-10 h-full w-full border-l-[.5px] border-solid border-[rgba(0,0,0,.08)] bg-[#F6F6F6] md:static md:w-side-bar ${
         !showMobileMap ? 'invisible opacity-0 md:visible md:opacity-[1]' : ''
       }`}
     >

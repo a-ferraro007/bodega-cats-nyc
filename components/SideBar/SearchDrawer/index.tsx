@@ -17,33 +17,29 @@ const SearchDrawer = () => {
 
   return (
     <>
-      {/*{!newLocOpen && (*/}
-      <>
-        <SearchBar />
-        <AnimatePresence>
-          {data?.length > 0 && (
-            <motion.div
-              className="h-full overflow-hidden"
-              transition={{
-                delay: 0,
-                ease: 'circOut',
-                duration: 0.25,
-              }}
-              key={'search-drawer-location-close'}
-              variants={Variants.search}
-            >
-              <SearchResults />
-            </motion.div>
-          )}
-        </AnimatePresence>
-        {inputValue.length > 0 && data?.length === 0 && (
-          //add link to submit bug report for missing location
-          <p className="w-full text-center font-nunito font-normal">
-            no location found 😿
-          </p>
+      <SearchBar />
+      <AnimatePresence>
+        {data.length > 0 && (
+          <motion.div
+            className="h-full overflow-hidden"
+            transition={{
+              delay: 0,
+              ease: 'circOut',
+              duration: 0.25,
+            }}
+            key={'search-drawer-location-close'}
+            variants={Variants.search}
+          >
+            <SearchResults />
+          </motion.div>
         )}
-      </>
-      {/*)}*/}
+      </AnimatePresence>
+      {inputValue.length > 0 && data?.length === 0 && (
+        //add link to submit bug report for missing location
+        <p className="w-full text-center font-nunito font-normal">
+          no location found 😿
+        </p>
+      )}
     </>
   )
 }

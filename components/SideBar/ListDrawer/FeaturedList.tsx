@@ -1,10 +1,7 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Feature, FeatureInterface } from '../../../constants/types'
 import Arrow from '../../../svg/Arrow'
-import { returnNewMarker } from '../../../utils/MapMarker'
-import BoroughBadge from '../BoroughBadge'
-import Card from './Card'
-import CardV2 from './CardV2'
+import ListCard from './ListCard'
 type FeaturedListProps = {
   topFeatures: FeatureInterface[]
   isLoading: boolean
@@ -29,11 +26,13 @@ const FeaturedList = ({ topFeatures, isLoading }: FeaturedListProps) => {
         <ol className="-mr-6 flex overflow-x-auto pb-4">
           {topFeatures.map((feature: Feature) => {
             const { id } = feature
-            return <CardV2 classNames={classNames} feature={feature} key={id} />
+            return (
+              <ListCard classNames={classNames} feature={feature} key={id} />
+            )
           })}
-          <div className="group flex-shrink-0 flex-grow-0 basis-11 pr-6">
-            <button className="flex h-full w-40 cursor-pointer flex-col items-center justify-center gap-4 rounded-[15px] border border-[#dad8d2] hover:bg-[#f5f4f1]">
-              <div className="rounded-full border-[1px] border-[#dad8d2] p-2 transition-all duration-300 group-hover:border-[#242424]">
+          <div className="hadow-[0_2px_4px_rgba(0,0,0,.04)] borer borer-[rgba(0,0,0,.08)] group flex-shrink-0 flex-grow-0 basis-11 rounded-[15px] bg-white pr-6">
+            <button className="flex h-full w-40 cursor-pointer flex-col items-center justify-center gap-4 rounded-[15px] border border-[rgba(0,0,0,.08)] bg-white shadow-[0_2px_4px_rgba(0,0,0,.04)]">
+              <div className="group-hover:border-[rgb(36, 36, 36, .8)] rounded-full border-[1px] border-[#dad8d2] p-2 transition-all duration-300">
                 <Arrow />
               </div>
               <p className="text-md font-nunito font-light text-graphite">

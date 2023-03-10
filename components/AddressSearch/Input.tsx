@@ -57,7 +57,7 @@ const AddressSearchBar = ({ address }: any) => {
 
   return (
     <div
-      className="font-regular flex h-10 w-full flex-row gap-1 rounded-[10px] border-[rgba(0,0,0,.5)] bg-[#f5f4f1] px-2 font-nunito text-lg text-graphite outline-none transition-all duration-500  placeholder:text-graphite md:gap-3 md:px-4"
+      className="font-regular flex h-10 w-full flex-row gap-1 rounded-[10px] border-[rgba(0,0,0,.5)] bg-white px-2 font-nunito text-lg text-graphite shadow-[0_1px_3px_rgba(0,0,0,.04)] outline-none transition-all  duration-500 placeholder:text-graphite md:gap-3 md:px-4"
       onBlur={() => handleOnBlur()}
       onFocus={() => handleOnFocus()}
     >
@@ -66,7 +66,7 @@ const AddressSearchBar = ({ address }: any) => {
       </span>
       <div className="flex-grow">
         <input
-          className="font-regular h-full w-full bg-[#f5f4f1] font-nunito text-lg text-graphite outline-none transition-all  duration-500 placeholder:pl-1 placeholder:text-[rgb(93,93,93)]"
+          className="font-regular h-full w-full bg-white font-nunito text-lg text-graphite outline-none transition-all  duration-500 placeholder:pl-1 placeholder:text-[rgb(93,93,93)]"
           placeholder="search an area"
           id="search-area-input"
           type="search"
