@@ -1,4 +1,3 @@
-//import { NewFeatureMutation } from './types';
 import { z } from 'zod'
 
 export const FormInputs = z.object({
@@ -116,10 +115,6 @@ export type Coordinates = {
   latitude: number
 }
 
-//export interface LngLat {
-//  lng: number
-//  lat: number
-//}
 export interface SearchLocation {
   feature_id: string
   lnglat: LngLat
@@ -136,8 +131,13 @@ export interface MarkerFeature {
   feature: Feature
 }
 
-export type CardProps = {
+export interface ListCardProps {
   feature: Feature
+  classNames: { listItem: string; cardContainer: string }
+}
+
+export interface SearchCardProps {
+  location: ParsedFeature
   classNames: { listItem: string; cardContainer: string }
 }
 

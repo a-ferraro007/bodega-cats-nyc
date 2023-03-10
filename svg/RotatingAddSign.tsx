@@ -33,7 +33,7 @@ const RotatingAddSign = ({ isOpen }: RotatingAddSignProps) => {
         <g
           strokeLinecap="round"
           strokeLinejoin="round"
-          stroke="#292929"
+          stroke="#242424"
           strokeWidth={2}
         ></g>
         <g id="SVGRepo_iconCarrier">
@@ -41,7 +41,7 @@ const RotatingAddSign = ({ isOpen }: RotatingAddSignProps) => {
             fillRule="evenodd"
             clipRule="evenodd"
             d="M12 3a1 1 0 0 0-1 1v7H4a1 1 0 1 0 0 2h7v7a1 1 0 1 0 2 0v-7h7a1 1 0 1 0 0-2h-7V4a1 1 0 0 0-1-1z"
-            fill="#292929"
+            fill="#242424"
           ></path>
         </g>
       </motion.svg>

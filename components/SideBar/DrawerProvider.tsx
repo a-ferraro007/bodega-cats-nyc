@@ -8,13 +8,17 @@ import {
   useReducer,
   useState,
 } from 'react'
-import { FeatureDrawerState, NewLocationInterface } from '../../constants/types'
+import {
+  FeatureDrawerState,
+  NewLocation,
+  NewLocationInterface,
+} from '../../constants/types'
 import { useDebounce } from '../../hooks'
 import { trpc } from '../../utils/trpc'
 const { search } = trpc
 type DrawerContextType = {
-  data: any
-  setData: any //(data: any) => void
+  data: NewLocation[]
+  setData: Dispatch<SetStateAction<NewLocation[]>>
   newLocation: NewLocationInterface | null
   setNewLocation: Dispatch<SetStateAction<any>>
   newLocOpen: boolean
@@ -31,7 +35,7 @@ type DrawerProviderProps = {
 }
 
 const DrawerContext = createContext<DrawerContextType>({
-  data: null,
+  data: [],
   setData: () => {},
   newLocation: null,
   setNewLocation: () => {},
@@ -46,7 +50,7 @@ const DrawerContext = createContext<DrawerContextType>({
 })
 
 const DrawerProvider = ({ children }: DrawerProviderProps) => {
-  const [data, setData] = useState<FeatureDrawerState | undefined>()
+  const [data, setData] = useState<NewLocation[]>([])
   const [newLocation, setNewLocation] = useState(null)
   const [newLocOpen, setNewLocOpen] = useReducer((state) => !state, false)
   const [isOpen, setIsOpen] = useReducer((state) => !state, false)
@@ -61,7 +65,8 @@ const DrawerProvider = ({ children }: DrawerProviderProps) => {
   )
 
   useEffect(() => {
-    setData(searchData as any)
+    if (!searchData) return
+    setData(searchData)
   }, [searchData, setData])
 
   useEffect(() => {

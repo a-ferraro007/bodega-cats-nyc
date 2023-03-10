@@ -2,14 +2,13 @@ import { SupabaseClient } from '@supabase/supabase-js'
 import {
   FeatureDrawerState,
   LngLat,
+  NewLocation,
   ParsedAddressFeature,
   ParsedSearchLocation,
   SearchLocation,
 } from '../../../constants/types'
 
-const getSearchResults = async (
-  query: string
-): Promise<Array<FeatureDrawerState>> => {
+const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
   try {
     var requestOptions = <RequestInit>{
       method: 'GET',
@@ -25,45 +24,42 @@ const getSearchResults = async (
 
     const { features } = await resp.json()
 
-    const mappedFeatures: Array<FeatureDrawerState> = features.map(
-      (feature: any) => {
-        const {
+    const mappedFeatures: Array<NewLocation> = features.map((feature: any) => {
+      const {
+        id,
+        type,
+        geometry,
+        place_name,
+        place_type,
+        center,
+        context,
+        text,
+        properties,
+      } = feature
+      const splitPlaceName = place_name?.split(',')
+      let locality = context.find((item: any) =>
+        item.id.includes('locality')
+      )?.text
+      if (locality)
+        locality =
+          locality.charAt(0).toUpperCase() + locality.slice(1, locality.length)
+
+      return {
+        ParsedFeature: {
+          feature_id: id,
+          name: splitPlaceName[0],
+          address: properties.address + ', New York, New York',
+          locality,
+          center,
+        },
+        Feature: {
           id,
           type,
           geometry,
-          place_name,
           place_type,
-          center,
-          context,
-          text,
-          properties,
-        } = feature
-        const splitPlaceName = place_name?.split(',')
-        let locality = context.find((item: any) =>
-          item.id.includes('locality')
-        )?.text
-        if (locality)
-          locality =
-            locality.charAt(0).toUpperCase() +
-            locality.slice(1, locality.length)
-
-        return {
-          ParsedFeature: {
-            feature_id: id,
-            name: splitPlaceName[0],
-            address: properties.address + ', New York, New York',
-            locality,
-            center,
-          },
-          Feature: {
-            id,
-            type,
-            geometry,
-            place_type,
-          },
-        }
+        },
       }
-    )
+    })
 
     return mappedFeatures
   } catch (error) {

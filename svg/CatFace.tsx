@@ -7,7 +7,7 @@ const CurledCat = ({ classNames }: any) => {
       version="1.1"
       id="_x32_"
       viewBox="0 0 512 512"
-      fill="#000000"
+      fill="#242424"
     >
       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
