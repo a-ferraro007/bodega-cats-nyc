@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import BoroughBadge from '../BoroughBadge'
-import { CardProps } from '../../../constants/types'
+import { ListCardProps } from '../../../constants/types'
 
-const CardV2 = ({ feature, classNames }: CardProps) => {
+const CardV2 = ({ feature, classNames }: ListCardProps) => {
   const { id, MapBox_Feature, name, locality, image: src } = feature
   const { address } = MapBox_Feature[0]
   const { listItem, cardContainer } = classNames
