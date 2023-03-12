@@ -19,6 +19,7 @@ module.exports = {
         primaryBlue: '#3884FF', //'#1e30a4',
         lightBlue: 'rgba(30, 48, 164, .1)',
         mediumBlue: 'rgba(30, 48, 164, .2)',
+        seasalt: '#F6F6F6',
       },
       fontSize: {
         xxs: ['.5rem', '.75rem'],
@@ -36,6 +37,7 @@ module.exports = {
         '3xl': '0 1px 2px rgba(0, 0, 0, .2)',
         '4xl': '0 2px 4px rgb(0 0 0 / 20%), 0 -1px 0px rgb(0 0 0 / 2%)',
         '5xl': '0 0 8px rgb(0 0 0 / 16%)',
+        default: '0 2px 4px rgba(0,0,0,.04)',
       },
       height: {
         container: 'calc(100% - 4rem)',
@@ -59,6 +61,9 @@ module.exports = {
           'radial-gradient(circle, rgba(35,162,242,1) 19%, rgba(11,145,255,1) 100%);',
         'dark-blue-radial-gradient':
           'linear-gradient(135deg, rgba(0,71,214,1) 19%, rgba(0,71,214,1) 100%);',
+      },
+      borderRadius: {
+        default: '15px',
       },
     },
   },

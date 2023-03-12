@@ -17,6 +17,7 @@ import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { DrawerProvider } from '../components/SideBar/DrawerProvider'
 import Logo from '../svg/Logo'
+import { motion } from 'framer-motion'
 const { search } = trpc
 
 const Home: NextPage = ({}) => {
@@ -47,6 +48,17 @@ const Home: NextPage = ({}) => {
     console.log('profile clicked', user, supabaseClient, authStatus)
   }
 
+  const Variants = {
+    button: {
+      key_down: {
+        boxShadow:
+          'inset 1px 1px 3px rgba(0,0,0,.25), 0 1px 2px rgba(0,0,0,.05)',
+        scale: 0.99999,
+      },
+      key_up: { boxShadow: '0 2px 4px rgba(0,0,0,.05)' },
+    },
+  }
+
   return (
     <>
       <Head>
@@ -59,17 +71,25 @@ const Home: NextPage = ({}) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="relative h-full w-screen overflow-hidden">
-        <nav className="flex h-[70px] w-full items-center justify-between gap-4 border-b-[.5px] border-solid border-[rgba(0,0,0,.08)] bg-[#F6F6F6] p-4 px-2 md:h-20 md:gap-6 md:p-6 md:px-2">
+        <nav className="flex h-[70px] w-full items-center justify-between gap-4 border-b-[.5px] border-solid border-[rgba(0,0,0,.08)] bg-seasalt p-4 px-2 md:h-20 md:gap-6 md:p-6 md:px-2">
           <span className="max-w-[75px] md:max-w-[115px]">
             <Logo />
           </span>
           <AddressSearch />
-          <button
+          <motion.button
+            layout
+            initial={'key_up'}
+            whileTap={'key_down'}
+            //whileFocus={'focus'}
+            exit={{ opacity: 0 }}
+            transition={{ delay: 0, ease: 'linear', duration: 0.125 }}
+            variants={Variants.button}
+            key={`login-button`}
             className="rounded-[10px] border border-[rgba(0,0,0,.08)] bg-white p-[.625rem] shadow-[0_2px_4px_rgba(0,0,0,.04)] md:p-3"
             onClick={() => handleProfileClick()}
           >
             <Login classNames="-translate-y-[.115rem] md:translate-y-0" />
-          </button>
+          </motion.button>
         </nav>
         <div className="relative flex h-container flex-row">
           <div className="flex w-full justify-center md:w-map-container">

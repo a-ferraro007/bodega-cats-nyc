@@ -10,18 +10,21 @@ import { useDrawerContext } from '../../DrawerProvider'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { useAuthStore } from '../../../../store'
 import MotionDiv from '../../../MotionDiv'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import CloseArrow from '../../../../svg/CloseArrow'
+import { useIsMobile } from '../../../../hooks'
 const { insert } = trpc
 
 const NewLocation = () => {
   const user = useUser()
   const { session } = useSessionContext()
   const utils = trpc.useContext()
+  const isMobile = useIsMobile()
   const [rating, setRating] = useState(0)
   const [hover, setHover] = useState(0)
   const { setAuthStatus } = useAuthStore((state) => state)
-  const { newLocation, setNewLocation, setNewLocOpen } = useDrawerContext()
+  const { newLocation, setNewLocation, newLocOpen, setNewLocOpen } =
+    useDrawerContext()
 
   const {
     register,
@@ -93,15 +96,51 @@ const NewLocation = () => {
     }
   }, [newFeatureMutation.isSuccess])
 
+  const handleBackBtnCick = () => {
+    setNewLocation(null)
+    setNewLocOpen(false)
+  }
+
+  const Variants = {
+    location: {
+      location_open: { x: 0, opacity: 1, transition: { delayChildren: 4 } },
+      location_close: { x: '100%', opacity: 1 },
+      location_mobile_close: { y: '100%', opacity: 1 },
+      location_mobile_open: { y: 30, opacity: 1 },
+    },
+    button: {
+      button_open: { opacity: 1 },
+      button_close: { opacity: 0 },
+    },
+  }
+
   return (
-    <div className="h-full w-full overflow-scroll">
+    <div className="h-full w-full">
+      {newLocOpen && (
+        <motion.button
+          className={` rounded-full  bg-white p-1 shadow-default ${
+            !isMobile ? '' : ''
+          }`}
+          onClick={() => handleBackBtnCick()}
+          initial={'button_close'}
+          animate={'button_open'}
+          exit={'button_close'}
+          transition={{
+            delay: 0,
+            ease: 'circOut',
+            duration: 0.35,
+          }}
+          key={'button_open'}
+          variants={Variants.button}
+        >
+          <CloseArrow rotate={isMobile ? 'rotate(90)' : 'rotate(0)'} />
+        </motion.button>
+      )}
+
       <form
-        className="flex h-full flex-auto basis-full flex-col gap-6"
+        className="flex h-full flex-auto basis-full flex-col gap-6 overflow-y-scroll"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <fieldset>
-          <FileInput label="file" required={true} register={register} />
-        </fieldset>
         <div className="px-4">
           {' '}
           <div className="flex flex-col gap-6">
@@ -135,10 +174,13 @@ const NewLocation = () => {
             </fieldset>
           </div>
         </div>
+        <fieldset>
+          <FileInput label="file" required={true} register={register} />
+        </fieldset>
         <fieldset className="flex flex-grow flex-col justify-end">
           <button
             type="submit"
-            className="mb-8 w-full rounded-md border-[#dad8d2] bg-[#f5f4f1] px-3 py-2 font-nunito text-lg font-bold text-graphite transition-all duration-300 hover:bg-slate-300 hover:font-extrabold focus:bg-slate-300 focus:font-extrabold"
+            className="group mb-8  w-full rounded-[10px] border border-[rgba(0,0,0,.08)] bg-white p-1 px-3 py-2 font-nunito text-lg font-bold text-graphite shadow-default"
           >
             submit
           </button>

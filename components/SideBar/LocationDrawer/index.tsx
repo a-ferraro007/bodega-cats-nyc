@@ -37,17 +37,17 @@ const LocationDrawer = () => {
     },
   }
 
-  const handleBackBtnCick = () => {
-    setNewLocation(null)
-    setNewLocOpen(false)
-  }
+  //const handleBackBtnCick = () => {
+  //  setNewLocation(null)
+  //  setNewLocOpen(false)
+  //}
 
   return (
     <AnimatePresence>
       {newLocOpen && (
         <motion.div
           layout
-          className={`absolute top-0 right-0 h-full w-full bg-white p-6 ${
+          className={`absolute top-0 right-0  h-full w-full bg-seasalt p-4 ${
             isMobile
               ? 'rounded-t-[15px] shadow-[0px_-5px_7px_rgb(0,0,0,.15)]'
               : ''
@@ -63,28 +63,6 @@ const LocationDrawer = () => {
           key={'location_open'}
           variants={Variants.location}
         >
-          {newLocOpen && (
-            <motion.button
-              className={`absolute rounded-full bg-white p-1  ${
-                !isMobile
-                  ? 'left-[-1.5rem] top-0'
-                  : 'right-[1.5rem] -top-6 z-10 shadow-[0px_-5px_7px_rgb(0,0,0,.15)]'
-              }`}
-              onClick={() => handleBackBtnCick()}
-              initial={'button_close'}
-              animate={'button_open'}
-              exit={'button_close'}
-              transition={{
-                delay: 0,
-                ease: 'circOut',
-                duration: 0.35,
-              }}
-              key={'button_open'}
-              variants={Variants.button}
-            >
-              <CloseArrow rotate={isMobile ? 'rotate(90)' : 'rotate(0)'} />
-            </motion.button>
-          )}
           <NewLocation />
         </motion.div>
       )}

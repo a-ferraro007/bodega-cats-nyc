@@ -9,7 +9,7 @@ type FeaturedListProps = {
 
 const FeaturedList = ({ topFeatures, isLoading }: FeaturedListProps) => {
   const classNames = {
-    listItem: 'pr-4',
+    listItem: 'pr-4 relative z-10 transition-all duration-300 ease-in-out',
     cardContainer: 'w-72',
   }
 
@@ -23,15 +23,15 @@ const FeaturedList = ({ topFeatures, isLoading }: FeaturedListProps) => {
       key={isLoading ? 'featured-list-open' : 'featured-list-close'}
     >
       {topFeatures.length > 0 && (
-        <ol className="-mr-6 flex overflow-x-auto pb-4">
+        <ol className="flex overflow-x-auto py-4">
           {topFeatures.map((feature: Feature) => {
             const { id } = feature
             return (
               <ListCard classNames={classNames} feature={feature} key={id} />
             )
           })}
-          <div className="hadow-[0_2px_4px_rgba(0,0,0,.04)] borer borer-[rgba(0,0,0,.08)] group flex-shrink-0 flex-grow-0 basis-11 rounded-[15px] bg-white pr-6">
-            <button className="flex h-full w-40 cursor-pointer flex-col items-center justify-center gap-4 rounded-[15px] border border-[rgba(0,0,0,.08)] bg-white shadow-[0_2px_4px_rgba(0,0,0,.04)]">
+          <div className="hadow-[0_2px_4px_rgba(0,0,0,.04)] borer borer-[rgba(0,0,0,.08)] group flex-shrink-0 flex-grow-0 basis-11 rounded-default bg-white">
+            <button className="flex h-full w-40 cursor-pointer flex-col items-center justify-center gap-4 rounded-default border border-[rgba(0,0,0,.08)] bg-white shadow-[0_2px_4px_rgba(0,0,0,.04)]">
               <div className="group-hover:border-[rgb(36, 36, 36, .8)] rounded-full border-[1px] border-[#dad8d2] p-2 transition-all duration-300">
                 <Arrow />
               </div>

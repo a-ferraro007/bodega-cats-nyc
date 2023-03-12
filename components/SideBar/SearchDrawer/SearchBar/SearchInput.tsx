@@ -1,11 +1,13 @@
 import { AnimatePresence, AnimationProps, motion } from 'framer-motion'
 import { ChangeEvent, useEffect } from 'react'
+import { useStore } from '../../../../store'
 import Close from '../../../../svg/Close'
 import SearchIcon from '../../../../svg/SearchIcon'
 import MotionDiv from '../../../MotionDiv'
 import { useDrawerContext } from '../../DrawerProvider'
 
 const SearchInput = () => {
+  const showMobileMap = useStore((state) => state.showMobileMap)
   const { isOpen, setInputFocused, inputValue, setInputValue } =
     useDrawerContext()
 
@@ -50,7 +52,7 @@ const SearchInput = () => {
           </span>
           <div className="flex-grow">
             <input
-              className="font-regular placeholder:text-md h-full w-full bg-white font-nunito text-lg text-graphite outline-none transition-all duration-500 placeholder:pl-1 placeholder:text-base placeholder:text-[rgb(93,93,93)]"
+              className={`font-regular placeholder:text-md h-full w-full bg-white font-nunito text-lg text-graphite outline-none transition-all duration-500 placeholder:pl-1 placeholder:text-base placeholder:text-[rgb(93,93,93)]`}
               placeholder="search to add a location"
               id="add-location-input"
               type="search"
@@ -60,6 +62,7 @@ const SearchInput = () => {
               onChange={(e) => handleOnChange(e)}
               onFocus={() => handleOnFocus()}
               tabIndex={0}
+              disabled={!showMobileMap}
             />
           </div>
           <button
