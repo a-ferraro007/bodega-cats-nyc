@@ -15,15 +15,15 @@ const CloseArrow = ({ rotate = 'rotate(0)' }) => {
         {' '}
         <path
           d="M16 12L8 12"
-          stroke="#323232"
-          strokeWidth="1.5"
+          stroke="#242424"
+          strokeWidth="1.75"
           strokeLinecap="round"
           strokeLinejoin="round"
         ></path>{' '}
         <path
           d="M13 15L15.913 12.087V12.087C15.961 12.039 15.961 11.961 15.913 11.913V11.913L13 9"
-          stroke="#323232"
-          strokeWidth="1.5"
+          stroke="#242424"
+          strokeWidth="1.75"
           strokeLinecap="round"
           strokeLinejoin="round"
         ></path>

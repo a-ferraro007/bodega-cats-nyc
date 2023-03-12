@@ -23,7 +23,7 @@ const SearchCard = ({ location, classNames }: SearchCardProps) => {
       tabIndex={0}
     >
       <div
-        className={`hovr:bg-[#f5f4f1] group m-0 flex cursor-pointer gap-2 rounded-[15px] transition-all duration-300 ${cardContainer}  border-[rgba(0,0,0,.08)]] max-h-[16rem] border bg-[#FFFF] p-3
+        className={`hovr:bg-[#f5f4f1] rounded-default group m-0 flex cursor-pointer gap-2 transition-all duration-300 ${cardContainer}  border-[rgba(0,0,0,.08)]] max-h-[16rem] border bg-[#FFFF] p-3
         shadow-[0_2px_4px_rgba(0,0,0,.04)]`}
       >
         <div className="group-:bg-[#f5f4f1] flex-grow rounded-b-[15px] bg-[#FFFF] transition-all duration-300">

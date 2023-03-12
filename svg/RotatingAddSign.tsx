@@ -28,6 +28,7 @@ const RotatingAddSign = ({ isOpen }: RotatingAddSignProps) => {
         viewBox="0 0 24 24"
         fill="none"
         key="add_open"
+        className="h-full max-h-[30px] w-full max-w-[30px]"
       >
         <g strokeWidth="0"></g>
         <g
