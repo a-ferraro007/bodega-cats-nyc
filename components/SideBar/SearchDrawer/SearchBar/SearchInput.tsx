@@ -1,5 +1,6 @@
 import { AnimatePresence, AnimationProps, motion } from 'framer-motion'
 import { ChangeEvent, useEffect } from 'react'
+import { useIsMobile } from '../../../../hooks'
 import { useStore } from '../../../../store'
 import Close from '../../../../svg/Close'
 import SearchIcon from '../../../../svg/SearchIcon'
@@ -7,7 +8,10 @@ import MotionDiv from '../../../MotionDiv'
 import { useDrawerContext } from '../../DrawerProvider'
 
 const SearchInput = () => {
+  const isMobile = useIsMobile()
   const showMobileMap = useStore((state) => state.showMobileMap)
+  console.log('showMobileMap: ', showMobileMap)
+
   const { isOpen, setInputFocused, inputValue, setInputValue } =
     useDrawerContext()
 
@@ -62,7 +66,7 @@ const SearchInput = () => {
               onChange={(e) => handleOnChange(e)}
               onFocus={() => handleOnFocus()}
               tabIndex={0}
-              disabled={!showMobileMap}
+              disabled={!showMobileMap && isMobile}
             />
           </div>
           <button

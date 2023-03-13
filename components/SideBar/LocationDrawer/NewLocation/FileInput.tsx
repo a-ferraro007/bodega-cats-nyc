@@ -15,11 +15,11 @@ type FileInputProps = {
 const FileInputContainer = ({ children, image }: any) => {
   return (
     <div
-      className={`peer relative mx-auto h-[7rem] w-full max-w-[7rem] cursor-pointer overflow-hidden rounded-[10px] bg-[#E5E8F5] text-center  shadow-default transition-all duration-500`}
+      className={`peer relative h-[7rem] w-full max-w-[7rem] cursor-pointer overflow-hidden rounded-[10px] bg-[#E5E8F5] text-center  shadow-default transition-all duration-500`}
       tabIndex={0}
     >
       <div
-        className={`absolute z-10 flex h-full w-full flex-1 basis-full items-end justify-center p-2`}
+        className={`absolute z-10 flex h-full w-full flex-1 basis-full items-end justify-end p-2`}
       >
         {children}
       </div>
@@ -66,20 +66,10 @@ const FileInput = ({ label, required, register }: FileInputProps) => {
       <FileInputContainer image={image}>
         <label
           htmlFor="file-input"
-          className={`mb-2 cursor-pointer rounded-xl bg-white bg-opacity-60 px-2 py-1 font-nunito  text-xs font-bold text-graphite shadow-xl backdrop-blur-lg transition-all duration-300 hover:-translate-y-[2px]`}
+          className={`cursor-pointer rounded-[10px] bg-white  bg-opacity-60 px-2 py-1 font-nunito  text-xs font-bold text-graphite shadow-xl backdrop-blur-lg transition-all duration-300 hover:-translate-y-[2px]`}
         >
-          {!image && (
-            <>
-              <AddPhoto />
-              <span>add a photo</span>
-            </>
-          )}{' '}
-          {image && (
-            <>
-              <ChangePhoto />
-              <span>change photo</span>
-            </>
-          )}
+          <ChangePhoto />
+
           <input
             id="file-input"
             required={required}
