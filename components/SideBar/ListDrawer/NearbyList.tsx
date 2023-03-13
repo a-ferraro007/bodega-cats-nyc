@@ -22,12 +22,18 @@ const NearbyList = ({ data, isLoading }: NearbyListProps) => {
       transition={{ delay: 0, ease: 'linear', duration: 0.25 }}
       layout
       key={isLoading ? `loading-nearby` : `loaded-nearby`}
+      className="h-full overflow-scroll"
     >
-      {data.length > 0 &&
+      {data.length > 0 ? (
         data.map((feature: Feature) => {
           const { id } = feature
           return <ListCard classNames={classNames} feature={feature} key={id} />
-        })}
+        })
+      ) : (
+        <p className="w-full text-center font-nunito font-normal">
+          no cats nearby 😿
+        </p>
+      )}
     </motion.ul>
   )
 }

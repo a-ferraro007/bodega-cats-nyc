@@ -59,9 +59,11 @@ const ListDrawer = () => {
           </div>
 
           <p className="my-1 font-nunito text-lg font-semibold">Nearby</p>
-          <div className="h-full overflow-y-auto">
+          <div className="flex h-full flex-col overflow-y-scroll">
             <AnimatePresence>
-              {isLoading ? (
+              {!isLoading ? (
+                <NearbyList data={memoizedFeatures} isLoading={isLoading} />
+              ) : (
                 <LoadingList
                   fullWidth={true}
                   size={size ? size : 10}
@@ -70,16 +72,6 @@ const ListDrawer = () => {
                   isLoading={isLoading}
                   fKey={'nearby'}
                 />
-              ) : (
-                <>
-                  {memoizedFeatures.length > 0 ? (
-                    <NearbyList data={memoizedFeatures} isLoading={isLoading} />
-                  ) : (
-                    <p className="w-full text-center font-nunito font-normal">
-                      no cats nearby 😿
-                    </p>
-                  )}
-                </>
               )}
             </AnimatePresence>
           </div>

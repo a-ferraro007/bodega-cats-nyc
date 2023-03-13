@@ -8,11 +8,11 @@ const SideBar = () => {
 
   return (
     <div
-      className={`absolute h-full w-full border-l-[.5px] border-solid border-[rgba(0,0,0,.08)] bg-seasalt  md:relative md:w-side-bar ${
+      className={`absolute z-10 h-full w-full border-l-[.5px] border-solid border-[rgba(0,0,0,.08)] bg-seasalt  md:relative md:w-side-bar ${
         !showMobileMap ? 'invisible  opacity-0 md:visible md:opacity-[1]' : ''
       }`}
     >
-      <div className="h-full p-4">
+      <div className="relative flex h-mobileSideContainer flex-col px-4 md:h-desktopSideContainer">
         <SearchDrawer />
         <LocationDrawer />
         <ListDrawer />
