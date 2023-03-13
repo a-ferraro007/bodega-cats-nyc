@@ -13,6 +13,7 @@ import MotionDiv from '../../../MotionDiv'
 import { AnimatePresence, motion } from 'framer-motion'
 import CloseArrow from '../../../../svg/CloseArrow'
 import { useIsMobile } from '../../../../hooks'
+import Line from '../../../../svg/Line'
 const { insert } = trpc
 
 const NewLocation = () => {
@@ -112,78 +113,90 @@ const NewLocation = () => {
       button_open: { opacity: 1 },
       button_close: { opacity: 0 },
     },
+    submit_button: {
+      key_down: {
+        boxShadow:
+          'inset 1px 1px 3px rgba(0,0,0,.25), 0 1px 2px rgba(0,0,0,.05)',
+        scale: 0.99,
+      },
+      key_up: { boxShadow: '0 2px 4px rgba(0,0,0,.05)' },
+    },
   }
 
   return (
     <div className="h-full w-full">
       {newLocOpen && (
-        <motion.button
-          className={` rounded-full  bg-white p-1 shadow-default ${
-            !isMobile ? '' : ''
-          }`}
-          onClick={() => handleBackBtnCick()}
-          initial={'button_close'}
-          animate={'button_open'}
-          exit={'button_close'}
-          transition={{
-            delay: 0,
-            ease: 'circOut',
-            duration: 0.35,
-          }}
-          key={'button_open'}
-          variants={Variants.button}
-        >
-          <CloseArrow rotate={isMobile ? 'rotate(90)' : 'rotate(0)'} />
-        </motion.button>
+        <div className="flex justify-center">
+          <motion.button
+            className="mb-1 p-3"
+            onClick={() => handleBackBtnCick()}
+            initial={'button_close'}
+            animate={'button_open'}
+            exit={'button_close'}
+            transition={{
+              delay: 0,
+              ease: 'circOut',
+              duration: 0.35,
+            }}
+            key={'button_open'}
+            variants={Variants.button}
+          >
+            <Line />
+            {/*<CloseArrow rotate={isMobile ? 'rotate(90)' : 'rotate(0)'} />*/}
+          </motion.button>
+        </div>
       )}
 
       <form
-        className="flex h-full flex-auto basis-full flex-col gap-6 overflow-y-scroll"
+        className="flex h-full flex-auto basis-full flex-col gap-4 overflow-y-scroll p-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="px-4">
-          {' '}
-          <div className="flex flex-col gap-6">
-            <fieldset>
-              <Input
-                id="name-input"
-                label="name"
-                type="name"
-                placeholder="name"
-                register={register}
-                required={true}
-              />
-            </fieldset>
-            <fieldset>
-              <Input
-                id="address-input"
-                label="address"
-                type="address"
-                register={register}
-                defaultValue={newLocation?.ParsedFeature?.address}
-              />
-            </fieldset>
-            <fieldset>
-              <label className="font-nunito text-sm font-bold">rating</label>
-              <Rating
-                rating={rating}
-                hover={hover}
-                setRating={setRating}
-                setHover={setHover}
-              />
-            </fieldset>
-          </div>
-        </div>
+        <fieldset>
+          <Input
+            id="name-input"
+            label="name"
+            type="name"
+            placeholder="name"
+            register={register}
+            required={true}
+          />
+        </fieldset>
+        <fieldset>
+          <Input
+            id="address-input"
+            label="address"
+            type="address"
+            register={register}
+            defaultValue={newLocation?.ParsedFeature?.address}
+          />
+        </fieldset>
+        <fieldset>
+          <label className="font-nunito text-sm font-bold">rating</label>
+          <Rating
+            rating={rating}
+            hover={hover}
+            setRating={setRating}
+            setHover={setHover}
+          />
+        </fieldset>
         <fieldset>
           <FileInput label="file" required={true} register={register} />
         </fieldset>
         <fieldset className="flex flex-grow flex-col justify-end">
-          <button
+          <motion.button
+            layout
+            initial={'key_up'}
+            whileTap={'key_down'}
+            //whileFocus={'focus'}
+            exit={{ opacity: 0 }}
+            transition={{ delay: 0, ease: 'linear', duration: 0.125 }}
+            variants={Variants.submit_button}
+            key={`submit-button-press`}
             type="submit"
             className="group mb-8  w-full rounded-[10px] border border-[rgba(0,0,0,.08)] bg-white p-1 px-3 py-2 font-nunito text-lg font-bold text-graphite shadow-default"
           >
             submit
-          </button>
+          </motion.button>
         </fieldset>
       </form>
     </div>

@@ -21,7 +21,7 @@ const FeaturedList = ({ topFeatures, isLoading }: FeaturedListProps) => {
       transition={{ delay: 0, ease: 'linear', duration: 0.25 }}
       layout
       key={isLoading ? 'featured-list-open' : 'featured-list-close'}
-      className="flex overflow-x-auto py-4"
+      className="flex overflow-x-auto pb-4"
     >
       {topFeatures.map((feature: Feature) => {
         const { id } = feature

@@ -29,7 +29,7 @@ const LocationDrawer = () => {
       location_open: { x: 0, opacity: 1, transition: { delayChildren: 4 } },
       location_close: { x: '100%', opacity: 1 },
       location_mobile_close: { y: '100%', opacity: 1 },
-      location_mobile_open: { y: 30, opacity: 1 },
+      location_mobile_open: { y: 25, opacity: 1 },
     },
     button: {
       button_open: { opacity: 1 },
@@ -47,7 +47,7 @@ const LocationDrawer = () => {
       {newLocOpen && (
         <motion.div
           layout
-          className={`absolute top-0 right-0  h-full w-full bg-seasalt p-4 ${
+          className={`absolute top-0 right-0  h-full w-full bg-seasalt p-2 pt-0 ${
             isMobile
               ? 'rounded-t-[15px] shadow-[0px_-5px_7px_rgb(0,0,0,.15)]'
               : ''

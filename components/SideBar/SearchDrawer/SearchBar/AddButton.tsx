@@ -37,7 +37,7 @@ const AddButton = () => {
       transition={{ delay: 0, ease: 'linear', duration: 0.125 }}
       variants={Variants.button}
       key={`open-search-button`}
-      className="group rounded-[10px] border border-[rgba(0,0,0,.08)] bg-white p-1 shadow-[0_2px_4px_rgba(0,0,0,.04)]"
+      className="group cursor-pointer rounded-[10px] border border-[rgba(0,0,0,.08)] bg-white p-1 shadow-[0_2px_4px_rgba(0,0,0,.04)]"
       onClick={() => handleNewCatCTA()}
     >
       <RotatingAddSign isOpen={isOpen} />
