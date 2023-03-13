@@ -41,7 +41,8 @@ module.exports = {
       },
       height: {
         container: 'calc(100% - 4rem)',
-        sideBarContainer: 'calc(100% - 1rem)',
+        mobileSideContainer: 'calc(100% - 1rem)',
+        desktopSideContainer: 'calc(100% - 1.5rem)',
       },
       width: {
         'side-bar': '25rem',
