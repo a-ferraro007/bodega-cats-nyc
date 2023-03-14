@@ -15,7 +15,7 @@ type FileInputProps = {
 const FileInputContainer = ({ children, image }: any) => {
   return (
     <div
-      className={`peer relative h-[7rem] w-full max-w-[7rem] cursor-pointer overflow-hidden rounded-[10px] bg-[#E5E8F5] text-center  shadow-default transition-all duration-500`}
+      className={`peer relative mx-auto  h-48 w-full  max-w-[12rem] cursor-pointer overflow-hidden rounded-[10px] bg-[#E5E8F5] text-center shadow-default transition-all  duration-500 md:h-52 md:max-w-[13rem]`}
       tabIndex={0}
     >
       <div

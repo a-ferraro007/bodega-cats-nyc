@@ -6,6 +6,7 @@ export const FormInputs = z.object({
   rating: z.string(),
   search: z.string(),
   file: z.string().optional(),
+  location: z.string().optional(),
 })
 
 export const zLngLat = z.object({
