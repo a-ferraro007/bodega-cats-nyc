@@ -16,9 +16,9 @@ const Line = () => {
         x2="60"
         y2="5"
         stroke="#242424"
-        stroke-opacity="0.95"
-        stroke-width="6"
-        stroke-linecap="round"
+        strokeOpacity="0.95"
+        strokeWidth="6"
+        strokeLinecap="round"
       />
     </svg>
   )

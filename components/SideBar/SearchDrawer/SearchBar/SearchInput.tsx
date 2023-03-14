@@ -10,7 +10,6 @@ import { useDrawerContext } from '../../DrawerProvider'
 const SearchInput = () => {
   const isMobile = useIsMobile()
   const showMobileMap = useStore((state) => state.showMobileMap)
-  console.log('showMobileMap: ', showMobileMap)
 
   const { isOpen, setInputFocused, inputValue, setInputValue } =
     useDrawerContext()

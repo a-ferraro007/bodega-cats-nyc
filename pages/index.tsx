@@ -18,17 +18,29 @@ import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { DrawerProvider } from '../components/SideBar/DrawerProvider'
 import Logo from '../svg/Logo'
 import { motion } from 'framer-motion'
+import Close from '../svg/Close'
 const { search } = trpc
 
 const Home: NextPage = ({}) => {
   const user = useUser()
   const lnglat = useGetUserLocation()
+  const { session } = useSessionContext()
   const { supabaseClient } = useSessionContext()
-  const { authStatus, setAuthStatus } = useAuthStore((state) => state)
+  const [authWindow, setAuthWindow] = useState(false)
   const { showMobileMap, setShowMobileMap } = useStore((state) => state)
   const { setSearchLocationState, searchLocationState } = useAddressSearchStore(
     (state) => state
   )
+  const Variants = {
+    button: {
+      key_down: {
+        boxShadow:
+          'inset 1px 1px 3px rgba(0,0,0,.25), 0 1px 2px rgba(0,0,0,.05)',
+        scale: 0.99999,
+      },
+      key_up: { boxShadow: '0 2px 4px rgba(0,0,0,.05)' },
+    },
+  }
   const { data } = search.searchByLngLat.useQuery(lnglat, {
     enabled: !!lnglat,
   })
@@ -45,18 +57,8 @@ const Home: NextPage = ({}) => {
   }, [setSearchLocationState, data, lnglat])
 
   const handleProfileClick = () => {
-    console.log('profile clicked', user, supabaseClient, authStatus)
-  }
-
-  const Variants = {
-    button: {
-      key_down: {
-        boxShadow:
-          'inset 1px 1px 3px rgba(0,0,0,.25), 0 1px 2px rgba(0,0,0,.05)',
-        scale: 0.99999,
-      },
-      key_up: { boxShadow: '0 2px 4px rgba(0,0,0,.05)' },
-    },
+    console.log('profile clicked', user, session)
+    setAuthWindow(session ? false : true)
   }
 
   return (
@@ -76,20 +78,41 @@ const Home: NextPage = ({}) => {
             <Logo />
           </span>
           <AddressSearch />
+
           <motion.button
             layout
             initial={'key_up'}
             whileTap={'key_down'}
-            //whileFocus={'focus'}
             exit={{ opacity: 0 }}
             transition={{ delay: 0, ease: 'linear', duration: 0.125 }}
             variants={Variants.button}
             key={`login-button`}
-            className="rounded-[10px] border border-[rgba(0,0,0,.08)] bg-white p-[.625rem] shadow-[0_2px_4px_rgba(0,0,0,.04)] md:p-3"
+            className="rounded-[10px] border border-[rgba(0,0,0,.08)] bg-white p-[.625rem] md:p-3"
             onClick={() => handleProfileClick()}
           >
             <Login classNames="-translate-y-[.115rem] md:translate-y-0" />
           </motion.button>
+          {authWindow && (
+            <div className="absolute top-[70px] right-[8px]  z-30 max-w-xs rounded-md bg-white p-4 shadow-[0_6px_30px_-10px]">
+              <button
+                className="flex w-full justify-end font-baloo font-medium"
+                onClick={() => setAuthWindow(false)}
+              >
+                <Close />
+              </button>
+              <p className="text-center font-baloo text-lg font-bold">
+                login with google
+              </p>
+              <Auth
+                redirectTo={process.env.NEXT_PUBLIC_REDIRECT_URL}
+                appearance={{ theme: ThemeSupa }}
+                supabaseClient={supabaseClient}
+                providers={['google']}
+                socialLayout="horizontal"
+                onlyThirdPartyProviders={true}
+              />
+            </div>
+          )}
         </nav>
         <div className="relative flex h-container">
           <div className="flex w-full justify-center md:w-map-container">
@@ -115,29 +138,6 @@ const Home: NextPage = ({}) => {
             {showMobileMap ? <Lines /> : <MapIcon />}
           </button>
         </div>
-        {!user && !authStatus && (
-          <div className="absolute left-0 right-0 top-40 mx-auto  max-w-xs rounded-md bg-white p-4 shadow-[0_6px_30px_-10px]">
-            <button
-              className="w-full text-right font-baloo font-medium"
-              onClick={() => setAuthStatus(true)}
-            >
-              {' '}
-              close
-            </button>
-            <p className="text-center font-baloo text-lg font-bold">
-              {' '}
-              log in with Google to add a new cat{' '}
-            </p>
-            <Auth
-              redirectTo={process.env.NEXT_PUBLIC_REDIRECT_URL}
-              appearance={{ theme: ThemeSupa }}
-              supabaseClient={supabaseClient}
-              providers={['google']}
-              socialLayout="horizontal"
-              onlyThirdPartyProviders={true}
-            />
-          </div>
-        )}
       </main>
 
       <footer></footer>
