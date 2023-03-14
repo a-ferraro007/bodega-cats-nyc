@@ -1,27 +1,10 @@
-import SearchInput from '../SearchDrawer/SearchBar/SearchInput'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useReducer } from 'react'
-import { useDebounce, useIsMobile } from '../../../hooks'
-import { trpc } from '../../../utils/trpc'
+import { useIsMobile } from '../../../hooks'
 import { useDrawerContext } from '../DrawerProvider'
-import AddButton from '../SearchDrawer/SearchBar/AddButton'
-import SearchDrawer from '../SearchDrawer/SearchResults'
 import NewLocation from './NewLocation'
-import MotionDiv from '../../MotionDiv'
-import CloseArrow from '../../../svg/CloseArrow'
 
 const LocationDrawer = () => {
-  const {
-    inputValue,
-    setInputValue,
-    isOpen,
-    setIsOpen,
-    setData,
-    newLocation,
-    newLocOpen,
-    setNewLocOpen,
-    setNewLocation,
-  } = useDrawerContext()
+  const { newLocOpen } = useDrawerContext()
   const isMobile = useIsMobile()
 
   const Variants = {
@@ -36,11 +19,6 @@ const LocationDrawer = () => {
       button_close: { opacity: 0 },
     },
   }
-
-  //const handleBackBtnCick = () => {
-  //  setNewLocation(null)
-  //  setNewLocOpen(false)
-  //}
 
   return (
     <AnimatePresence>

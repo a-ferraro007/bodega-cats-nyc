@@ -9,8 +9,7 @@ import { trpc } from '../../../../utils/trpc'
 import { useDrawerContext } from '../../DrawerProvider'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { useAuthStore } from '../../../../store'
-import MotionDiv from '../../../MotionDiv'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import CloseArrow from '../../../../svg/CloseArrow'
 import { useIsMobile } from '../../../../hooks'
 import Line from '../../../../svg/Line'
@@ -42,14 +41,13 @@ const NewLocation = () => {
   })
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    let sbImgURL
-    let geo_json
     if (!user || !session) {
       setAuthStatus(false)
       return
     } //handling not being logged in
     if (!newLocation) return
     const { ParsedFeature, Feature } = newLocation
+    let sbImgURL, geo_json
 
     const uuid = user.id
     const { name, address, file } = data
@@ -68,27 +66,27 @@ const NewLocation = () => {
         .from('cat-images')
         .getPublicUrl(storageData.path).data.publicUrl
       geo_json.properties['image'] = sbImgURL
-    } catch (error) {
-      console.log(error)
-      return //handle error in form
-    }
 
-    const mutationReqData: NewFeatureMutation = {
-      CatProperties: {
-        name,
-        rating,
-        image: sbImgURL,
-        locality: ParsedFeature.locality,
-      },
-      MapBoxFeature: {
-        feature_id: ParsedFeature.feature_id,
-        user_id: uuid,
-        address,
-        geo_json,
-      },
+      const mutationReqData: NewFeatureMutation = {
+        CatProperties: {
+          name,
+          rating,
+          image: sbImgURL,
+          locality: ParsedFeature.locality,
+        },
+        MapBoxFeature: {
+          feature_id: ParsedFeature.feature_id,
+          user_id: uuid,
+          address,
+          geo_json,
+        },
+      }
+      console.log('MUTATION REQ DATA:', mutationReqData)
+      newFeatureMutation.mutate(mutationReqData)
+    } catch (error) {
+      console.error(error)
+      throw error
     }
-    console.log('MUTATION REQ DATA:', mutationReqData)
-    newFeatureMutation.mutate(mutationReqData)
   }
 
   useEffect(() => {
@@ -110,48 +108,61 @@ const NewLocation = () => {
       location_mobile_open: { y: 30, opacity: 1 },
     },
     button: {
-      button_open: { opacity: 1 },
-      button_close: { opacity: 0 },
-    },
-    submit_button: {
       key_down: {
         boxShadow:
           'inset 1px 1px 3px rgba(0,0,0,.25), 0 1px 2px rgba(0,0,0,.05)',
-        scale: 0.99,
+        scale: 0.99999,
       },
       key_up: { boxShadow: '0 2px 4px rgba(0,0,0,.05)' },
+    },
+    submit_button: {
+      key_down_submit: {
+        boxShadow:
+          'inset 1px 1px 3px rgba(22,22,22,.8), 0 1px 2px rgba(0,0,0,.2)',
+        scale: 0.99,
+      },
+      key_up_submit: { boxShadow: '0 2px 4px rgba(0,0,0,.2)' },
     },
   }
 
   return (
-    <div className="h-full w-full">
-      {newLocOpen && (
-        <div className="flex justify-center">
-          <motion.button
-            className="mb-1 p-3"
-            onClick={() => handleBackBtnCick()}
-            initial={'button_close'}
-            animate={'button_open'}
-            exit={'button_close'}
-            transition={{
-              delay: 0,
-              ease: 'circOut',
-              duration: 0.35,
-            }}
-            key={'button_open'}
-            variants={Variants.button}
-          >
+    <div className="h-full w-full p-4">
+      <div className="flex flex-col items-center justify-between md:mb-6 md:flex-row">
+        <motion.button
+          className="mb-1 rounded-[10px] border-[rgba(0,0,0,.08)] p-[.115rem] md:border md:bg-white"
+          onClick={() => handleBackBtnCick()}
+          initial={'key_up'}
+          whileTap={'key_down'}
+          exit={'key_up'}
+          transition={{
+            delay: 0,
+            ease: 'circOut',
+            duration: 0.35,
+          }}
+          key={'button_open'}
+          variants={Variants.button}
+        >
+          <span className="inline md:hidden">
             <Line />
-            {/*<CloseArrow rotate={isMobile ? 'rotate(90)' : 'rotate(0)'} />*/}
-          </motion.button>
-        </div>
-      )}
+          </span>
+          <span className="hidden md:inline">
+            <CloseArrow rotate={isMobile ? 'rotate(90)' : 'rotate(0)'} />
+          </span>
+        </motion.button>
+        <h1 className="mb-3 self-start font-nunito text-[1.60rem] font-extrabold md:mb-0 md:self-center">
+          new cat
+        </h1>
+      </div>
 
       <form
-        className="flex h-full flex-auto basis-full flex-col gap-4 overflow-y-scroll p-4"
+        className="flex h-full flex-auto basis-full flex-col gap-4 overflow-y-scroll"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <fieldset className="mb-1">
+          <FileInput label="file" required={true} register={register} />
+        </fieldset>
         <fieldset>
+          <label className="block px-2 pb-1 font-nunito font-bold">name</label>
           <Input
             id="name-input"
             label="name"
@@ -162,38 +173,47 @@ const NewLocation = () => {
           />
         </fieldset>
         <fieldset>
-          <Input
-            id="address-input"
-            label="address"
-            type="address"
-            register={register}
-            defaultValue={newLocation?.ParsedFeature?.address}
-          />
+          <label className="block px-2 pb-1 font-nunito font-bold ">
+            location
+          </label>
+          <div className="flex h-full flex-col gap-3">
+            <Input
+              id="location-input"
+              type="location"
+              label="location"
+              register={register}
+              defaultValue={newLocation?.ParsedFeature?.name.toLowerCase()}
+            />
+            <Input
+              id="address-input"
+              label="address"
+              type="address"
+              register={register}
+              defaultValue={newLocation?.ParsedFeature?.address}
+            />
+          </div>
         </fieldset>
-        <fieldset>
-          <label className="font-nunito text-sm font-bold">rating</label>
+        {/*<fieldset>
+          <label className="px-2 pb-2 font-nunito font-bold">rating</label>
           <Rating
             rating={rating}
             hover={hover}
             setRating={setRating}
             setHover={setHover}
           />
-        </fieldset>
-        <fieldset>
-          <FileInput label="file" required={true} register={register} />
-        </fieldset>
-        <fieldset className="flex flex-grow flex-col justify-end">
+        </fieldset>*/}
+        <fieldset className="mt-2">
           <motion.button
             layout
-            initial={'key_up'}
-            whileTap={'key_down'}
+            initial={'key_up_submit'}
+            whileTap={'key_down_submit'}
             //whileFocus={'focus'}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 1 }}
             transition={{ delay: 0, ease: 'linear', duration: 0.125 }}
             variants={Variants.submit_button}
             key={`submit-button-press`}
             type="submit"
-            className="group mb-8  w-full rounded-[10px] border border-[rgba(0,0,0,.08)] bg-white p-1 px-3 py-2 font-nunito text-lg font-bold text-graphite shadow-default"
+            className="group mb-8 w-full rounded-[10px] border border-[rgba(0,0,0,.08)] bg-graphite p-1 px-3 py-2 font-nunito text-lg font-bold text-white"
           >
             submit
           </motion.button>

@@ -91,7 +91,7 @@ const Home: NextPage = ({}) => {
             <Login classNames="-translate-y-[.115rem] md:translate-y-0" />
           </motion.button>
         </nav>
-        <div className="relative flex h-container flex-row">
+        <div className="relative flex h-container">
           <div className="flex w-full justify-center md:w-map-container">
             {searchLocationState.lnglat && <Map {...searchLocationState} />}{' '}
             {!searchLocationState.lnglat && (
@@ -106,9 +106,7 @@ const Home: NextPage = ({}) => {
             <SideBar />
           </DrawerProvider>
           <button
-            className={`absolute bottom-20 right-10 z-20 block rounded-full ${
-              false ? 'bg-dark-blue-radial-gradient' : 'bg-graphite'
-            }  b p-4 text-white md:hidden`}
+            className={`absolute bottom-20 right-10 z-20 block rounded-full bg-graphite p-4 text-white md:hidden`}
             onClick={() => {
               const state = showMobileMap
               setShowMobileMap(!state)

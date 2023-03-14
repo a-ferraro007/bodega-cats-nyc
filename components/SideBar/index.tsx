@@ -10,7 +10,7 @@ const SideBar = () => {
 
   return (
     <div
-      className={`absolute h-full w-full border-l-[.5px] border-solid border-[rgba(0,0,0,.08)] bg-seasalt  md:relative md:w-side-bar ${
+      className={`absolute h-full w-full border-r-[.5px] border-solid border-[rgba(0,0,0,.08)] bg-seasalt  md:relative md:w-side-bar ${
         !showMobileMap && isMobile
           ? 'invisible z-[-1] opacity-0 md:visible md:opacity-[1]'
           : 'z-10'
