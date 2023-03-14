@@ -22,7 +22,6 @@ const NewLocation = () => {
   const isMobile = useIsMobile()
   const [rating, setRating] = useState(0)
   const [hover, setHover] = useState(0)
-  const { setAuthStatus } = useAuthStore((state) => state)
   const { newLocation, setNewLocation, newLocOpen, setNewLocOpen } =
     useDrawerContext()
 
@@ -42,7 +41,6 @@ const NewLocation = () => {
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     if (!user || !session) {
-      setAuthStatus(false)
       return
     } //handling not being logged in
     if (!newLocation) return

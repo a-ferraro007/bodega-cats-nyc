@@ -1,11 +1,5 @@
 import mapboxgl from 'mapbox-gl'
-import {
-  DrawerState,
-  Feature,
-  FeatureDrawerState,
-  MarkerFeature,
-  SearchLocation,
-} from './../constants/types'
+import { MarkerFeature, SearchLocation } from './../constants/types'
 import create from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
 
@@ -58,13 +52,14 @@ const featureStore = (set: any) => ({
 })
 
 interface AuthStore {
-  authStatus: boolean
-  setAuthStatus: (authState: boolean) => void
+  isAuthenticated: boolean
+  setIsAuthenticated: (authState: boolean) => void
 }
 
 const authStore = (set: any) => ({
-  authStatus: false,
-  setAuthStatus: (authState: boolean) => set(() => ({ authState: authState })),
+  isAuthenticated: false,
+  setIsAuthenticated: (authState: boolean) =>
+    set(() => ({ authState: authState })),
 })
 
 interface StoreState {
