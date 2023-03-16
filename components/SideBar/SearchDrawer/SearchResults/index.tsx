@@ -6,15 +6,15 @@ import {
 import SearchCard from './SearchCard'
 
 type SearchResultsProps = {
-  results: NewLocationInterface[]
+  data: NewLocationInterface[]
 }
 
-const SearchResults = ({ results }: SearchResultsProps) => {
+const SearchResults = ({ data }: SearchResultsProps) => {
   const HandleOnKeyDown = (e: KeyboardEvent, selected: FeatureDrawerState) => {}
 
   return (
     <ul className="h-full scroll-m-4 overflow-y-scroll">
-      {results.map((location: NewLocationInterface, i: number) => {
+      {data.map((location: NewLocationInterface, i: number) => {
         return (
           <SearchCard
             classNames={{

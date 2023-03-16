@@ -111,11 +111,18 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
           },
         } as NewLocation
       })
-      .reduce((prev: any, curr: any) => {
-        return [...prev, curr]
-      }, [])
+      .reduce(
+        (
+          previousValue: NewLocation[],
+          currentValue: NewLocation | undefined
+        ) => {
+          if (currentValue) return [...previousValue, currentValue]
+          return previousValue
+        },
+        []
+      )
 
-    return mappedFeatures
+    return mappedFeatures || <NewLocation[]>[]
   } catch (error) {
     throw error
   }
