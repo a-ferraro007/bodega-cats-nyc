@@ -9,7 +9,7 @@ const CloseArrow = ({ rotate = 'rotate(0)' }) => {
       viewBox="0 0 24 24"
       fill="none"
     >
-      <g stroke-width="0"></g>
+      <g strokeWidth="0"></g>
       <g strokeLinecap="round" strokeLinejoin="round"></g>
       <g>
         {' '}

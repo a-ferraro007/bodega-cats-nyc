@@ -1,3 +1,4 @@
+import { Locality, zGeometry, zLocality } from './../../../constants/types'
 import { SupabaseClient } from '@supabase/supabase-js'
 import {
   FeatureDrawerState,
@@ -7,59 +8,112 @@ import {
   ParsedSearchLocation,
   SearchLocation,
 } from '../../../constants/types'
+import {
+  AddressComponent,
+  AddressType,
+  Client,
+  LatLng,
+  Place,
+  PlaceData,
+  PlaceDetailsResponse,
+  PlaceInputType,
+} from '@googlemaps/google-maps-services-js'
+enum PlaceType {
+  administrative_area_level_1 = 'administrative_area_level_1',
+  administrative_area_level_2 = 'administrative_area_level_2',
+}
 
 const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
+  const client = new Client({})
   try {
-    var requestOptions = <RequestInit>{
-      method: 'GET',
-      redirect: 'follow',
-    }
-
-    const resp = await fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-        query
-      )}.json?fuzzyMatch=true&types=poi&bbox=-74.26379, 40.3923, -73.667498, 40.94285&autocomplete=true&limit=10&access_token=pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA`,
-      requestOptions
-    )
-
-    const { features } = await resp.json()
-
-    const mappedFeatures: Array<NewLocation> = features.map((feature: any) => {
-      const {
-        id,
-        type,
-        geometry,
-        place_name,
-        place_type,
-        center,
-        context,
-        text,
-        properties,
-      } = feature
-      const splitPlaceName = place_name?.split(',')
-      let locality = context.find((item: any) =>
-        item.id.includes('locality')
-      )?.text
-      if (locality)
-        locality =
-          locality.charAt(0).toUpperCase() + locality.slice(1, locality.length)
-
-      return {
-        ParsedFeature: {
-          feature_id: id,
-          name: splitPlaceName[0],
-          address: properties.address + ', New York, New York',
-          locality,
-          center,
-        },
-        Feature: {
-          id,
-          type,
-          geometry,
-          place_type,
-        },
-      }
+    const textSearch = await client.textSearch({
+      params: {
+        key: 'AIzaSyA90r3cljczxa0m8uCT7d0MAz8xGFyaSO0',
+        query,
+        location: [40.73423383278248, -73.990000682489714] as LatLng,
+        radius: 3500, //Find exact radius from bounding box of map
+      },
     })
+
+    const req = textSearch.data.results.map(
+      (result: Partial<PlaceData>, i: number) => {
+        const { place_id, types } = result
+
+        if (
+          place_id &&
+          (!types?.includes(AddressType.administrative_area_level_1) ||
+            !types?.includes(AddressType.administrative_area_level_2) ||
+            !types?.includes(AddressType.administrative_area_level_3) ||
+            !types?.includes(AddressType.administrative_area_level_4) ||
+            !types?.includes(AddressType.administrative_area_level_5))
+        ) {
+          return client.placeDetails({
+            params: {
+              key: 'AIzaSyA90r3cljczxa0m8uCT7d0MAz8xGFyaSO0',
+              place_id,
+              fields: [
+                'place_id',
+                'name',
+                'formatted_address',
+                'geometry',
+                'address_components',
+                'photos',
+              ],
+            },
+          })
+        }
+      }
+    )
+    const responses = await Promise.all(req)
+    const mappedFeatures = responses
+      ?.map((resp: PlaceDetailsResponse | undefined) => {
+        const result = resp?.data.result
+        if (!result) return
+        const {
+          place_id: id,
+          name,
+          formatted_address,
+          geometry,
+          address_components,
+          photos,
+        } = result
+
+        const locality =
+          address_components?.find((component: AddressComponent) => {
+            if (
+              (component && component.long_name === zLocality.Enum.Brooklyn) ||
+              component.long_name === zLocality.Enum.Manhattan ||
+              component.long_name === zLocality.Enum.Queens ||
+              component.long_name === zLocality.Enum.Bronx ||
+              component.long_name === zLocality.Enum['Staten Island']
+            )
+              return true
+          })?.long_name || zLocality.Enum.Unknown
+
+        console.log(locality, 'locality')
+
+        return {
+          ParsedFeature: {
+            feature_id: id,
+            name,
+            address: formatted_address,
+            locality: (locality as Locality) || zLocality.Enum.Unknown,
+            center: [geometry?.location.lng, geometry?.location.lat],
+          },
+          Feature: {
+            id: id || '',
+            type: '',
+            geometry: {
+              coordinates: [geometry?.location.lng, geometry?.location.lat],
+              type: 'Point',
+            },
+            place_type: [''],
+          },
+        } as NewLocation
+      })
+      .reduce((prev: any, curr: any) => {
+        return [...prev, curr]
+      }, [])
 
     return mappedFeatures
   } catch (error) {

@@ -31,12 +31,23 @@ export const MapBoxFeature = z.object({
   //cat_id: z.optional(z.number()) //
 })
 
+export const zLocality = z.enum([
+  'Brooklyn',
+  'Manhattan',
+  'Queens',
+  'Bronx',
+  'Staten Island',
+  'Unknown',
+])
+
 export const ParsedFeature = z.object({
-  feature_id: z.string(),
+  feature_id: z.union([z.string(), z.number()]),
   name: z.string(),
   center: z.array(z.number()),
   address: z.string(),
-  locality: z.string(),
+  locality: zLocality,
+
+  //z.string(),
 })
 
 export const zNewFeatureMutation = z.object({
@@ -157,6 +168,7 @@ export interface FeatureInterface extends Feature {
   MapBox_Feature: MapBoxFeature[]
 }
 export interface NewLocationInterface extends NewLocation {}
+export type Locality = z.infer<typeof zLocality>
 export type Json =
   | string
   | number

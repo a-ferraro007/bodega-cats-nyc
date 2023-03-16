@@ -24,6 +24,7 @@ type DrawerContextType = {
   newLocOpen: boolean
   setNewLocOpen: Dispatch<SetStateAction<boolean>> //(newLocationIsOpen: boolean) => void
   isOpen: boolean
+  isLoading: boolean
   setIsOpen: Dispatch<SetStateAction<boolean>> //(isOpen: boolean) => void
   inputValue: string
   setInputValue: Dispatch<SetStateAction<string>> //(inputValue: string) => void
@@ -42,6 +43,7 @@ const DrawerContext = createContext<DrawerContextType>({
   newLocOpen: false,
   setNewLocOpen: () => {},
   isOpen: true,
+  isLoading: false,
   setIsOpen: () => {},
   inputValue: '',
   setInputValue: () => {},
@@ -61,6 +63,7 @@ const DrawerProvider = ({ children }: DrawerProviderProps) => {
     debounce,
     {
       refetchOnWindowFocus: false,
+      //enabled: debounce.length > 0,
     }
   )
 
@@ -80,6 +83,7 @@ const DrawerProvider = ({ children }: DrawerProviderProps) => {
         newLocation,
         newLocOpen,
         isOpen,
+        isLoading,
         inputValue,
         inputFocused,
         setData,

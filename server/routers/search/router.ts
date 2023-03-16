@@ -1,4 +1,4 @@
-import { ParsedAddressFeature } from './../../../constants/types'
+import { NewLocation, ParsedAddressFeature } from './../../../constants/types'
 import { z } from 'zod'
 import {
   fetchAddressSearchResults,
@@ -17,7 +17,8 @@ export const searchRouter = router({
     if (!input) return <ParsedSearchLocation>{}
     return getLngLatResults(input)
   }),
-  searchByPlace: procedure
-    .input(z.string())
-    .query(({ input }) => getSearchResults(input)),
+  searchByPlace: procedure.input(z.string()).query(({ input }) => {
+    if (input.length <= 0) return <NewLocation[]>[]
+    return getSearchResults(input)
+  }),
 })
