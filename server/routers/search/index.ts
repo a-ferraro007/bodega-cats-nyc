@@ -18,24 +18,21 @@ import {
   PlaceDetailsResponse,
   PlaceInputType,
 } from '@googlemaps/google-maps-services-js'
-enum PlaceType {
-  administrative_area_level_1 = 'administrative_area_level_1',
-  administrative_area_level_2 = 'administrative_area_level_2',
-}
 
 const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
   const client = new Client({})
   try {
     const textSearch = await client.textSearch({
       params: {
-        key: process.env.GOOGLE_MAPS_API_KEY || '',
+        key: process.env.GOOGLE_PLACES_KEY || '',
         query,
         region: 'us',
         location: [40.73423383278248, -73.990000682489714] as LatLng,
         radius: 3500, //Find exact radius from bounding box of map
       },
     })
-    console.log(textSearch.data.results, 'textSearch.data.results')
+
+    //console.log(textSearch.data.results, 'textSearch.data.results')
 
     const req = textSearch.data.results.map(
       (result: Partial<PlaceData>, i: number) => {
@@ -51,7 +48,7 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
         ) {
           return client.placeDetails({
             params: {
-              key: process.env.GOOGLE_MAPS_API_KEY || '',
+              key: process.env.GOOGLE_PLACES_KEY || '',
               place_id,
               fields: [
                 'place_id',
