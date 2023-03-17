@@ -28,12 +28,14 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
   try {
     const textSearch = await client.textSearch({
       params: {
-        key: 'AIzaSyA90r3cljczxa0m8uCT7d0MAz8xGFyaSO0',
+        key: process.env.GOOGLE_MAPS_API_KEY || '',
         query,
+        region: 'us',
         location: [40.73423383278248, -73.990000682489714] as LatLng,
         radius: 3500, //Find exact radius from bounding box of map
       },
     })
+    console.log(textSearch.data.results, 'textSearch.data.results')
 
     const req = textSearch.data.results.map(
       (result: Partial<PlaceData>, i: number) => {
@@ -49,7 +51,7 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
         ) {
           return client.placeDetails({
             params: {
-              key: 'AIzaSyA90r3cljczxa0m8uCT7d0MAz8xGFyaSO0',
+              key: process.env.GOOGLE_MAPS_API_KEY || '',
               place_id,
               fields: [
                 'place_id',

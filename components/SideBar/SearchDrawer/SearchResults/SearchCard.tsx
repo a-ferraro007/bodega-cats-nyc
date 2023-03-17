@@ -2,6 +2,7 @@ import BoroughBadge from '../../BoroughBadge'
 import {
   NewLocationInterface,
   SearchCardProps,
+  zLocality,
 } from '../../../../constants/types'
 import { useDrawerContext } from '../../DrawerProvider'
 import { motion } from 'framer-motion'
@@ -59,7 +60,7 @@ const SearchCard = ({ location, classNames }: SearchCardProps) => {
             </span>
             <p className="mb-2 font-roboto text-xs font-normal"> {address}</p>
             <div className="border-b-[.5px] border-solid border-[#dad8d2] transition-all duration-300 group-hover:border-[#242424] "></div>
-            {locality && (
+            {locality !== zLocality.Enum.Unknown && (
               <div className="pt-2">
                 <BoroughBadge locality={locality} />
               </div>
