@@ -41,13 +41,11 @@ export const zLocality = z.enum([
 ])
 
 export const ParsedFeature = z.object({
-  feature_id: z.union([z.string(), z.number()]),
+  feature_id: z.string(),
   name: z.string(),
   center: z.array(z.number()),
   address: z.string(),
   locality: zLocality,
-
-  //z.string(),
 })
 
 export const zNewFeatureMutation = z.object({

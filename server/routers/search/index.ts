@@ -96,7 +96,7 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
 
         return {
           ParsedFeature: {
-            feature_id: id,
+            feature_id: id || '',
             name,
             address: formatted_address,
             locality: (locality as Locality) || zLocality.Enum.Unknown,
