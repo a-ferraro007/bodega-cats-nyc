@@ -1,81 +1,86 @@
-import { Locality, zGeometry, zLocality } from './../../../constants/types'
-import { SupabaseClient } from '@supabase/supabase-js'
 import {
-  FeatureDrawerState,
   LngLat,
   NewLocation,
   ParsedAddressFeature,
   ParsedSearchLocation,
   SearchLocation,
-} from '../../../constants/types'
-import {
   AddressComponent,
-  AddressType,
-  Client,
-  LatLng,
-  Place,
-  PlaceData,
-  PlaceDetailsResponse,
-  PlaceInputType,
-} from '@googlemaps/google-maps-services-js'
+  Locality,
+  PlaceDetailResult,
+  PlaceResult,
+  PlaceType,
+  TextSearchResult,
+  zLocality,
+} from '../../../constants/types'
+
+const BASE_URL = 'https://maps.googleapis.com/maps/api/place'
+const TEXT_SEARCH = 'textsearch/json'
+const DETAILS = 'details/json'
 
 const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
-  const client = new Client({})
   try {
-    const textSearch = await client.textSearch({
-      params: {
-        key: process.env.GOOGLE_PLACES_KEY || '',
-        query,
-        region: 'us',
-        location: [40.73423383278248, -73.990000682489714] as LatLng,
-        radius: 3500, //Find exact radius from bounding box of map
-      },
+    const QUERY_PARAMS = new URLSearchParams({
+      key: process.env.GOOGLE_PLACES_KEY || '',
+      query,
+      region: 'us',
+      location: '40.73423383278248 -73.990000682489714',
+      radius: '3500',
     })
+    const url = new URL(`${BASE_URL}/${TEXT_SEARCH}?${QUERY_PARAMS}`)
 
-    //console.log(textSearch.data.results, 'textSearch.data.results')
+    const headers = new Headers()
+    headers.append('Accept', 'application/json')
+    const textSearchResp = await fetch(url, {
+      method: 'GET',
+      headers: headers,
+      redirect: 'follow',
+    })
+    const textSearchJson = (await textSearchResp.json()) as TextSearchResult
 
-    const req = textSearch.data.results.map(
-      (result: Partial<PlaceData>, i: number) => {
+    const req = textSearchJson.results.map(
+      (result: PlaceResult, i: number): Promise<Response> | undefined => {
         const { place_id, types } = result
 
         if (
           place_id &&
-          (!types?.includes(AddressType.administrative_area_level_1) ||
-            !types?.includes(AddressType.administrative_area_level_2) ||
-            !types?.includes(AddressType.administrative_area_level_3) ||
-            !types?.includes(AddressType.administrative_area_level_4) ||
-            !types?.includes(AddressType.administrative_area_level_5))
+          (!types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_1) ||
+            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_1) ||
+            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_1) ||
+            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_1) ||
+            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_1))
         ) {
-          return client.placeDetails({
-            params: {
-              key: process.env.GOOGLE_PLACES_KEY || '',
-              place_id,
-              fields: [
-                'place_id',
-                'name',
-                'formatted_address',
-                'geometry',
-                'address_components',
-                'photos',
-              ],
-            },
+          const QUERY_PARAMS = new URLSearchParams({
+            key: process.env.GOOGLE_PLACES_KEY || '',
+            place_id,
+          })
+          const url = new URL(
+            `${BASE_URL}/${DETAILS}?${QUERY_PARAMS}&fields=place_id,name,formatted_address,geometry,address_components,photos`
+          )
+          console.log(url, 'url')
+
+          return fetch(url, {
+            method: 'GET',
+            headers: headers,
+            redirect: 'follow',
           })
         }
       }
     )
-    const responses = await Promise.all(req)
-    const mappedFeatures = responses
-      ?.map((resp: PlaceDetailsResponse | undefined) => {
-        const result = resp?.data.result
-        if (!result) return
+
+    const responses = (await Promise.all(req)).map(
+      (resp) => resp?.json() as Promise<PlaceDetailResult>
+    )
+    const json = await Promise.all(responses)
+
+    const mappedFeatures = json
+      .map(({ result: PlaceDetail }: PlaceDetailResult) => {
         const {
           place_id: id,
           name,
           formatted_address,
           geometry,
           address_components,
-          photos,
-        } = result
+        } = PlaceDetail
 
         const locality =
           address_components?.find((component: AddressComponent) => {
@@ -89,21 +94,19 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
               return true
           })?.long_name || zLocality.Enum.Unknown
 
-        console.log(locality, 'locality')
-
         return {
           ParsedFeature: {
             feature_id: id || '',
             name,
             address: formatted_address,
             locality: (locality as Locality) || zLocality.Enum.Unknown,
-            center: [geometry?.location.lng, geometry?.location.lat],
+            center: [geometry?.location?.lng, geometry?.location?.lat],
           },
           Feature: {
             id: id || '',
             type: '',
             geometry: {
-              coordinates: [geometry?.location.lng, geometry?.location.lat],
+              coordinates: [geometry?.location?.lng, geometry?.location?.lat],
               type: 'Point',
             },
             place_type: [''],
