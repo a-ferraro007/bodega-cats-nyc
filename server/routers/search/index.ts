@@ -13,9 +13,17 @@ import {
   zLocality,
 } from '../../../constants/types'
 
-const BASE_URL = 'https://maps.googleapis.com/maps/api/place'
-const TEXT_SEARCH = 'textsearch/json'
-const DETAILS = 'details/json'
+const BASE_URL = 'https://maps.googleapis.com/maps'
+const TEXT_SEARCH = 'api/place/textsearch/json'
+const DETAILS_SEARCH = 'api/place/details/json'
+const REVERSE_GEOCODE = 'api/geocode/json'
+const headers = new Headers()
+headers.append('Accept', 'application/json')
+const REQUEST_OPTIONS = <RequestInit>{
+  headers,
+  method: 'GET',
+  redirect: 'follow',
+}
 
 const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
   try {
@@ -23,18 +31,11 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
       key: process.env.GOOGLE_PLACES_KEY || '',
       query,
       region: 'us',
-      location: '40.73423383278248 -73.990000682489714',
+      location: '40.73423383278248,-73.990000682489714',
       radius: '3500',
     })
     const url = new URL(`${BASE_URL}/${TEXT_SEARCH}?${QUERY_PARAMS}`)
-
-    const headers = new Headers()
-    headers.append('Accept', 'application/json')
-    const textSearchResp = await fetch(url, {
-      method: 'GET',
-      headers: headers,
-      redirect: 'follow',
-    })
+    const textSearchResp = await fetch(url, REQUEST_OPTIONS)
     const textSearchJson = (await textSearchResp.json()) as TextSearchResult
 
     const req = textSearchJson.results.map(
@@ -54,15 +55,10 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
             place_id,
           })
           const url = new URL(
-            `${BASE_URL}/${DETAILS}?${QUERY_PARAMS}&fields=place_id,name,formatted_address,geometry,address_components,photos`
+            `${BASE_URL}/${DETAILS_SEARCH}?${QUERY_PARAMS}&fields=place_id,name,formatted_address,geometry,address_components,photos`
           )
-          console.log(url, 'url')
 
-          return fetch(url, {
-            method: 'GET',
-            headers: headers,
-            redirect: 'follow',
-          })
+          return fetch(url, REQUEST_OPTIONS)
         }
       }
     )
@@ -135,36 +131,25 @@ const getLngLatResults = async (
 ): Promise<ParsedSearchLocation> => {
   if (!lnglat) return <ParsedSearchLocation>{}
   try {
-    var requestOptions = <RequestInit>{
-      method: 'GET',
-      redirect: 'follow',
-    }
+    const QUERY_PARAMS = new URLSearchParams({
+      key: process.env.GOOGLE_PLACES_KEY || '',
+      latlng: `${lnglat.lat},${lnglat.lng}`,
+    })
+    const url = new URL(`${BASE_URL}/${REVERSE_GEOCODE}?${QUERY_PARAMS}`)
 
-    const resp = await fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-        lnglat.lng
-      )},${encodeURIComponent(
-        lnglat.lat
-      )}.json?types=address&bbox=-74.26379, 40.3923, -73.667498, 40.94285&access_token=pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA`,
-      requestOptions
-    )
+    const headers = new Headers()
+    headers.append('Accept', 'application/json')
+    const resp = await fetch(url, REQUEST_OPTIONS)
+    const { results } = await resp.json()
 
-    const { features } = await resp.json()
-    const {
-      id,
-      type,
-      geometry,
-      place_name,
-      place_type,
-      center,
-      context,
-      text,
-      properties,
-    } = features[0]
-    return <ParsedSearchLocation>{
-      feature_id: id,
-      address: place_name,
-    }
+    return {
+      feature_id: '',
+      address: results[0].formatted_address,
+      lnglat: {
+        lng: results[0].geometry.location.lng,
+        lat: results[0].geometry.location.lat,
+      },
+    } as SearchLocation
   } catch (error) {
     throw error
   }
@@ -174,16 +159,11 @@ const fetchAddressSearchResults = async (
   query: string
 ): Promise<Array<ParsedAddressFeature>> => {
   try {
-    var requestOptions = <RequestInit>{
-      method: 'GET',
-      redirect: 'follow',
-    }
-
     const resp = await fetch(
       `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
         query
       )}.json?fuzzyMatch=true&types=address&bbox=-74.26379, 40.3923, -73.667498, 40.94285&autocomplete=true&limit=10&access_token=pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA`,
-      requestOptions
+      REQUEST_OPTIONS
     )
 
     const { features } = await resp.json()
