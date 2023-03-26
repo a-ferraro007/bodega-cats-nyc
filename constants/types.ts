@@ -126,7 +126,7 @@ export type Coordinates = {
 }
 
 export interface SearchLocation {
-  feature_id: string
+  feature_id?: string
   lnglat: LngLat
   address: string
 }

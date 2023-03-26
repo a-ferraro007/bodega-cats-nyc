@@ -31,8 +31,8 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
       key: process.env.GOOGLE_PLACES_KEY || '',
       query,
       region: 'us',
-      location: '40.73423383278248,-73.990000682489714',
-      radius: '3500',
+      location: '40.701201,-73.968585', //'40.73423383278248,-73.990000682489714',
+      radius: '35000',
     })
     const url = new URL(`${BASE_URL}/${TEXT_SEARCH}?${QUERY_PARAMS}`)
     const textSearchResp = await fetch(url, REQUEST_OPTIONS)
@@ -68,7 +68,7 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
     )
     const json = await Promise.all(responses)
 
-    const mappedFeatures = json
+    const mappedResults = json
       .map(({ result: PlaceDetail }: PlaceDetailResult) => {
         const {
           place_id: id,
@@ -90,7 +90,7 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
               return true
           })?.long_name || zLocality.Enum.Unknown
 
-        return {
+        return <NewLocation>{
           ParsedFeature: {
             feature_id: id || '',
             name,
@@ -107,7 +107,7 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
             },
             place_type: [''],
           },
-        } as NewLocation
+        }
       })
       .reduce(
         (
@@ -120,7 +120,7 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
         []
       )
 
-    return mappedFeatures || <NewLocation[]>[]
+    return mappedResults || <NewLocation[]>[]
   } catch (error) {
     throw error
   }
@@ -128,28 +128,24 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
 
 const getLngLatResults = async (
   lnglat: LngLat | undefined
-): Promise<ParsedSearchLocation> => {
-  if (!lnglat) return <ParsedSearchLocation>{}
+): Promise<SearchLocation> => {
+  if (!lnglat) return <SearchLocation>{}
   try {
     const QUERY_PARAMS = new URLSearchParams({
       key: process.env.GOOGLE_PLACES_KEY || '',
       latlng: `${lnglat.lat},${lnglat.lng}`,
     })
     const url = new URL(`${BASE_URL}/${REVERSE_GEOCODE}?${QUERY_PARAMS}`)
-
-    const headers = new Headers()
-    headers.append('Accept', 'application/json')
     const resp = await fetch(url, REQUEST_OPTIONS)
     const { results } = await resp.json()
 
-    return {
-      feature_id: '',
+    return <SearchLocation>{
       address: results[0].formatted_address,
       lnglat: {
         lng: results[0].geometry.location.lng,
         lat: results[0].geometry.location.lat,
       },
-    } as SearchLocation
+    }
   } catch (error) {
     throw error
   }
@@ -162,16 +158,14 @@ const fetchAddressSearchResults = async (
     const QUERY_PARAMS = new URLSearchParams({
       key: process.env.GOOGLE_PLACES_KEY || '',
       input: query,
-      location: '40.73423383278248,-73.990000682489714',
+      location: '40.701201,-73.968585', //'40.73423383278248,-73.990000682489714',
       radius: '35000',
       strictbounds: 'true',
     })
     const url = new URL(`${BASE_URL}/${AUTOCOMPLETE_ADDRESS}?${QUERY_PARAMS}`)
-
-    const headers = new Headers()
-    headers.append('Accept', 'application/json')
     const resp = await fetch(url, REQUEST_OPTIONS)
     const { predictions } = await resp.json()
+
     const detailsReqs: Promise<Response>[] = predictions.map(
       (prediction: any) => {
         const { structured_formatting, place_id } = prediction
@@ -190,13 +184,12 @@ const fetchAddressSearchResults = async (
       resp.json()
     )
     const details = await Promise.all(detailsJson)
-    const mappedFeatures: Array<SearchLocation> = details.map((detail: any) => {
+    const mappedResults: Array<SearchLocation> = details.map((detail: any) => {
       const {
         result: { geometry, formatted_address },
       } = detail
 
       return <SearchLocation>{
-        feature_id: '',
         address: formatted_address,
         lnglat: {
           lng: geometry.location.lng,
@@ -205,8 +198,8 @@ const fetchAddressSearchResults = async (
       }
     })
 
-    console.log('mappedFeaturess', mappedFeatures)
-    return mappedFeatures
+    console.log('mappedResultss', mappedResults)
+    return mappedResults
   } catch (error) {
     throw error
   }
