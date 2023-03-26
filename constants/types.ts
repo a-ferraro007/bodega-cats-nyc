@@ -84,11 +84,11 @@ export const zRowId = z.object({
   id: z.number(),
 })
 
-export interface ParsedAddressFeature {
-  feature_id: string
-  name: string
-  lnglat: LngLat
-}
+//export interface SearchLocation {
+//  feature_id: string
+//  name: string
+//  lnglat: LngLat
+//}
 
 //export interface FeatureData {
 //  id: string

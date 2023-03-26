@@ -1,7 +1,6 @@
 import {
   LngLat,
   NewLocation,
-  ParsedAddressFeature,
   ParsedSearchLocation,
   SearchLocation,
   AddressComponent,
@@ -17,6 +16,7 @@ const BASE_URL = 'https://maps.googleapis.com/maps'
 const TEXT_SEARCH = 'api/place/textsearch/json'
 const DETAILS_SEARCH = 'api/place/details/json'
 const REVERSE_GEOCODE = 'api/geocode/json'
+const AUTOCOMPLETE_ADDRESS = 'api/place/autocomplete/json'
 const headers = new Headers()
 headers.append('Accept', 'application/json')
 const REQUEST_OPTIONS = <RequestInit>{
@@ -157,42 +157,55 @@ const getLngLatResults = async (
 
 const fetchAddressSearchResults = async (
   query: string
-): Promise<Array<ParsedAddressFeature>> => {
+): Promise<Array<SearchLocation>> => {
   try {
-    const resp = await fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-        query
-      )}.json?fuzzyMatch=true&types=address&bbox=-74.26379, 40.3923, -73.667498, 40.94285&autocomplete=true&limit=10&access_token=pk.eyJ1IjoidG9ueS1waXp6YSIsImEiOiJjbDltNXZ3eGE0ank0M25tdmZwaGMwY3psIn0.yxAZrLLcNHNyot9Cj4twsA`,
-      REQUEST_OPTIONS
-    )
+    const QUERY_PARAMS = new URLSearchParams({
+      key: process.env.GOOGLE_PLACES_KEY || '',
+      input: query,
+      location: '40.73423383278248,-73.990000682489714',
+      radius: '35000',
+      strictbounds: 'true',
+    })
+    const url = new URL(`${BASE_URL}/${AUTOCOMPLETE_ADDRESS}?${QUERY_PARAMS}`)
 
-    const { features } = await resp.json()
-
-    const mappedFeatures: Array<ParsedAddressFeature> = features.map(
-      (feature: any) => {
-        const {
-          id,
-          type,
-          geometry: { coordinates },
-          place_name,
-          place_type,
-          center,
-          context,
-          text,
-          properties,
-        } = feature
-
-        return <SearchLocation>{
-          feature_id: id,
-          address: place_name,
-          lnglat: {
-            lng: coordinates[0],
-            lat: coordinates[1],
-          } as LngLat,
-        }
+    const headers = new Headers()
+    headers.append('Accept', 'application/json')
+    const resp = await fetch(url, REQUEST_OPTIONS)
+    const { predictions } = await resp.json()
+    const detailsReqs: Promise<Response>[] = predictions.map(
+      (prediction: any) => {
+        const { structured_formatting, place_id } = prediction
+        console.log('result', structured_formatting)
+        const QUERY_PARAMS = new URLSearchParams({
+          key: process.env.GOOGLE_PLACES_KEY || '',
+          place_id,
+        })
+        const url = new URL(
+          `${BASE_URL}/${DETAILS_SEARCH}?${QUERY_PARAMS}&fields=geometry,formatted_address`
+        )
+        return fetch(url, REQUEST_OPTIONS)
       }
     )
+    const detailsJson = (await Promise.all(detailsReqs)).map((resp) =>
+      resp.json()
+    )
+    const details = await Promise.all(detailsJson)
+    const mappedFeatures: Array<SearchLocation> = details.map((detail: any) => {
+      const {
+        result: { geometry, formatted_address },
+      } = detail
 
+      return <SearchLocation>{
+        feature_id: '',
+        address: formatted_address,
+        lnglat: {
+          lng: geometry.location.lng,
+          lat: geometry.location.lat,
+        } as LngLat,
+      }
+    })
+
+    console.log('mappedFeaturess', mappedFeatures)
     return mappedFeatures
   } catch (error) {
     throw error

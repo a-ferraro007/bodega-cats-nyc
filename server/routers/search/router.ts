@@ -1,4 +1,4 @@
-import { NewLocation, ParsedAddressFeature } from './../../../constants/types'
+import { NewLocation, SearchLocation } from './../../../constants/types'
 import { z } from 'zod'
 import {
   fetchAddressSearchResults,
@@ -10,7 +10,7 @@ import { procedure, router } from '../../trpc'
 
 export const searchRouter = router({
   searchByAddress: procedure.input(z.string()).query(({ input }) => {
-    if (!input) return <ParsedAddressFeature[]>[]
+    if (!input) return <SearchLocation[]>[]
     return fetchAddressSearchResults(input)
   }),
   searchByLngLat: procedure.input(zLngLat).query(({ input }) => {
