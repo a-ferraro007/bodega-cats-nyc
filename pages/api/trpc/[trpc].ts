@@ -8,13 +8,14 @@ export default trpcNext.createNextApiHandler({
   router: appRouter,
   createContext,
   onError({ error, type, path, input, ctx, req }) {
-    console.error('trpc error', {
-      error,
-      type,
-      path,
-      input,
-      ctx,
-      req,
-    })
+    console.error('trpc error', error)
+    //{
+    ///  error,
+    //type,
+    //path,
+    //input,
+    //ctx,
+    //req,
+    //})
   },
 })

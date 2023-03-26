@@ -49,7 +49,7 @@ const insertCatProperty = async (
   supabase: SupabaseClient
 ): Promise<RowId> => {
   try {
-    console.log('inserting into Cat_Properties', supabase)
+    //console.log('inserting into Cat_Properties', supabase)
 
     const { data, error } = await supabase
       .from('Cat_Properties')

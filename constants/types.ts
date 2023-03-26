@@ -31,12 +31,21 @@ export const MapBoxFeature = z.object({
   //cat_id: z.optional(z.number()) //
 })
 
+export const zLocality = z.enum([
+  'Brooklyn',
+  'Manhattan',
+  'Queens',
+  'Bronx',
+  'Staten Island',
+  'Unknown',
+])
+
 export const ParsedFeature = z.object({
   feature_id: z.string(),
   name: z.string(),
   center: z.array(z.number()),
   address: z.string(),
-  locality: z.string(),
+  locality: zLocality,
 })
 
 export const zNewFeatureMutation = z.object({
@@ -75,11 +84,11 @@ export const zRowId = z.object({
   id: z.number(),
 })
 
-export interface ParsedAddressFeature {
-  feature_id: string
-  name: string
-  lnglat: LngLat
-}
+//export interface SearchLocation {
+//  feature_id: string
+//  name: string
+//  lnglat: LngLat
+//}
 
 //export interface FeatureData {
 //  id: string
@@ -117,7 +126,7 @@ export type Coordinates = {
 }
 
 export interface SearchLocation {
-  feature_id: string
+  feature_id?: string
   lnglat: LngLat
   address: string
 }
@@ -157,6 +166,71 @@ export interface FeatureInterface extends Feature {
   MapBox_Feature: MapBoxFeature[]
 }
 export interface NewLocationInterface extends NewLocation {}
+export type Locality = z.infer<typeof zLocality>
+export enum PlaceType {
+  ADMINISTRATIVE_AREA_LEVEL_1 = 'ADMINISTRATIVE_AREA_LEVEL_1',
+  ADMINISTRATIVE_AREA_LEVEL_2 = 'ADMINISTRATIVE_AREA_LEVEL_2',
+  ADMINISTRATIVE_AREA_LEVEL_3 = 'ADMINISTRATIVE_AREA_LEVEL_3',
+  ADMINISTRATIVE_AREA_LEVEL_4 = 'ADMINISTRATIVE_AREA_LEVEL_4',
+  administrative_area_level_5 = 'ADMINISTRATIVE_AREA_LEVEL_5',
+}
+interface PlaceGeometry {
+  location?: LngLat
+  viewport?: {
+    northeast: LngLat
+    southwest: LngLat
+  }
+}
+export interface AddressComponent {
+  long_name: string | null
+  short_name: string | null
+  types: string[]
+}
+export interface PlaceResult {
+  address_components?: AddressComponent[]
+  adr_address?: string
+  aspects?: any //PlaceAspectRating[];
+  business_status?: any //BusinessStatus;
+  formatted_address?: string
+  formatted_phone_number?: string
+  geometry?: PlaceGeometry
+  html_attributions?: string[]
+  icon?: string
+  icon_background_color?: string
+  icon_mask_base_uri?: string
+  international_phone_number?: string
+  name?: string
+  opening_hours?: any //.PlaceOpeningHours;
+  permanently_closed?: boolean
+  photos?: any //PlacePhoto[];
+  place_id?: string
+  plus_code?: any //PlacePlusCode;
+  price_level?: number
+  rating?: number
+  reviews?: any // PlaceReview[];
+  types?: string[]
+  url?: string
+  user_ratings_total?: number
+  utc_offset?: number
+  utc_offset_minutes?: number
+  vicinity?: string
+  website?: string
+}
+export type TextSearchResult = {
+  results: PlaceResult[]
+}
+export interface PlaceDetail {
+  address_components?: AddressComponent[]
+  place_id?: string
+  name?: string
+  formatted_address?: string
+  geometry?: PlaceGeometry
+  photos?: any //PlacePhoto[];
+}
+export type PlaceDetailResult = {
+  result: PlaceDetail
+}
+
 export type Json =
   | string
   | number

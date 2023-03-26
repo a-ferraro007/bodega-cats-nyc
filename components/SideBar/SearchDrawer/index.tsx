@@ -7,7 +7,8 @@ import SearchBar from './SearchBar'
 import SearchResults from './SearchResults'
 
 const SearchDrawer = () => {
-  const { inputValue, newLocation, newLocOpen, data } = useDrawerContext()
+  const size = useCardListSize('height')
+  const { inputValue, isLoading, data } = useDrawerContext()
   const Variants = {
     search: {
       search_open: { opacity: 1 },
@@ -18,23 +19,34 @@ const SearchDrawer = () => {
   return (
     <>
       <SearchBar />
-      <AnimatePresence>
-        {data.length > 0 && (
-          <motion.div
-            className="h-full overflow-hidden"
-            transition={{
-              delay: 0,
-              ease: 'circOut',
-              duration: 0.25,
-            }}
-            key={'search-drawer-location-close'}
-            variants={Variants.search}
-          >
-            <SearchResults />
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {inputValue.length > 0 && data?.length === 0 && (
+      {data.length > 0 && (
+        <AnimatePresence>
+          {!isLoading ? (
+            <motion.div
+              className="h-full overflow-hidden"
+              transition={{
+                delay: 0,
+                ease: 'circOut',
+                duration: 0.25,
+              }}
+              key={'search-drawer-location-close'}
+              variants={Variants.search}
+            >
+              <SearchResults data={data} />
+            </motion.div>
+          ) : (
+            <LoadingList
+              fullWidth={true}
+              size={size ? size : 10}
+              flexDirection={'flex-col'}
+              scrollDirection={'overflow-y-hidden'}
+              isLoading={isLoading}
+              fKey={'search-loading'}
+            />
+          )}
+        </AnimatePresence>
+      )}
+      {inputValue.length > 0 && data.length === 0 && !isLoading && (
         //add link to submit bug report for missing location
         <p className="w-full text-center font-nunito font-normal">
           no location found 😿
