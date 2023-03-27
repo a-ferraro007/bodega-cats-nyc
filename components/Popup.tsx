@@ -7,13 +7,17 @@ type PopupProps = {
 const Popup = ({ feature }: PopupProps) => {
   return (
     <div onClick={() => {}}>
-      <div className="h-24 w-24">
+      <div className="relative h-24 w-24">
         <Image
           className="rounded-[3px]"
-          width="40"
-          height="40"
+          style={{
+            objectFit: 'cover',
+            width: '100%',
+            height: '100%',
+          }}
           src={feature.image}
           alt="cat image"
+          fill
         />
       </div>
       <span className="font-nunito text-lg  font-bold"> {feature.name} </span>

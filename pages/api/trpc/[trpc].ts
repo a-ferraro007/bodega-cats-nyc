@@ -9,13 +9,5 @@ export default trpcNext.createNextApiHandler({
   createContext,
   onError({ error, type, path, input, ctx, req }) {
     console.error('trpc error', error)
-    //{
-    ///  error,
-    //type,
-    //path,
-    //input,
-    //ctx,
-    //req,
-    //})
   },
 })

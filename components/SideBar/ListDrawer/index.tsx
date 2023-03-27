@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { Feature } from '../../../constants/types'
 import { useCardListSize, useIsMobile } from '../../../hooks'
 import { useFeatureStore } from '../../../store'
+import { returnNewMarker } from '../../../utils/MapMarker'
 import { trpc } from '../../../utils/trpc'
 import { useDrawerContext } from '../DrawerProvider'
 import LoadingList from '../LoadingList'
@@ -13,12 +14,26 @@ const { select } = trpc
 const ListDrawer = () => {
   const size = useCardListSize('height')
   const { isOpen } = useDrawerContext()
-  const { features: featureMap, isLoading } = useFeatureStore((state) => state)
+  const {
+    features: featureMap,
+    isLoading,
+    setTopFeatures,
+  } = useFeatureStore((state) => state)
   const { data, isLoading: isTopInAreaLoading } =
     select.selectTopInArea.useQuery('Brooklyn', {
       enabled: true,
+      onSuccess: (data) => {
+        console.log('data', data)
+        const map = new Map()
+        data.forEach((feature) => {
+          const { MapBox_Feature } = feature
+          const marker = returnNewMarker(feature, true, feature.image)
+          map.set(MapBox_Feature[0].feature_id, { marker, feature })
+        })
+        setTopFeatures(map)
+      },
     })
-  const memoizedFeatures = useMemo<Array<Feature>>(() => {
+  const featureMemo = useMemo<Array<Feature>>(() => {
     const array: Array<Feature> = []
     featureMap.forEach(({ feature }) => {
       array.push(feature)
@@ -62,7 +77,7 @@ const ListDrawer = () => {
           <div className="flex h-full flex-col overflow-y-scroll">
             <AnimatePresence>
               {!isLoading ? (
-                <NearbyList data={memoizedFeatures} isLoading={isLoading} />
+                <NearbyList data={featureMemo} isLoading={isLoading} />
               ) : (
                 <LoadingList
                   fullWidth={true}

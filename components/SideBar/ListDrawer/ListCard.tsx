@@ -3,9 +3,11 @@ import BoroughBadge from '../BoroughBadge'
 import { ListCardProps } from '../../../constants/types'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { useFeatureStore, useStore } from '../../../store'
 
 const ListCard = ({ feature, classNames }: ListCardProps) => {
-  const [isClicked, setIsClicked] = useState(false)
+  const { features, topFeatures } = useFeatureStore((state) => state)
+  const { mapRef, openPopup, setOpenPopup } = useStore((state) => state)
   const { id, MapBox_Feature, name, locality, image: src } = feature
   const { address } = MapBox_Feature[0]
   const { listItem, cardContainer } = classNames
@@ -28,17 +30,35 @@ const ListCard = ({ feature, classNames }: ListCardProps) => {
   }
 
   return (
-    <li className={`${listItem}`} onClick={() => setIsClicked(!isClicked)}>
+    <li className={`${listItem}`}>
       <motion.button
         layout
         initial={'key_up'}
         whileTap={'key_down'}
-        //whileFocus={'focus'}
         exit={{ opacity: 0 }}
         transition={{ delay: 0, ease: 'linear', duration: 0.125 }}
         variants={Variants.button}
         key={`list-button-press-${id}`}
         className={`m-0 flex cursor-pointer gap-2 self-start rounded-default text-left transition-all duration-300 ${cardContainer} border-[rgba(0,0,0,.08)]] max-h-[16rem] border bg-white p-3`}
+        onClick={() => {
+          features.get(openPopup)?.marker.togglePopup()
+          topFeatures.get(openPopup)?.marker.togglePopup()
+          topFeatures.get(openPopup)?.marker.remove(mapRef)
+          setOpenPopup(MapBox_Feature[0].feature_id)
+          mapRef.flyTo({
+            center: {
+              lng: MapBox_Feature[0].geo_json.geometry.coordinates[0],
+              lat: MapBox_Feature[0].geo_json.geometry.coordinates[1],
+            },
+            zoom: 14,
+          })
+          if (features.has(MapBox_Feature[0].feature_id)) {
+            features.get(MapBox_Feature[0].feature_id)?.marker.togglePopup()
+          } else if (topFeatures.has(MapBox_Feature[0].feature_id)) {
+            topFeatures.get(MapBox_Feature[0].feature_id)?.marker.addTo(mapRef)
+            topFeatures.get(MapBox_Feature[0].feature_id)?.marker.togglePopup()
+          }
+        }}
         tabIndex={0}
       >
         <div className="flex-grow rounded-b-default">
@@ -61,7 +81,6 @@ const ListCard = ({ feature, classNames }: ListCardProps) => {
               className="h-full w-full object-cover"
               alt="feature image"
               src={src}
-              //placeholder="blur"
               fill
             />
             <div className="pointer-events-none absolute inset-0 rounded-[10px] shadow-[inset_0px_0px_0px_2px_rgba(0,0,0,.1)] "></div>

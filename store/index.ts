@@ -7,8 +7,10 @@ type Marker<T> = T | null
 
 interface FeatureStore {
   features: Map<string, MarkerFeature>
+  topFeatures: any
   isLoading: boolean
   setFeatures: (features: Map<string, MarkerFeature>) => void
+  setTopFeatures: (topFeatures: any) => void
   setIsLoading: (isLoading: boolean) => void
 }
 
@@ -45,9 +47,12 @@ const addressSearchStore = (set: any) => ({
 
 const featureStore = (set: any) => ({
   features: new Map<string, MarkerFeature>(),
+  topFeatures: {},
   isLoading: true,
   setFeatures: (features: Map<String, MarkerFeature>) =>
     set(() => ({ features: new Map(features) })),
+  setTopFeatures: (topFeatures: any) =>
+    set(() => ({ topFeatures: topFeatures })),
   setIsLoading: (isLoading: boolean) => set(() => ({ isLoading })),
 })
 
@@ -64,6 +69,7 @@ const authStore = (set: any) => ({
 
 interface StoreState {
   mapRef: mapboxgl.Map
+  openPopup: string
   searchMarker: Marker<mapboxgl.Marker>
   authState: boolean
 
@@ -71,7 +77,7 @@ interface StoreState {
   showMobileMap: boolean
 
   setShowMobileMap: (showMobileMap: boolean) => void
-
+  setOpenPopup: (openPopup: string) => void
   setShow: (show: boolean) => void
   setMapRef: (mapRef: mapboxgl.Map) => void
   setAuthState: (authState: boolean) => void
@@ -79,6 +85,7 @@ interface StoreState {
 
 const store = (set: any) => ({
   mapRef: <mapboxgl.Map>{},
+  openPopup: '',
   searchMarker: null,
   authState: false,
   show: false,
@@ -87,7 +94,7 @@ const store = (set: any) => ({
     set(() => ({
       showMobileMap: showMobileMap,
     })),
-
+  setOpenPopup: (openPopup: string) => set(() => ({ openPopup: openPopup })),
   setMapRef: (mapRef: mapboxgl.Map) => set(() => ({ mapRef: mapRef })),
   setAuthState: (authState: boolean) => set(() => ({ authState: authState })),
   setShow: (show: boolean) => set(() => ({ show: show })),
