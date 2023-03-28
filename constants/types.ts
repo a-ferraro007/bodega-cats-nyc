@@ -84,20 +84,6 @@ export const zRowId = z.object({
   id: z.number(),
 })
 
-//export interface SearchLocation {
-//  feature_id: string
-//  name: string
-//  lnglat: LngLat
-//}
-
-//export interface FeatureData {
-//  id: string
-//  name: string
-//  geometry: { coordinates: Array<Number>; type: string }
-//  place_type: Array<string>
-//  type: string
-//}
-
 export interface DrawerState {
   searchDrawerIsActive: boolean
   featureDrawerIsActive: boolean
@@ -136,10 +122,12 @@ export interface ParsedSearchLocation {
   address: string
 }
 
-export interface MarkerFeature {
-  marker: mapboxgl.Marker
+export interface FeatureMarker {
   feature: Feature
+  marker: mapboxgl.Marker
 }
+
+export type FeatureMap = Map<string, FeatureMarker>
 
 export interface ListCardProps {
   feature: Feature
@@ -149,6 +137,11 @@ export interface ListCardProps {
 export interface SearchCardProps {
   location: NewLocationInterface
   classNames: { listItem: string; cardContainer: string }
+}
+
+export interface ActivePopup {
+  id: string
+  marker: mapboxgl.Marker
 }
 
 type lnglat = z.infer<typeof zLngLat>

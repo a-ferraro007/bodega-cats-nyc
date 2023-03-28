@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Feature, FeatureInterface, MarkerFeature } from '../constants/types'
+import { Feature, FeatureInterface, FeatureMarker } from '../constants/types'
 import { useFeatureStore, useStore } from '../store'
 import { returnNewMarker } from '../utils/MapMarker'
 
@@ -23,7 +23,7 @@ const useMapUpdate = (features: FeatureInterface[] | undefined) => {
         fetchedFeaturesMap.set(MapBox_Feature[0].feature_id, feature)
       })
 
-      featureStateMap.forEach((_: MarkerFeature, key: string) => {
+      featureStateMap.forEach((_: FeatureMarker, key: string) => {
         if (!fetchedFeaturesMap.has(key)) {
           const marketFeature = featureStateMap.get(key)
           if (marketFeature) {

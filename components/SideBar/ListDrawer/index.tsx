@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useMemo } from 'react'
-import { Feature } from '../../../constants/types'
+import { Feature, FeatureMarker } from '../../../constants/types'
 import { useCardListSize, useIsMobile } from '../../../hooks'
 import { useFeatureStore } from '../../../store'
 import { returnNewMarker } from '../../../utils/MapMarker'
@@ -23,8 +23,7 @@ const ListDrawer = () => {
     select.selectTopInArea.useQuery('Brooklyn', {
       enabled: true,
       onSuccess: (data) => {
-        console.log('data', data)
-        const map = new Map()
+        const map = new Map<string, FeatureMarker>()
         data.forEach((feature) => {
           const { MapBox_Feature } = feature
           const marker = returnNewMarker(feature, true, feature.image)

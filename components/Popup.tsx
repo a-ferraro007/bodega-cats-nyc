@@ -1,10 +1,12 @@
 import Image from 'next/image'
 import { Feature } from '../constants/types'
+import { useStore } from '../store'
 
 type PopupProps = {
   feature: Feature
 }
 const Popup = ({ feature }: PopupProps) => {
+  const { setActivePopup } = useStore((state) => state)
   return (
     <div onClick={() => {}}>
       <div className="relative h-24 w-24">

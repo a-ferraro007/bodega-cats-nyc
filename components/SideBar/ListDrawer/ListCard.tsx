@@ -7,9 +7,9 @@ import { useFeatureStore, useStore } from '../../../store'
 
 const ListCard = ({ feature, classNames }: ListCardProps) => {
   const { features, topFeatures } = useFeatureStore((state) => state)
-  const { mapRef, openPopup, setOpenPopup } = useStore((state) => state)
+  const { mapRef, activePopup, setActivePopup } = useStore((state) => state)
   const { id, MapBox_Feature, name, locality, image: src } = feature
-  const { address } = MapBox_Feature[0]
+  const mb_feature = MapBox_Feature[0]
   const { listItem, cardContainer } = classNames
 
   const Variants = {
@@ -41,22 +41,28 @@ const ListCard = ({ feature, classNames }: ListCardProps) => {
         key={`list-button-press-${id}`}
         className={`m-0 flex cursor-pointer gap-2 self-start rounded-default text-left transition-all duration-300 ${cardContainer} border-[rgba(0,0,0,.08)]] max-h-[16rem] border bg-white p-3`}
         onClick={() => {
-          features.get(openPopup)?.marker.togglePopup()
-          topFeatures.get(openPopup)?.marker.togglePopup()
-          topFeatures.get(openPopup)?.marker.remove(mapRef)
-          setOpenPopup(MapBox_Feature[0].feature_id)
-          mapRef.flyTo({
-            center: {
-              lng: MapBox_Feature[0].geo_json.geometry.coordinates[0],
-              lat: MapBox_Feature[0].geo_json.geometry.coordinates[1],
-            },
-            zoom: 14,
-          })
-          if (features.has(MapBox_Feature[0].feature_id)) {
-            features.get(MapBox_Feature[0].feature_id)?.marker.togglePopup()
-          } else if (topFeatures.has(MapBox_Feature[0].feature_id)) {
-            topFeatures.get(MapBox_Feature[0].feature_id)?.marker.addTo(mapRef)
-            topFeatures.get(MapBox_Feature[0].feature_id)?.marker.togglePopup()
+          if (activePopup.id === mb_feature.feature_id) return
+          if (activePopup.id) {
+            activePopup.marker.togglePopup()
+            topFeatures.get(activePopup.id)?.marker?.remove()
+          }
+
+          const featureMarker = features.get(mb_feature.feature_id)
+          const topFeatureMarker = topFeatures.get(mb_feature.feature_id)
+          if (featureMarker) {
+            const marker = featureMarker.marker
+            marker.togglePopup()
+            setActivePopup({
+              id: mb_feature.feature_id,
+              marker,
+            })
+          } else if (topFeatureMarker) {
+            topFeatureMarker.marker.addTo(mapRef)
+            topFeatureMarker.marker.togglePopup()
+            setActivePopup({
+              id: mb_feature.feature_id,
+              marker: topFeatureMarker.marker,
+            })
           }
         }}
         tabIndex={0}
@@ -66,7 +72,10 @@ const ListCard = ({ feature, classNames }: ListCardProps) => {
             <span className="text-md block pb-1 font-nunito font-bold">
               {name}
             </span>
-            <p className="mb-2 font-roboto text-xs font-normal"> {address}</p>
+            <p className="mb-2 font-roboto text-xs font-normal">
+              {' '}
+              {mb_feature.address}
+            </p>
             <div className=" border-b-[.5px] border-solid border-graphite transition-all duration-300 "></div>
             {locality && (
               <div className="pt-2">
