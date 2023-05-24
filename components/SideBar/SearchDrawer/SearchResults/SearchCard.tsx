@@ -1,5 +1,6 @@
 import BoroughBadge from '../../BoroughBadge'
 import {
+  NewLocation,
   NewLocationInterface,
   SearchCardProps,
   zLocality,
@@ -30,7 +31,7 @@ const SearchCard = ({ location, classNames }: SearchCardProps) => {
     },
   }
 
-  const handleOnClick = (selected: NewLocationInterface) => {
+  const handleOnClick = (selected: NewLocation) => {
     setNewLocation(selected)
     setNewLocOpen(true)
   }

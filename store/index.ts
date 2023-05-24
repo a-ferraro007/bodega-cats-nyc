@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl'
 import {
   ActivePopup,
+  FeatureMap,
   //ActivePopup,
   FeatureMarker,
   SearchLocation,
@@ -11,8 +12,8 @@ import { subscribeWithSelector } from 'zustand/middleware'
 type Marker<T> = T | null
 
 interface FeatureStore {
-  features: Map<string, FeatureMarker>
-  topFeatures: Map<string, FeatureMarker>
+  features: FeatureMap
+  topFeatures: FeatureMap
   isLoading: boolean
   setFeatures: (features: Map<string, FeatureMarker>) => void
   setTopFeatures: (topFeatures: Map<string, FeatureMarker>) => void

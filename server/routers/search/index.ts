@@ -45,10 +45,10 @@ const getSearchResults = async (query: string): Promise<Array<NewLocation>> => {
         if (
           place_id &&
           (!types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_1) ||
-            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_1) ||
-            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_1) ||
-            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_1) ||
-            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_1))
+            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_2) ||
+            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_3) ||
+            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_4) ||
+            !types?.includes(PlaceType.ADMINISTRATIVE_AREA_LEVEL_5))
         ) {
           const QUERY_PARAMS = new URLSearchParams({
             key: process.env.GOOGLE_PLACES_KEY || '',

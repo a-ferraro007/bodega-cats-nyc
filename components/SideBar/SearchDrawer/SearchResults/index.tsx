@@ -1,20 +1,17 @@
 import { KeyboardEvent } from 'react'
 import {
-  FeatureDrawerState,
-  NewLocationInterface,
+  NewLocation,
 } from '../../../../constants/types'
 import SearchCard from './SearchCard'
 
 type SearchResultsProps = {
-  data: NewLocationInterface[]
+  data: NewLocation[]
 }
 
 const SearchResults = ({ data }: SearchResultsProps) => {
-  const HandleOnKeyDown = (e: KeyboardEvent, selected: FeatureDrawerState) => {}
-
   return (
     <ul className="h-full scroll-m-4 overflow-y-scroll">
-      {data.map((location: NewLocationInterface, i: number) => {
+      {data.map((location: NewLocation, i: number) => {
         return (
           <SearchCard
             classNames={{

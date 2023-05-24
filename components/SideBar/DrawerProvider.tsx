@@ -9,9 +9,7 @@ import {
   useState,
 } from 'react'
 import {
-  FeatureDrawerState,
   NewLocation,
-  NewLocationInterface,
 } from '../../constants/types'
 import { useDebounce } from '../../hooks'
 import { trpc } from '../../utils/trpc'
@@ -19,7 +17,7 @@ const { search } = trpc
 type DrawerContextType = {
   data: NewLocation[]
   setData: Dispatch<SetStateAction<NewLocation[]>>
-  newLocation: NewLocationInterface | null
+  newLocation: NewLocation | null
   setNewLocation: Dispatch<SetStateAction<any>>
   newLocOpen: boolean
   setNewLocOpen: Dispatch<SetStateAction<boolean>> //(newLocationIsOpen: boolean) => void

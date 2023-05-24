@@ -84,20 +84,6 @@ export const zRowId = z.object({
   id: z.number(),
 })
 
-export interface DrawerState {
-  searchDrawerIsActive: boolean
-  featureDrawerIsActive: boolean
-}
-
-export interface FeatureDrawerProps {
-  handleStateReset: () => void
-}
-
-export interface FeatureDrawerState {
-  ParsedFeature?: ParsedFeature
-  Feature?: any
-}
-
 export enum Borough {
   Manhattan = 'Manhattan',
   Queens = 'Queens',
@@ -149,7 +135,7 @@ export type CatProperties = z.infer<typeof CatProperties>
 export type FormInputs = z.infer<typeof FormInputs>
 export type ParsedFeature = z.infer<typeof ParsedFeature>
 export type MapBoxFeature = z.infer<typeof MapBoxFeature>
-export type NewLocation = z.infer<typeof zNewLocation>
+export type NewLocation = z.infer<typeof zNewLocation> 
 export type RowId = z.infer<typeof zRowId>
 export type NewFeatureMutation = z.infer<typeof zNewFeatureMutation>
 export type Feature = z.infer<typeof zFeature>
@@ -165,7 +151,7 @@ export enum PlaceType {
   ADMINISTRATIVE_AREA_LEVEL_2 = 'ADMINISTRATIVE_AREA_LEVEL_2',
   ADMINISTRATIVE_AREA_LEVEL_3 = 'ADMINISTRATIVE_AREA_LEVEL_3',
   ADMINISTRATIVE_AREA_LEVEL_4 = 'ADMINISTRATIVE_AREA_LEVEL_4',
-  administrative_area_level_5 = 'ADMINISTRATIVE_AREA_LEVEL_5',
+  ADMINISTRATIVE_AREA_LEVEL_5 = 'ADMINISTRATIVE_AREA_LEVEL_5',
 }
 interface PlaceGeometry {
   location?: LngLat
